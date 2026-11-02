@@ -29,9 +29,15 @@ MODELS = {
     "chat_gpt": "gpt-5.4-2026-03-05",
     "perplexity": "sonar-pro",
     "claude": "claude-sonnet-5",
-    "gemini": "gemini-3.5-flash",
+    # Requested gemini-3.5-flash on 2026-11-02; DataForSEO served gemini-3.6-flash on all 100 rows while
+    # listing both names. Pinned to the served name so the instrument is what the data says it is.
+    "gemini": "gemini-3.6-flash",
 }
 MAX_TOKENS = 1500
+
+
+class PaymentRequired(RuntimeError):
+    """DataForSEO 40200: the account balance is empty. Nothing else will succeed, so the run stops."""
 
 
 def load_panel():
@@ -74,6 +80,66 @@ def extract(task):
     }
 
 
+def balance(dfs):
+    """Account balance in dollars from appendix/user_data (a free call), or None if unreadable."""
+    try:
+        out = subprocess.run([dfs, "appendix/user_data", ""], capture_output=True, text=True, timeout=60)
+        return float(json.loads(out.stdout)["tasks"][0]["result"][0]["money"]["balance"])
+    except Exception:  # noqa: BLE001
+        return None
+
+
+REDIRECT_HOST = "vertexaisearch.cloud.google.com"
+
+
+def resolve_sources(sources, workers=12):
+    """Gemini grounding returns every citation as a vertexaisearch.cloud.google.com redirect link whose
+    title is the real domain. Follow each distinct link once (302 Location) and keep the real URL as
+    `url`, the redirect as `redirect_url`. A link that fails to resolve falls back to https://{title}/
+    when the title is a bare domain, and is flagged `resolved: false` either way."""
+    import urllib.request
+    from urllib.parse import urlparse
+
+    links = sorted({s["url"] for s in sources if urlparse(s["url"]).netloc == REDIRECT_HOST})
+    if not links:
+        return sources
+
+    class NoRedirect(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self, req, fp, code, msg, headers, newurl):  # noqa: D401
+            return None
+
+    opener = urllib.request.build_opener(NoRedirect)
+
+    def head(link):
+        try:
+            opener.open(urllib.request.Request(link, method="HEAD"), timeout=20)
+        except urllib.error.HTTPError as e:
+            if e.code in (301, 302, 303, 307, 308) and e.headers.get("Location"):
+                return link, e.headers["Location"]
+        except Exception:  # noqa: BLE001
+            pass
+        return link, None
+
+    resolved = {}
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        for link, target in pool.map(head, links):
+            resolved[link] = target
+    out = []
+    for s in sources:
+        if urlparse(s["url"]).netloc != REDIRECT_HOST:
+            out.append(s)
+            continue
+        target = resolved.get(s["url"])
+        title = (s.get("title") or "").strip().lower()
+        if target:
+            out.append({**s, "url": target, "redirect_url": s["url"], "resolved": True})
+        elif title and "." in title and " " not in title and "/" not in title:
+            out.append({**s, "url": f"https://{title}/", "redirect_url": s["url"], "resolved": False})
+        else:
+            out.append({**s, "redirect_url": s["url"], "resolved": False})
+    return out
+
+
 def call(dfs, engine, prompt):
     body = json.dumps([{"user_prompt": prompt, "model_name": MODELS[engine], "web_search": True,
                         "max_output_tokens": MAX_TOKENS}])
@@ -82,8 +148,15 @@ def call(dfs, engine, prompt):
     if out.returncode != 0:
         raise RuntimeError(f"dfs.sh exit {out.returncode}: {out.stderr[:200]}")
     data = json.loads(out.stdout)
+    if data.get("status_code") == 40200:
+        raise PaymentRequired("40200 Payment Required (account balance empty)")
+    if not data.get("tasks"):
+        return {"task_id": None, "status": data.get("status_message"), "cost": 0,
+                "error": f"{data.get('status_code')} {data.get('status_message')} (no tasks in response)"}
     task = data["tasks"][0]
     row = {"task_id": task.get("id"), "status": task.get("status_message"), "cost": task.get("cost")}
+    if task.get("status_code") == 40200:
+        raise PaymentRequired("40200 Payment Required (account balance empty)")
     if task.get("status_code") != 20000:
         row["error"] = f"{task.get('status_code')} {task.get('status_message')}"
         return row
@@ -91,6 +164,8 @@ def call(dfs, engine, prompt):
     if not ex or not ex["answer"]:
         row["error"] = "empty result"
         return row
+    if engine == "gemini":
+        ex["sources"] = resolve_sources(ex["sources"])
     row.update(ex)
     return row
 
@@ -106,7 +181,27 @@ def main():
     ap.add_argument("--concurrency", type=int, default=3)
     ap.add_argument("--dfs", default=DFS_DEFAULT)
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--resolve-existing", action="store_true",
+                    help="rewrite the run file in place, resolving Gemini redirect links in rows collected before the resolver existed")
     a = ap.parse_args()
+
+    if a.resolve_existing:
+        path = os.path.join(ROOT, "data", "runs", f"{a.run_id}{'-variance' if a.variance else ''}.jsonl")
+        rows = [json.loads(l) for l in open(path, encoding="utf-8") if l.strip()]
+        n_rows = n_links = n_fail = 0
+        for r in rows:
+            if r.get("sources") and any(s["url"].startswith(f"https://{REDIRECT_HOST}/") for s in r["sources"]):
+                r["sources"] = resolve_sources(r["sources"])
+                n_rows += 1
+                n_links += sum(1 for s in r["sources"] if "redirect_url" in s)
+                n_fail += sum(1 for s in r["sources"] if s.get("resolved") is False)
+        tmp = path + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
+            for r in rows:
+                f.write(json.dumps(r, ensure_ascii=False) + "\n")
+        os.replace(tmp, path)
+        print(f"resolved redirects in {n_rows} rows, {n_links} source entries, {n_fail} fell back to the title domain; {path}")
+        return
 
     panel = load_panel()
     engines = [e.strip() for e in a.engines.split(",") if e.strip()]
@@ -161,6 +256,19 @@ def main():
                "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
         try:
             row.update(call(a.dfs, e, p["prompt"]))
+        except PaymentRequired as ex:
+            # 40200 also arrives as a one-off on a single call with money in the account (seen 2026-11-02
+            # on a Claude call at a $49 balance), so the balance decides: empty = stop, otherwise a
+            # transient row error that the next resume retries.
+            bal = balance(a.dfs)
+            if bal is None or bal > 0.5:
+                row["error"] = f"{ex} transient, balance {bal}"
+            else:
+                row["error"] = str(ex)
+                with lock:
+                    if not state["stop"]:
+                        state["stop"] = True
+                        print(f"DataForSEO balance empty (40200, balance {bal}); no further submissions. Top up and rerun the same command to resume.", flush=True)
         except Exception as ex:  # noqa: BLE001
             row["error"] = f"{type(ex).__name__}: {str(ex)[:200]}"
         with lock:

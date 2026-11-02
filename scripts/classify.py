@@ -28,6 +28,21 @@ DIRECTORIES = {
     # appended 2026-11-02 (seen in run 0 top tables, missed by the July list)
     "experience.com", "lawnstarter.com", "homeguide.com", "trustanalytica.com",
     "bing.com", "apple.com", "tiktok.com", "x.com", "twitter.com",
+    # appended 2026-11-02 after run 1 (analysis a4): directories, aggregators, ranking and listicle
+    # sites, media, reference, government, associations, manufacturer and insurer finders seen on the
+    # four November lanes. delandlocal.com is EVOIX's own DeLand directory and is classed here so it
+    # never counts as a business's own site; the method page discloses it.
+    "todayshomeowner.com", "usnews.com", "homelight.com", "effectiveagents.com",
+    "industryoversight.com", "fastexpert.com", "deltadental.com", "delandlocal.com",
+    "healthhives.com", "dentistsranked.com", "yahoo.com", "contractorsranked.com",
+    "bestlawyers.com", "ficpa.org", "floridapros.org", "floridaroofingdirectory.com",
+    "gaf.com", "consumeraffairs.com", "ratemyagent.com", "rate-my-agent.com", "taxbuzz.com",
+    "floridahomenetwork.com", "carrier.com", "ratingsnearme.com", "tebra.com", "homes.com",
+    "realestateagents.com", "agentpronto.com", "pests.org", "forbes.com", "ufl.edu",
+    "homedepot.com", "daytonachamber.com", "floridabusinessesnear.me", "orlandomagazine.com",
+    "clearlyrated.com", "bestpickreports.com", "volusia.org", "myfloridalicense.com",
+    "floridabar.org", "opencare.com", "palmer.edu", "healthline.com", "realtrends.com",
+    "fdacs.gov", "aisyndicate.com",
 }
 
 # Not on the list, but cited for the same template across this many of the 10
@@ -36,7 +51,7 @@ DIRECTORIES = {
 # folded into "directory".
 MULTI_CITY_THRESHOLD = 5
 
-ANALYSIS_VERSION = "a3"  # a1 July 2026 two-class; a2 appended list rows; a3 multi-city class, per-month decision
+ANALYSIS_VERSION = "a4"  # a1 July 2026 two-class; a2 appended list rows; a3 multi-city class, per-month decision; a4 list appended after run 1
 
 
 def norm_domain(url):

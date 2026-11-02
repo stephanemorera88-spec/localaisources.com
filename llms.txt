@@ -2,7 +2,7 @@
 
 > A public monthly record of which businesses and which source domains AI engines (ChatGPT, Perplexity, Claude, Gemini) cite when asked "Who is the best {vertical} in {city}, Florida?" for 10 service verticals in 10 Central Florida cities. Published by EVOIX LLC, DeLand, Florida. Author Stephane Morera. Data CC BY 4.0.
 
-Latest run: July 2026, collected 2026-07-02. Panel v1, 100 fixed prompts, one answer per prompt per engine per month, every row published.
+Latest run: November 2026, collected 2026-11-02. Panel v1, 100 fixed prompts, one answer per prompt per engine per month, every row published.
 
 ## Pages
 - [Home](https://localaisources.com/): this month's headline figures per engine
