@@ -1,0 +1,631 @@
+{
+ "panel_version": "v1",
+ "template": "Who is the best {vertical} in {city}, Florida?",
+ "frozen": "2026-07-02",
+ "cities": [
+  "DeLand",
+  "Daytona Beach",
+  "Deltona",
+  "Ormond Beach",
+  "Port Orange",
+  "New Smyrna Beach",
+  "Sanford",
+  "Lake Mary",
+  "Orlando",
+  "Winter Park"
+ ],
+ "verticals": [
+  "roofer",
+  "AC repair company",
+  "plumber",
+  "personal injury lawyer",
+  "dentist",
+  "chiropractor",
+  "real estate agent",
+  "landscaping company",
+  "pest control company",
+  "CPA"
+ ],
+ "prompts": [
+  {
+   "query_id": "roofer__deland",
+   "vertical": "roofer",
+   "city": "DeLand",
+   "prompt": "Who is the best roofer in DeLand, Florida?"
+  },
+  {
+   "query_id": "roofer__daytona-beach",
+   "vertical": "roofer",
+   "city": "Daytona Beach",
+   "prompt": "Who is the best roofer in Daytona Beach, Florida?"
+  },
+  {
+   "query_id": "roofer__deltona",
+   "vertical": "roofer",
+   "city": "Deltona",
+   "prompt": "Who is the best roofer in Deltona, Florida?"
+  },
+  {
+   "query_id": "roofer__ormond-beach",
+   "vertical": "roofer",
+   "city": "Ormond Beach",
+   "prompt": "Who is the best roofer in Ormond Beach, Florida?"
+  },
+  {
+   "query_id": "roofer__port-orange",
+   "vertical": "roofer",
+   "city": "Port Orange",
+   "prompt": "Who is the best roofer in Port Orange, Florida?"
+  },
+  {
+   "query_id": "roofer__new-smyrna-beach",
+   "vertical": "roofer",
+   "city": "New Smyrna Beach",
+   "prompt": "Who is the best roofer in New Smyrna Beach, Florida?"
+  },
+  {
+   "query_id": "roofer__sanford",
+   "vertical": "roofer",
+   "city": "Sanford",
+   "prompt": "Who is the best roofer in Sanford, Florida?"
+  },
+  {
+   "query_id": "roofer__lake-mary",
+   "vertical": "roofer",
+   "city": "Lake Mary",
+   "prompt": "Who is the best roofer in Lake Mary, Florida?"
+  },
+  {
+   "query_id": "roofer__orlando",
+   "vertical": "roofer",
+   "city": "Orlando",
+   "prompt": "Who is the best roofer in Orlando, Florida?"
+  },
+  {
+   "query_id": "roofer__winter-park",
+   "vertical": "roofer",
+   "city": "Winter Park",
+   "prompt": "Who is the best roofer in Winter Park, Florida?"
+  },
+  {
+   "query_id": "ac-repair-company__deland",
+   "vertical": "AC repair company",
+   "city": "DeLand",
+   "prompt": "Who is the best AC repair company in DeLand, Florida?"
+  },
+  {
+   "query_id": "ac-repair-company__daytona-beach",
+   "vertical": "AC repair company",
+   "city": "Daytona Beach",
+   "prompt": "Who is the best AC repair company in Daytona Beach, Florida?"
+  },
+  {
+   "query_id": "ac-repair-company__deltona",
+   "vertical": "AC repair company",
+   "city": "Deltona",
+   "prompt": "Who is the best AC repair company in Deltona, Florida?"
+  },
+  {
+   "query_id": "ac-repair-company__ormond-beach",
+   "vertical": "AC repair company",
+   "city": "Ormond Beach",
+   "prompt": "Who is the best AC repair company in Ormond Beach, Florida?"
+  },
+  {
+   "query_id": "ac-repair-company__port-orange",
+   "vertical": "AC repair company",
+   "city": "Port Orange",
+   "prompt": "Who is the best AC repair company in Port Orange, Florida?"
+  },
+  {
+   "query_id": "ac-repair-company__new-smyrna-beach",
+   "vertical": "AC repair company",
+   "city": "New Smyrna Beach",
+   "prompt": "Who is the best AC repair company in New Smyrna Beach, Florida?"
+  },
+  {
+   "query_id": "ac-repair-company__sanford",
+   "vertical": "AC repair company",
+   "city": "Sanford",
+   "prompt": "Who is the best AC repair company in Sanford, Florida?"
+  },
+  {
+   "query_id": "ac-repair-company__lake-mary",
+   "vertical": "AC repair company",
+   "city": "Lake Mary",
+   "prompt": "Who is the best AC repair company in Lake Mary, Florida?"
+  },
+  {
+   "query_id": "ac-repair-company__orlando",
+   "vertical": "AC repair company",
+   "city": "Orlando",
+   "prompt": "Who is the best AC repair company in Orlando, Florida?"
+  },
+  {
+   "query_id": "ac-repair-company__winter-park",
+   "vertical": "AC repair company",
+   "city": "Winter Park",
+   "prompt": "Who is the best AC repair company in Winter Park, Florida?"
+  },
+  {
+   "query_id": "plumber__deland",
+   "vertical": "plumber",
+   "city": "DeLand",
+   "prompt": "Who is the best plumber in DeLand, Florida?"
+  },
+  {
+   "query_id": "plumber__daytona-beach",
+   "vertical": "plumber",
+   "city": "Daytona Beach",
+   "prompt": "Who is the best plumber in Daytona Beach, Florida?"
+  },
+  {
+   "query_id": "plumber__deltona",
+   "vertical": "plumber",
+   "city": "Deltona",
+   "prompt": "Who is the best plumber in Deltona, Florida?"
+  },
+  {
+   "query_id": "plumber__ormond-beach",
+   "vertical": "plumber",
+   "city": "Ormond Beach",
+   "prompt": "Who is the best plumber in Ormond Beach, Florida?"
+  },
+  {
+   "query_id": "plumber__port-orange",
+   "vertical": "plumber",
+   "city": "Port Orange",
+   "prompt": "Who is the best plumber in Port Orange, Florida?"
+  },
+  {
+   "query_id": "plumber__new-smyrna-beach",
+   "vertical": "plumber",
+   "city": "New Smyrna Beach",
+   "prompt": "Who is the best plumber in New Smyrna Beach, Florida?"
+  },
+  {
+   "query_id": "plumber__sanford",
+   "vertical": "plumber",
+   "city": "Sanford",
+   "prompt": "Who is the best plumber in Sanford, Florida?"
+  },
+  {
+   "query_id": "plumber__lake-mary",
+   "vertical": "plumber",
+   "city": "Lake Mary",
+   "prompt": "Who is the best plumber in Lake Mary, Florida?"
+  },
+  {
+   "query_id": "plumber__orlando",
+   "vertical": "plumber",
+   "city": "Orlando",
+   "prompt": "Who is the best plumber in Orlando, Florida?"
+  },
+  {
+   "query_id": "plumber__winter-park",
+   "vertical": "plumber",
+   "city": "Winter Park",
+   "prompt": "Who is the best plumber in Winter Park, Florida?"
+  },
+  {
+   "query_id": "personal-injury-lawyer__deland",
+   "vertical": "personal injury lawyer",
+   "city": "DeLand",
+   "prompt": "Who is the best personal injury lawyer in DeLand, Florida?"
+  },
+  {
+   "query_id": "personal-injury-lawyer__daytona-beach",
+   "vertical": "personal injury lawyer",
+   "city": "Daytona Beach",
+   "prompt": "Who is the best personal injury lawyer in Daytona Beach, Florida?"
+  },
+  {
+   "query_id": "personal-injury-lawyer__deltona",
+   "vertical": "personal injury lawyer",
+   "city": "Deltona",
+   "prompt": "Who is the best personal injury lawyer in Deltona, Florida?"
+  },
+  {
+   "query_id": "personal-injury-lawyer__ormond-beach",
+   "vertical": "personal injury lawyer",
+   "city": "Ormond Beach",
+   "prompt": "Who is the best personal injury lawyer in Ormond Beach, Florida?"
+  },
+  {
+   "query_id": "personal-injury-lawyer__port-orange",
+   "vertical": "personal injury lawyer",
+   "city": "Port Orange",
+   "prompt": "Who is the best personal injury lawyer in Port Orange, Florida?"
+  },
+  {
+   "query_id": "personal-injury-lawyer__new-smyrna-beach",
+   "vertical": "personal injury lawyer",
+   "city": "New Smyrna Beach",
+   "prompt": "Who is the best personal injury lawyer in New Smyrna Beach, Florida?"
+  },
+  {
+   "query_id": "personal-injury-lawyer__sanford",
+   "vertical": "personal injury lawyer",
+   "city": "Sanford",
+   "prompt": "Who is the best personal injury lawyer in Sanford, Florida?"
+  },
+  {
+   "query_id": "personal-injury-lawyer__lake-mary",
+   "vertical": "personal injury lawyer",
+   "city": "Lake Mary",
+   "prompt": "Who is the best personal injury lawyer in Lake Mary, Florida?"
+  },
+  {
+   "query_id": "personal-injury-lawyer__orlando",
+   "vertical": "personal injury lawyer",
+   "city": "Orlando",
+   "prompt": "Who is the best personal injury lawyer in Orlando, Florida?"
+  },
+  {
+   "query_id": "personal-injury-lawyer__winter-park",
+   "vertical": "personal injury lawyer",
+   "city": "Winter Park",
+   "prompt": "Who is the best personal injury lawyer in Winter Park, Florida?"
+  },
+  {
+   "query_id": "dentist__deland",
+   "vertical": "dentist",
+   "city": "DeLand",
+   "prompt": "Who is the best dentist in DeLand, Florida?"
+  },
+  {
+   "query_id": "dentist__daytona-beach",
+   "vertical": "dentist",
+   "city": "Daytona Beach",
+   "prompt": "Who is the best dentist in Daytona Beach, Florida?"
+  },
+  {
+   "query_id": "dentist__deltona",
+   "vertical": "dentist",
+   "city": "Deltona",
+   "prompt": "Who is the best dentist in Deltona, Florida?"
+  },
+  {
+   "query_id": "dentist__ormond-beach",
+   "vertical": "dentist",
+   "city": "Ormond Beach",
+   "prompt": "Who is the best dentist in Ormond Beach, Florida?"
+  },
+  {
+   "query_id": "dentist__port-orange",
+   "vertical": "dentist",
+   "city": "Port Orange",
+   "prompt": "Who is the best dentist in Port Orange, Florida?"
+  },
+  {
+   "query_id": "dentist__new-smyrna-beach",
+   "vertical": "dentist",
+   "city": "New Smyrna Beach",
+   "prompt": "Who is the best dentist in New Smyrna Beach, Florida?"
+  },
+  {
+   "query_id": "dentist__sanford",
+   "vertical": "dentist",
+   "city": "Sanford",
+   "prompt": "Who is the best dentist in Sanford, Florida?"
+  },
+  {
+   "query_id": "dentist__lake-mary",
+   "vertical": "dentist",
+   "city": "Lake Mary",
+   "prompt": "Who is the best dentist in Lake Mary, Florida?"
+  },
+  {
+   "query_id": "dentist__orlando",
+   "vertical": "dentist",
+   "city": "Orlando",
+   "prompt": "Who is the best dentist in Orlando, Florida?"
+  },
+  {
+   "query_id": "dentist__winter-park",
+   "vertical": "dentist",
+   "city": "Winter Park",
+   "prompt": "Who is the best dentist in Winter Park, Florida?"
+  },
+  {
+   "query_id": "chiropractor__deland",
+   "vertical": "chiropractor",
+   "city": "DeLand",
+   "prompt": "Who is the best chiropractor in DeLand, Florida?"
+  },
+  {
+   "query_id": "chiropractor__daytona-beach",
+   "vertical": "chiropractor",
+   "city": "Daytona Beach",
+   "prompt": "Who is the best chiropractor in Daytona Beach, Florida?"
+  },
+  {
+   "query_id": "chiropractor__deltona",
+   "vertical": "chiropractor",
+   "city": "Deltona",
+   "prompt": "Who is the best chiropractor in Deltona, Florida?"
+  },
+  {
+   "query_id": "chiropractor__ormond-beach",
+   "vertical": "chiropractor",
+   "city": "Ormond Beach",
+   "prompt": "Who is the best chiropractor in Ormond Beach, Florida?"
+  },
+  {
+   "query_id": "chiropractor__port-orange",
+   "vertical": "chiropractor",
+   "city": "Port Orange",
+   "prompt": "Who is the best chiropractor in Port Orange, Florida?"
+  },
+  {
+   "query_id": "chiropractor__new-smyrna-beach",
+   "vertical": "chiropractor",
+   "city": "New Smyrna Beach",
+   "prompt": "Who is the best chiropractor in New Smyrna Beach, Florida?"
+  },
+  {
+   "query_id": "chiropractor__sanford",
+   "vertical": "chiropractor",
+   "city": "Sanford",
+   "prompt": "Who is the best chiropractor in Sanford, Florida?"
+  },
+  {
+   "query_id": "chiropractor__lake-mary",
+   "vertical": "chiropractor",
+   "city": "Lake Mary",
+   "prompt": "Who is the best chiropractor in Lake Mary, Florida?"
+  },
+  {
+   "query_id": "chiropractor__orlando",
+   "vertical": "chiropractor",
+   "city": "Orlando",
+   "prompt": "Who is the best chiropractor in Orlando, Florida?"
+  },
+  {
+   "query_id": "chiropractor__winter-park",
+   "vertical": "chiropractor",
+   "city": "Winter Park",
+   "prompt": "Who is the best chiropractor in Winter Park, Florida?"
+  },
+  {
+   "query_id": "real-estate-agent__deland",
+   "vertical": "real estate agent",
+   "city": "DeLand",
+   "prompt": "Who is the best real estate agent in DeLand, Florida?"
+  },
+  {
+   "query_id": "real-estate-agent__daytona-beach",
+   "vertical": "real estate agent",
+   "city": "Daytona Beach",
+   "prompt": "Who is the best real estate agent in Daytona Beach, Florida?"
+  },
+  {
+   "query_id": "real-estate-agent__deltona",
+   "vertical": "real estate agent",
+   "city": "Deltona",
+   "prompt": "Who is the best real estate agent in Deltona, Florida?"
+  },
+  {
+   "query_id": "real-estate-agent__ormond-beach",
+   "vertical": "real estate agent",
+   "city": "Ormond Beach",
+   "prompt": "Who is the best real estate agent in Ormond Beach, Florida?"
+  },
+  {
+   "query_id": "real-estate-agent__port-orange",
+   "vertical": "real estate agent",
+   "city": "Port Orange",
+   "prompt": "Who is the best real estate agent in Port Orange, Florida?"
+  },
+  {
+   "query_id": "real-estate-agent__new-smyrna-beach",
+   "vertical": "real estate agent",
+   "city": "New Smyrna Beach",
+   "prompt": "Who is the best real estate agent in New Smyrna Beach, Florida?"
+  },
+  {
+   "query_id": "real-estate-agent__sanford",
+   "vertical": "real estate agent",
+   "city": "Sanford",
+   "prompt": "Who is the best real estate agent in Sanford, Florida?"
+  },
+  {
+   "query_id": "real-estate-agent__lake-mary",
+   "vertical": "real estate agent",
+   "city": "Lake Mary",
+   "prompt": "Who is the best real estate agent in Lake Mary, Florida?"
+  },
+  {
+   "query_id": "real-estate-agent__orlando",
+   "vertical": "real estate agent",
+   "city": "Orlando",
+   "prompt": "Who is the best real estate agent in Orlando, Florida?"
+  },
+  {
+   "query_id": "real-estate-agent__winter-park",
+   "vertical": "real estate agent",
+   "city": "Winter Park",
+   "prompt": "Who is the best real estate agent in Winter Park, Florida?"
+  },
+  {
+   "query_id": "landscaping-company__deland",
+   "vertical": "landscaping company",
+   "city": "DeLand",
+   "prompt": "Who is the best landscaping company in DeLand, Florida?"
+  },
+  {
+   "query_id": "landscaping-company__daytona-beach",
+   "vertical": "landscaping company",
+   "city": "Daytona Beach",
+   "prompt": "Who is the best landscaping company in Daytona Beach, Florida?"
+  },
+  {
+   "query_id": "landscaping-company__deltona",
+   "vertical": "landscaping company",
+   "city": "Deltona",
+   "prompt": "Who is the best landscaping company in Deltona, Florida?"
+  },
+  {
+   "query_id": "landscaping-company__ormond-beach",
+   "vertical": "landscaping company",
+   "city": "Ormond Beach",
+   "prompt": "Who is the best landscaping company in Ormond Beach, Florida?"
+  },
+  {
+   "query_id": "landscaping-company__port-orange",
+   "vertical": "landscaping company",
+   "city": "Port Orange",
+   "prompt": "Who is the best landscaping company in Port Orange, Florida?"
+  },
+  {
+   "query_id": "landscaping-company__new-smyrna-beach",
+   "vertical": "landscaping company",
+   "city": "New Smyrna Beach",
+   "prompt": "Who is the best landscaping company in New Smyrna Beach, Florida?"
+  },
+  {
+   "query_id": "landscaping-company__sanford",
+   "vertical": "landscaping company",
+   "city": "Sanford",
+   "prompt": "Who is the best landscaping company in Sanford, Florida?"
+  },
+  {
+   "query_id": "landscaping-company__lake-mary",
+   "vertical": "landscaping company",
+   "city": "Lake Mary",
+   "prompt": "Who is the best landscaping company in Lake Mary, Florida?"
+  },
+  {
+   "query_id": "landscaping-company__orlando",
+   "vertical": "landscaping company",
+   "city": "Orlando",
+   "prompt": "Who is the best landscaping company in Orlando, Florida?"
+  },
+  {
+   "query_id": "landscaping-company__winter-park",
+   "vertical": "landscaping company",
+   "city": "Winter Park",
+   "prompt": "Who is the best landscaping company in Winter Park, Florida?"
+  },
+  {
+   "query_id": "pest-control-company__deland",
+   "vertical": "pest control company",
+   "city": "DeLand",
+   "prompt": "Who is the best pest control company in DeLand, Florida?"
+  },
+  {
+   "query_id": "pest-control-company__daytona-beach",
+   "vertical": "pest control company",
+   "city": "Daytona Beach",
+   "prompt": "Who is the best pest control company in Daytona Beach, Florida?"
+  },
+  {
+   "query_id": "pest-control-company__deltona",
+   "vertical": "pest control company",
+   "city": "Deltona",
+   "prompt": "Who is the best pest control company in Deltona, Florida?"
+  },
+  {
+   "query_id": "pest-control-company__ormond-beach",
+   "vertical": "pest control company",
+   "city": "Ormond Beach",
+   "prompt": "Who is the best pest control company in Ormond Beach, Florida?"
+  },
+  {
+   "query_id": "pest-control-company__port-orange",
+   "vertical": "pest control company",
+   "city": "Port Orange",
+   "prompt": "Who is the best pest control company in Port Orange, Florida?"
+  },
+  {
+   "query_id": "pest-control-company__new-smyrna-beach",
+   "vertical": "pest control company",
+   "city": "New Smyrna Beach",
+   "prompt": "Who is the best pest control company in New Smyrna Beach, Florida?"
+  },
+  {
+   "query_id": "pest-control-company__sanford",
+   "vertical": "pest control company",
+   "city": "Sanford",
+   "prompt": "Who is the best pest control company in Sanford, Florida?"
+  },
+  {
+   "query_id": "pest-control-company__lake-mary",
+   "vertical": "pest control company",
+   "city": "Lake Mary",
+   "prompt": "Who is the best pest control company in Lake Mary, Florida?"
+  },
+  {
+   "query_id": "pest-control-company__orlando",
+   "vertical": "pest control company",
+   "city": "Orlando",
+   "prompt": "Who is the best pest control company in Orlando, Florida?"
+  },
+  {
+   "query_id": "pest-control-company__winter-park",
+   "vertical": "pest control company",
+   "city": "Winter Park",
+   "prompt": "Who is the best pest control company in Winter Park, Florida?"
+  },
+  {
+   "query_id": "cpa__deland",
+   "vertical": "CPA",
+   "city": "DeLand",
+   "prompt": "Who is the best CPA in DeLand, Florida?"
+  },
+  {
+   "query_id": "cpa__daytona-beach",
+   "vertical": "CPA",
+   "city": "Daytona Beach",
+   "prompt": "Who is the best CPA in Daytona Beach, Florida?"
+  },
+  {
+   "query_id": "cpa__deltona",
+   "vertical": "CPA",
+   "city": "Deltona",
+   "prompt": "Who is the best CPA in Deltona, Florida?"
+  },
+  {
+   "query_id": "cpa__ormond-beach",
+   "vertical": "CPA",
+   "city": "Ormond Beach",
+   "prompt": "Who is the best CPA in Ormond Beach, Florida?"
+  },
+  {
+   "query_id": "cpa__port-orange",
+   "vertical": "CPA",
+   "city": "Port Orange",
+   "prompt": "Who is the best CPA in Port Orange, Florida?"
+  },
+  {
+   "query_id": "cpa__new-smyrna-beach",
+   "vertical": "CPA",
+   "city": "New Smyrna Beach",
+   "prompt": "Who is the best CPA in New Smyrna Beach, Florida?"
+  },
+  {
+   "query_id": "cpa__sanford",
+   "vertical": "CPA",
+   "city": "Sanford",
+   "prompt": "Who is the best CPA in Sanford, Florida?"
+  },
+  {
+   "query_id": "cpa__lake-mary",
+   "vertical": "CPA",
+   "city": "Lake Mary",
+   "prompt": "Who is the best CPA in Lake Mary, Florida?"
+  },
+  {
+   "query_id": "cpa__orlando",
+   "vertical": "CPA",
+   "city": "Orlando",
+   "prompt": "Who is the best CPA in Orlando, Florida?"
+  },
+  {
+   "query_id": "cpa__winter-park",
+   "vertical": "CPA",
+   "city": "Winter Park",
+   "prompt": "Who is the best CPA in Winter Park, Florida?"
+  }
+ ]
+}
