@@ -1,0 +1,206 @@
+/* Local AI Sources: the book. One paper, two inks, one condensed caps face at every size (League Gothic for the
+   title, Bebas Neue for every listing, label and head), Barlow Condensed for running prose only. Measured from the
+   approved comp (768 wide): listing lines 29px there, so the root scales with the book width down to 14.7px at 390
+   and stops at 20px, the size of the approved owner-page re-dress on desktop. Every other size is an em of that. */
+
+@font-face{font-family:"League Gothic";src:url(/assets/fonts/LeagueGothic-400.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Bebas Neue";src:url(/assets/fonts/BebasNeue-400.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Barlow Condensed";src:url(/assets/fonts/BarlowCondensed-400.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Barlow Condensed";src:url(/assets/fonts/BarlowCondensed-600.woff2) format("woff2");font-weight:600;font-display:swap}
+
+:root{
+  --paper:#f3cf4a;
+  --ink:#141414;
+  --ink2:#4a3b10;
+  --red:#b3121e;
+  --red-deep:#8d0d17;
+  --ground:#161616;
+  --caps:"Bebas Neue","League Gothic",Impact,"Arial Narrow",sans-serif;
+  --title:"League Gothic","Bebas Neue",Impact,"Arial Narrow",sans-serif;
+  --text:"Barlow Condensed","Arial Narrow",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{font-size:clamp(14.7px,3.776vw,20px);-webkit-text-size-adjust:100%;scrollbar-color:var(--ink) var(--paper)}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--caps);font-size:1rem;line-height:1.18;letter-spacing:.012em;text-transform:uppercase;font-variant-numeric:tabular-nums;caret-color:var(--red)}
+::selection{background:var(--red);color:#fff}
+:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+a{color:inherit;text-decoration-thickness:2px;text-underline-offset:.12em}
+a:hover{color:var(--red)}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:-200vw;top:.5em;background:var(--ink);color:var(--paper);padding:.3em .8em;z-index:3}
+.skip:focus{left:.5em}
+.skip:hover,.tabs a:hover{color:var(--paper)}
+
+/* the book: paper tiled from the comp's own margin, twice at different scales so no lattice shows */
+.book{position:relative;max-width:768px;margin:0 auto;min-height:100vh;
+  background:url(/assets/plates/paper.svg) 0 0/44px 220px repeat,url(/assets/plates/paper.svg) 17px 61px/71px 355px repeat,var(--paper);
+  padding:.7em clamp(28px,7.6vw,58px) 1.6em clamp(28px,7.8vw,60px)}
+@media (min-width:800px){
+  body{background:radial-gradient(120% 90% at 50% 0%,#2b2620 0%,#1b1816 55%,#121110 100%) fixed,var(--ground)}
+  :root{--bookw:min(768px,calc(100vw - 120px))}
+  .book{margin:40px auto 56px;min-height:0;max-width:var(--bookw);
+    box-shadow:-2px 2px 0 #d8b83e,2px 2px 0 #d8b83e,-4px 4px 0 #cdad36,4px 4px 0 #cdad36,-6px 6px 0 #c1a22f,6px 6px 0 #c1a22f,
+      -8px 8px 0 #b59728,8px 8px 0 #b59728,-10px 10px 0 #a88b23,10px 10px 0 #a88b23,0 28px 70px rgba(0,0,0,.65)}
+}
+
+/* running head */
+.runhead{border-bottom:2px solid var(--ink);padding:.15em 0 .3em;margin-bottom:.9em}
+.runhead .line1{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.1em .8em;font-size:1.1em;padding-bottom:.1em}
+.runhead .home{text-decoration:none}
+.runhead .months a{text-decoration:none;padding-left:.1em}
+.runhead .months a:not(:first-child)::before{content:"|";padding:0 .4em 0 .25em;color:var(--ink)}
+.runhead .months a[aria-current]{color:var(--red);text-decoration:underline}
+.runhead .sections{font-size:clamp(1em,4.7vw,1.34em);line-height:1.1;white-space:nowrap;display:flex;flex-wrap:wrap}
+.runhead .sections a{text-decoration:none}
+.runhead .sections a:not(:first-child)::before{content:"|";padding:0 .36em;color:var(--ink)}
+.runhead .sections a[aria-current]{color:var(--red)}
+
+/* thumb index tabs down the right edge, the height of the window like the edge of a book */
+.tabs{position:fixed;z-index:2;top:3.2em;bottom:1.2em;right:max(0px,calc((100% - var(--bookw)) / 2));width:calc(min(100%,768px) * .069)}
+:root{--bookw:768px}
+@media (min-width:800px){
+  /* the trade index: a black band under the running head, the trades in paper ink, the current trade in red. The phone keeps the
+     thumb tabs of the comp; on the desk the index is a printed band, which reads at a glance and needs nothing beside the page. */
+  .book .tabs{position:static;width:auto;height:auto;inset:auto}
+  .book .tabs ul{display:grid;grid-template-columns:repeat(5,1fr);height:auto;gap:0;margin:-.45em 0 .9em;padding:0 .2em;background:var(--ink)}
+  .book .tabs li{display:flex}
+  .book .tabs a{flex:1;writing-mode:horizontal-tb;justify-content:center;background:none;color:var(--paper);border:0;border-radius:0;box-shadow:none;
+    padding:.38em .3em .3em;font-size:min(.98em,1.6vw);letter-spacing:.05em;white-space:nowrap;min-width:0;transform:none;text-decoration:none;border-left:1px solid rgba(243,207,74,.28)}
+  .book .tabs li:nth-child(6) a{border-left:0}
+  .book .tabs li:first-child a{border-left:0}
+  .book .tabs a:hover{color:#fff;background:#000}
+  .book .tabs a[aria-current]{background:var(--red);color:#fff}
+  .book{transform:none}
+}
+.tabs ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;height:100%;gap:3px}
+.tabs li{flex:1;display:flex;min-height:0}
+.tabs a{flex:1;display:flex;align-items:center;justify-content:center;background:var(--ink);color:var(--paper);text-decoration:none;
+  writing-mode:vertical-rl;font-size:max(8px,min(.62em,1.45vh));letter-spacing:.05em;border-radius:0 7px 7px 0;padding:.3em 0;overflow:hidden;transition:transform .15s cubic-bezier(.2,.8,.2,1)}
+.tabs a:hover{color:var(--paper);transform:translateX(-3px)}
+.tabs a[aria-current]{background:var(--red);color:#fff}
+
+/* display ads: the double-ruled lead box and the single-ruled notice */
+.ad{border:3px solid var(--red);padding:.55em .75em;margin:0 0 .8em}
+.ad.lead{box-shadow:inset 0 0 0 3px var(--paper),inset 0 0 0 5px var(--red);padding:1em .95em .95em}
+.ad.lead h1{font-family:var(--title);font-weight:400;font-size:2.97em;line-height:.9;margin:0;letter-spacing:.01em;text-wrap:balance}
+.ad.lead .dot{color:var(--red)}
+.ad.lead .tag{margin:.45em 0 0;font-size:.95em;color:var(--red);line-height:1.1}
+.ad.lead .ask{margin:.5em 0 0;font-size:1em;color:var(--red)}
+.ad.lead .q{margin:.15em 0 0;font-size:1.25em;line-height:1.05}
+.ad.notice p{margin:0;font-size:1.14em;line-height:1.22}
+.ad.notice a{text-decoration:underline}
+
+/* the finder, an order form inside the lead ad */
+.finder{margin-top:.7em}
+.finder label{display:block;margin-bottom:.4em}
+.finder select{width:100%;appearance:none;-webkit-appearance:none;border:2px solid var(--ink);border-radius:0;background:transparent;color:var(--ink);
+  font:inherit;font-size:1.14em;text-transform:uppercase;letter-spacing:.012em;padding:.22em 2.2em .2em .55em;cursor:pointer;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 10'><path d='M1 1h14L8 9z' fill='%23141414'/></svg>");
+  background-repeat:no-repeat;background-position:right .6em center;background-size:.85em .55em}
+.finder select:invalid{color:var(--ink)}
+.finder button{width:100%;border:0;border-radius:0;background:var(--red);color:var(--paper);font:inherit;font-size:1.55em;text-transform:uppercase;letter-spacing:.02em;
+  padding:.18em .5em .14em;margin-top:.2em;cursor:pointer;transition:background .15s ease-out}
+.finder button:hover,.finder button:focus-visible{background:var(--red-deep)}
+.finder button:active{background:var(--ink);color:var(--paper)}
+
+/* heads with a rule, the way a category head sits in the book */
+h2,h3{font-family:var(--caps);font-weight:400;letter-spacing:.02em;text-transform:uppercase;border-bottom:2px solid var(--ink);padding-bottom:.05em;text-wrap:balance}
+h2{font-size:1.2em;margin:1.1em 0 .3em}
+h3{font-size:1.02em;margin:.9em 0 .2em;border-bottom-width:1px}
+h2 .kind,h3 .kind{font-size:.7em;color:var(--red);letter-spacing:.05em;margin-left:.35em;vertical-align:.08em}
+h2 a,h3 a{text-decoration:none}
+
+/* ledger lines: label, dotted leader, value */
+.lines{list-style:none;margin:0;padding:0}
+.lines .row{display:flex;align-items:baseline;gap:.35em;padding:.13em 0;color:inherit;text-decoration:none;margin:0;line-height:1.1}
+.lines .k{flex:0 1 auto;min-width:0}
+.lines .v{flex:0 0 auto;order:2;text-align:right;margin:0}
+.lines .v small{font-size:.72em;letter-spacing:.04em;margin-left:.3em}
+.lines .row::after{content:"";flex:1 1 .5em;min-width:.5em;order:1;border-bottom:1px dotted var(--ink);transform:translateY(-.32em)}
+.lines a.row:hover .k{color:var(--red)}
+.lines .k a,.lines .v a{text-decoration:none}
+.lines .k a:hover,.lines .v a:hover{text-decoration:underline}
+.lines.two{columns:2;column-gap:1.4em}
+.lines.two li{break-inside:avoid}
+.lines.two .row{gap:.25em}
+dl.lines .k,dl.lines .v{margin:0}
+
+/* two-line listings: the business, then who named it */
+.listing .row{display:block;padding:.3em 0 .32em}
+.listing .row::after{display:none}
+.listing .nm{display:block;font-size:1.05em;line-height:1.05}
+.listing .who{display:block;font-size:max(12px,.78em);letter-spacing:.04em;margin-top:.1em;line-height:1.15}
+.listing a.row:hover .nm{color:var(--red)}
+@media (min-width:800px){
+  .listing .row{display:flex;align-items:baseline;gap:.5em;padding:.2em 0}
+  .listing .row::after{display:block}
+  .listing .nm{flex:0 1 auto;min-width:0}
+  .listing .who{flex:0 0 auto;order:2;margin:0}
+}
+
+/* sources per engine on the owner page */
+.srcs p{margin:.5em 0 0;font-size:.95em;line-height:1.3}
+.srcs b{font-weight:400}
+.srcs a{text-decoration:none}
+.srcs a:hover{text-decoration:underline}
+.srcs small{font-size:.75em;letter-spacing:.03em}
+.own,.srcs .own{color:var(--red)}
+.srcs a.own,.legend-sample{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.1em}
+.srcs .legend{font-size:max(12px,.8em);margin-top:.8em;letter-spacing:.03em}
+.aside{font-size:.95em;margin:.5em 0;letter-spacing:.02em}
+.month{margin-bottom:1.6em}
+.month .ad.notice{margin-top:.2em}
+
+/* running prose: mixed case, Barlow, a readable measure */
+.prose{font-family:var(--text);text-transform:none;letter-spacing:0;font-size:max(16px,.9em);line-height:1.4;max-width:72ch}
+.prose p,.prose li{margin:.55em 0}
+.prose ul,.prose ol{padding-left:1.3em}
+.prose li{margin:.35em 0}
+.prose strong{font-weight:600}
+.prose code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em}
+.prose h2{font-family:var(--caps);text-transform:uppercase;letter-spacing:.02em;font-size:1.33em;margin:1.4em 0 .4em}
+.prose.note{font-size:max(14px,.78em);color:var(--ink2);margin:.5em 0 1em}
+.prose.small{font-size:max(13px,.72em);color:var(--ink2)}
+.prose a{color:inherit}
+.prose a:hover{color:var(--red)}
+.about{margin-top:1.6em}
+
+/* the colophon at the foot of every page */
+.colophon{margin-top:2.2em;border-top:2px solid var(--ink);padding-top:.35em}
+.colophon .pub{text-align:center;font-size:.97em;margin:.2em 0 .4em}
+.colophon .prose p{margin:.3em 0}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
+@media print{.tabs,.skip{display:none}.book{max-width:none;margin:0;background:#fff}}
+
+
+/* the open book: from 1100px the content flows across two pages with a spine between them */
+@media (min-width:1100px){
+  :root{--bookw:min(1680px,calc(100vw - 120px))}
+  .book{max-width:var(--bookw);padding:.7em 4.5% 1.6em 4.5%}
+  .book::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:120px;transform:translateX(-50%);pointer-events:none;
+    background:linear-gradient(90deg,rgba(0,0,0,0) 0%,rgba(0,0,0,.10) 35%,rgba(60,40,0,.34) 50%,rgba(0,0,0,.10) 65%,rgba(0,0,0,0) 100%)}
+  .book{box-shadow:-2px 2px 0 #d8b83e,2px 2px 0 #d8b83e,-4px 4px 0 #cdad36,4px 4px 0 #cdad36,-6px 6px 0 #c1a22f,6px 6px 0 #c1a22f,
+      -8px 8px 0 #b59728,8px 8px 0 #b59728,-10px 10px 0 #a88b23,10px 10px 0 #a88b23,-12px 12px 0 #9b7f1f,12px 12px 0 #9b7f1f,0 32px 80px rgba(0,0,0,.7)}
+  .runhead{margin-right:calc(50% + 4.5%)}
+  .book .tabs ul{margin-top:-.6em;grid-template-columns:repeat(10,1fr)}
+  .book .tabs li:nth-child(6) a{border-left:1px solid rgba(243,207,74,.28)}
+  .book .tabs a{font-size:min(.98em,1.15vw)}
+  main{columns:2;column-gap:9%;column-fill:balance}
+  .listings > ol{break-inside:avoid}
+  main > *{break-inside:avoid}
+  main > section.listings,main > section.month,main > .prose,main > .srcs{break-inside:auto}
+  h2,h3{break-after:avoid}
+  .lines li,.ad,dl.lines .row,.srcs p{break-inside:avoid}
+  .colophon{margin-left:calc(50% + 4.5%)}
+}
+
+/* a thumb tab opens the book at that trade: the head it lands on turns red, and the matching tab reads as current */
+.listings h2{scroll-margin-top:1.2em}
+.listings h2:target{color:var(--red);border-bottom-color:var(--red)}
+.listings h2:target + ol .k{color:var(--red)}
+.book:has(#roofers:target) .tabs a[href$="#roofers"],.book:has(#ac-repair:target) .tabs a[href$="#ac-repair"],.book:has(#plumbers:target) .tabs a[href$="#plumbers"],
+.book:has(#personal-injury-lawyers:target) .tabs a[href$="#personal-injury-lawyers"],.book:has(#dentists:target) .tabs a[href$="#dentists"],
+.book:has(#chiropractors:target) .tabs a[href$="#chiropractors"],.book:has(#real-estate-agents:target) .tabs a[href$="#real-estate-agents"],
+.book:has(#landscapers:target) .tabs a[href$="#landscapers"],.book:has(#pest-control:target) .tabs a[href$="#pest-control"],.book:has(#cpas:target) .tabs a[href$="#cpas"]{background:var(--red);color:#fff}

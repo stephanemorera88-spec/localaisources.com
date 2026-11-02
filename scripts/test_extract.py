@@ -69,6 +69,73 @@ class KeepsRealNames(unittest.TestCase):
     def test_dedup_keeps_first_spelling(self):
         self.assertEqual(names("**ROC Roofing** ... **Roc Roofing**"), ["ROC Roofing"])
 
+class DropsJunkA6(unittest.TestCase):
+    """Strings the 2026-11-02 independent check found on the a5 pages."""
+    def test_licence_type_written_in_bold(self):
+        self.assertEqual(names("Always request proof of a **Certified Roofing Contractor (CCC)** license before signing."), [])
+        self.assertEqual(names("Look for a **Florida CAC license** on the truck."), [])
+        self.assertEqual(names("**CCC1332542**"), [])
+
+    def test_review_site_phrases_and_awards(self):
+        self.assertEqual(names("**Google Reviews**: 4.8 stars"), [])
+        self.assertEqual(names("**A+ BBB rating** and 20 years in business"), [])
+        self.assertEqual(names("**9 Google rating**"), [])
+        self.assertEqual(names("**Super Service Award** winner three years running"), [])
+        self.assertEqual(names("**Zocdoc, Google Reviews, and WebMD**"), [])
+
+    def test_checklist_headings(self):
+        self.assertEqual(names("**Confirm Emergency Services**"), [])
+        self.assertEqual(names("**Check Property Specialties**"), [])
+        self.assertEqual(names("**Emergency vs. Standard Scheduling**"), [])
+
+    def test_numbered_headings_are_list_items(self):
+        self.assertEqual(names("### 1. Karen Arbutine (RE/MAX Central Realty)\nShe has 20 years in Lake Mary."), ["Karen Arbutine (RE/MAX Central Realty)"])
+        self.assertEqual(names("## 2) Jenny Wemert & Wemert Group Realty"), ["Jenny Wemert & Wemert Group Realty"])
+        self.assertEqual(names("### Top Recommendations"), [])
+
+    def test_real_names_with_tricky_words_survive(self):
+        self.assertEqual(names("**Certified Roofing Solutions** has served DeLand since 1998."), ["Certified Roofing Solutions"])
+        self.assertEqual(names("**Call Dave Plumbing** is family run."), ["Call Dave Plumbing"])
+        self.assertEqual(names("**Trust Roofing**"), ["Trust Roofing"])
+        self.assertEqual(names("* **Patriot\u2019s Lawn Care:** Licensed and insured local option."), ["Patriot\u2019s Lawn Care"])
+        self.assertEqual(names("### 1. Top Regional & Full-Service Firms"), [])
+
+class DropsJunkA6SecondPass(unittest.TestCase):
+    """Strings the second independent check (2026-11-02) found on the first a6 build."""
+    def test_regulators_associations_and_the_bar(self):
+        self.assertEqual(names("**Florida Department of Business and Professional Regulation (DBPR)**"), [])
+        self.assertEqual(names("**Florida Institute of CPAs (FICPA)**"), [])
+        self.assertEqual(names("**Better Business Bureau (BBB)**"), [])
+        self.assertEqual(names("Check **Florida Bar's website** first."), [])
+
+    def test_directory_brands_as_names(self):
+        for junk in ("**Realtor.com**", "**Homes.com**", "**Super Lawyers**", "**Martindale-Hubbell**", "**Consumer Affairs**", "**BBB Directory**", "**BBB A+**"):
+            self.assertEqual(names(junk), [], junk)
+
+    def test_labels_cities_and_programmes(self):
+        for junk in ("**Doctors:**", "**Referrals**", "**Next Steps**", "**For 24/7 Emergencies**", "**Daytona Beach**", "**Deltona, Florida**",
+                     "**GAF Master Elite Contractor**", "**Owens Corning Preferred Contractor**", "**Highly Recommended Local Firms (Deltona & West Volusia)**", "**CPA**"):
+            self.assertEqual(names(junk), [], junk)
+
+    def test_top_for_headings_keep_the_name(self):
+        self.assertEqual(names("### **1. Top for Sports Injuries: Spine Way Chiropractic**"), ["Spine Way Chiropractic"])
+        self.assertEqual(names("### 2. Top Overall: Winter Park Chiropractic (Dr. Daniel Filardo)"), ["Winter Park Chiropractic (Dr. Daniel Filardo)"])
+
+    def test_real_names_near_the_new_rules_survive(self):
+        self.assertEqual(names("**Next Level Roofing**"), ["Next Level Roofing"])
+        self.assertEqual(names("**Daytona Beach Dental Care**"), ["Daytona Beach Dental Care"])
+        self.assertEqual(names("**RDG Roofing:** family owned since 1990"), ["RDG Roofing"])
+        self.assertEqual(names("**Deltona Family Chiropractic**"), ["Deltona Family Chiropractic"])
+        self.assertEqual(names("- **Orkin:** national chain with a Deltona branch"), ["Orkin"])
+        self.assertEqual(names("**Withum:** regional CPA firm"), ["Withum"])
+
+    def test_round_three_leftovers(self):
+        self.assertEqual(names("**Florida Super Lawyers**"), [])
+        self.assertEqual(names("**Avvo, Google, Martindale-Hubbell, and Super Lawyers**"), [])
+        self.assertEqual(names("**AV Preeminent**"), [])
+        self.assertEqual(names("**My top pick: American Air, Plumbing, and Electrical**"), ["American Air, Plumbing, and Electrical"])
+
+
 
 if __name__ == "__main__":
     unittest.main()
