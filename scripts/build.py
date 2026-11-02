@@ -120,6 +120,14 @@ ADVICE_START_RE = re.compile(
     r"identifying|investigating|researching|confirming|browsing|determining|compiling|narrowing|focusing|"
     r"weighing|deciding|how|why|what|where|when|who|if|before|after|pro tip|tip|tips|step|note|important|"
     r"disclaimer|red flags?|questions?|things?|factors?|signs?|reasons?)\b")
+# Question words and list headings are never a business name, trade word or not ("How to Choose the Right Chiropractor").
+HARD_START_RE = re.compile(r"^(how|why|what|where|when|who|which|if|before|after|pro tip|tips?|steps?|note|important|"
+                           r"disclaimer|red flags?|questions?|things?|factors?|signs?|reasons?|ways?|mistakes?)\b")
+# A heading made of ordinary words keeps a trade word sometimes ("Emergency Services", "Free Consultations"); these first
+# words mark it as a heading when every token is ordinary vocabulary.
+HEADING_FIRST_RE = re.compile(r"^(emergency|free|key|local|same-day|residential|commercial|general|patient|client|customer|"
+                              r"our|your|their|typical|average|common|overall|specialt(y|ies)|additional|other|more|most|"
+                              r"initial|second|multiple)\b")  # not all/certified/reliable/licensed: real names start with those
 RATING_RE = re.compile(r"/\s?5\b|\b\d[\d,]*\+?\s+(google\s+|yelp\s+)?reviews?\b|\bstars?\b|\b\d(\.\d)?\s*(star|rating)")
 ADDRESS_RE = re.compile(r"^\d{2,6}\s+\S|\bfl\s+\d{5}\b|\b\d+\s+[a-z0-9 .]+\b(rd|st|ave|blvd|dr|hwy|ln|way|suite|ste|unit|pkwy)\b\.?", re.I)
 PHONE_RE = re.compile(r"\(?\b\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}\b")
@@ -150,11 +158,14 @@ def valid_name(n, domains_compact=""):
         return None
     if RATING_RE.search(low):
         return None
+    if HARD_START_RE.match(low):
+        return None
     if ADVICE_START_RE.match(low) and not has_suffix:
         return None
     toks = re.findall(r"[A-Za-z][A-Za-z'-]+", n)
-    if GENERIC_WORDS and toks and not has_suffix and all(t.lower() in GENERIC_WORDS for t in toks) \
-            and compact(n) not in (domains_compact or ""):
+    all_generic = bool(GENERIC_WORDS and toks and all(t.lower() in GENERIC_WORDS for t in toks))
+    in_domains = compact(n) in (domains_compact or "")
+    if all_generic and not in_domains and (not has_suffix or HEADING_FIRST_RE.match(low)):
         return None
     if re.search(r"\b(near|options|option|companies|providers|picks|choices|list|guide|rated|reviewed|top|best)\b", low) \
             and not re.search(r"\b(inc|llc|co|corp|group|services|service|roofing|plumbing|law|dental|clinic|pa|pllc)\b", low):
