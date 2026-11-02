@@ -89,6 +89,9 @@ def day(s):
 def write(path, content):
     full = os.path.join(ROOT, path)
     os.makedirs(os.path.dirname(full), exist_ok=True)
+    if path.endswith(".html"):
+        # every table scrolls sideways on narrow screens instead of widening the page
+        content = content.replace("<table>", '<div class="tw"><table>').replace("</table>", "</table></div>")
     with open(full, "w", encoding="utf-8") as f:
         f.write(content)
 
@@ -317,6 +320,7 @@ th{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.8rem;text-transform
 td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 .chip{display:inline-block;font-family:ui-sans-serif,system-ui,sans-serif;font-size:.72rem;padding:.1em .5em;border-radius:3px;background:var(--chip);color:var(--muted);margin-left:.4em;vertical-align:middle;white-space:nowrap}
 .chip.own{color:#fff;background:var(--own)}.chip.dir{color:#fff;background:var(--dir)}.chip.multi{color:#fff;background:var(--multi)}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:.6em 0 1.2em}.tw table{margin:0;min-width:36rem}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));gap:6px 18px;font-size:.95rem}
 .grid a{text-decoration:none}
 .note{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.85rem;color:var(--muted);border-left:3px solid var(--line);padding-left:12px;margin:1em 0}
