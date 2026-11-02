@@ -75,17 +75,18 @@
 "accroofing.net"
 ],
 "kinds": {
-"pinnacleroofinggroup.com": "directory",
+"pinnacleroofinggroup.com": "multi-city",
 "rdgroofinginc.com": "own-site",
 "yelp.com": "directory",
 "facebook.com": "directory",
-"roofersintegrity.com": "own-site",
+"roofersintegrity.com": "multi-city",
 "blitzroofing.com": "own-site",
 "bbb.org": "directory",
 "beeryroofing.com": "own-site",
 "bndroofing.com": "own-site",
 "accroofing.net": "own-site"
 },
+"cost": 0.005417,
 "money_spent": null
 },
 {
@@ -165,17 +166,18 @@
 "bestchoiceroofing.com"
 ],
 "kinds": {
-"roofersintegrity.com": "own-site",
+"roofersintegrity.com": "multi-city",
 "bertfairclothroofing.com": "own-site",
 "yelp.com": "directory",
 "facebook.com": "directory",
-"gaf.com": "directory",
+"gaf.com": "multi-city",
 "bbb.org": "directory",
 "robersonroofinginc.com": "own-site",
 "thumbtack.com": "directory",
 "aibroofing.com": "own-site",
 "bestchoiceroofing.com": "own-site"
 },
+"cost": 0.00541,
 "money_spent": null
 },
 {
@@ -255,10 +257,11 @@
 "yelp.com": "directory",
 "methodrs.com": "own-site",
 "angi.com": "directory",
-"gaf.com": "directory",
+"gaf.com": "multi-city",
 "bbb.org": "directory",
-"pinnacleroofinggroup.com": "directory"
+"pinnacleroofinggroup.com": "multi-city"
 },
+"cost": 0.005184,
 "money_spent": null
 },
 {
@@ -319,11 +322,12 @@
 "kinds": {
 "expertise.com": "directory",
 "bestprosintown.com": "directory",
-"pinnacleroofinggroup.com": "directory",
+"pinnacleroofinggroup.com": "multi-city",
 "hipporoof.com": "own-site",
 "ninesquareroofing.com": "own-site",
 "oneworldroofing.com": "own-site"
 },
+"cost": 0.0359945,
 "money_spent": null
 },
 {
@@ -386,8 +390,9 @@
 "provenroofer.com": "directory",
 "heritageroofpro.com": "own-site",
 "riseaboveroofingllc.com": "own-site",
-"pinnacleroofinggroup.com": "directory"
+"pinnacleroofinggroup.com": "multi-city"
 },
+"cost": 0.03573375,
 "money_spent": null
 },
 {
@@ -452,6 +457,7 @@
 "roofing-services-pro.ueniweb.com": "own-site",
 "homeadvisor.com": "directory"
 },
+"cost": 0.0357775,
 "money_spent": null
 },
 {
@@ -533,12 +539,13 @@
 "astroroofinginc.com": "own-site",
 "yelp.com": "directory",
 "facebook.com": "directory",
-"gaf.com": "directory",
+"gaf.com": "multi-city",
 "bbb.org": "directory",
 "thumbtack.com": "directory",
 "bestchoiceroofing.com": "own-site",
-"pinnacleroofinggroup.com": "directory"
+"pinnacleroofinggroup.com": "multi-city"
 },
+"cost": 0.005274,
 "money_spent": null
 },
 {
@@ -621,12 +628,13 @@
 "wklroofing.com": "own-site",
 "yelp.com": "directory",
 "facebook.com": "directory",
-"gaf.com": "directory",
+"gaf.com": "multi-city",
 "bestchoiceroofing.com": "own-site",
 "robersonroofinginc.com": "own-site",
 "thumbtack.com": "directory",
 "bbb.org": "directory"
 },
+"cost": 0.005341,
 "money_spent": null
 },
 {
@@ -719,6 +727,7 @@
 "riverviewroofingnsb.com": "own-site",
 "angi.com": "directory"
 },
+"cost": 0.005267,
 "money_spent": null
 },
 {
@@ -803,13 +812,14 @@
 "rooftek.com": "own-site",
 "yelp.com": "directory",
 "facebook.com": "directory",
-"gaf.com": "directory",
-"roofersintegrity.com": "own-site",
+"gaf.com": "multi-city",
+"roofersintegrity.com": "multi-city",
 "angi.com": "directory",
-"pinnacleroofinggroup.com": "directory",
+"pinnacleroofinggroup.com": "multi-city",
 "sunriseroofingservice.com": "own-site",
 "bbb.org": "directory"
 },
+"cost": 0.005331,
 "money_spent": null
 },
 {
@@ -879,14 +889,15 @@
 "tiptoproofingcompany.com"
 ],
 "kinds": {
-"pinnacleroofinggroup.com": "directory",
+"pinnacleroofinggroup.com": "multi-city",
 "mapquest.com": "directory",
 "hipporoof.com": "own-site",
 "nolandsroofing.com": "own-site",
-"roofersintegrity.com": "own-site",
+"roofersintegrity.com": "multi-city",
 "bestprosintown.com": "directory",
 "tiptoproofingcompany.com": "own-site"
 },
+"cost": 0.03624825,
 "money_spent": null
 },
 {
@@ -943,8 +954,9 @@
 "riverviewroofingnsb.com": "own-site",
 "jandmroof.com": "own-site",
 "flatwaterroofing.com": "own-site",
-"roofersintegrity.com": "own-site"
+"roofersintegrity.com": "multi-city"
 },
+"cost": 0.03426725,
 "money_spent": null
 },
 {
@@ -1017,7 +1029,7 @@
 "angi.com"
 ],
 "kinds": {
-"pinnacleroofinggroup.com": "directory",
+"pinnacleroofinggroup.com": "multi-city",
 "rocroofingfl.com": "own-site",
 "janneyroofing.com": "own-site",
 "lundbergroofing.com": "own-site",
@@ -1028,6 +1040,7 @@
 "ojohnroofing.com": "own-site",
 "angi.com": "directory"
 },
+"cost": 0.005332,
 "money_spent": null
 },
 {
@@ -1090,6 +1103,7 @@
 "reviews.birdeye.com": "directory",
 "allbiz.com": "own-site"
 },
+"cost": 0.035858,
 "money_spent": null
 },
 {
@@ -1161,11 +1175,12 @@
 "yelp.com": "directory",
 "reddit.com": "directory",
 "bbb.org": "directory",
-"gaf.com": "directory",
+"gaf.com": "multi-city",
 "skylightroofing.com": "own-site",
 "local.yahoo.com": "own-site",
 "rooftopservices.com": "own-site"
 },
+"cost": 0.0052,
 "money_spent": null
 },
 {
@@ -1232,12 +1247,13 @@
 "buildzoom.com"
 ],
 "kinds": {
-"pinnacleroofinggroup.com": "directory",
+"pinnacleroofinggroup.com": "multi-city",
 "stanleysroofing.com": "own-site",
 "bynumroofing.com": "own-site",
-"roofersintegrity.com": "own-site",
+"roofersintegrity.com": "multi-city",
 "buildzoom.com": "directory"
 },
+"cost": 0.03596475,
 "money_spent": null
 },
 {
@@ -1326,6 +1342,7 @@
 "facebook.com": "directory",
 "thumbtack.com": "directory"
 },
+"cost": 0.005262,
 "money_spent": null
 },
 {
@@ -1403,7 +1420,7 @@
 ],
 "kinds": {
 "mid-floridaair.com": "own-site",
-"scottsair.com": "directory",
+"scottsair.com": "multi-city",
 "ameritechfl.com": "own-site",
 "jacobhac.com": "own-site",
 "yelp.com": "directory",
@@ -1412,6 +1429,7 @@
 "angi.com": "directory",
 "toptier-cooling.com": "own-site"
 },
+"cost": 0.005368,
 "money_spent": null
 },
 {
@@ -1467,12 +1485,13 @@
 "oneallratings.com"
 ],
 "kinds": {
-"gaf.com": "own-site",
+"gaf.com": "multi-city",
 "experience.com": "directory",
 "reviews.birdeye.com": "directory",
-"pinnacleroofinggroup.com": "directory",
+"pinnacleroofinggroup.com": "multi-city",
 "oneallratings.com": "own-site"
 },
+"cost": 0.03556575,
 "money_spent": null
 },
 {
@@ -1535,6 +1554,7 @@
 "bestpickreports.com": "own-site",
 "gettrustedcontractors.com": "own-site"
 },
+"cost": 0.03650725,
 "money_spent": null
 },
 {
@@ -1616,8 +1636,8 @@
 ],
 "kinds": {
 "mechanicalone.com": "own-site",
-"scottsair.com": "directory",
-"brittinghamac.com": "directory",
+"scottsair.com": "multi-city",
+"brittinghamac.com": "own-site",
 "ecoairflorida.com": "own-site",
 "onehourheatandair.com": "own-site",
 "todayshomeowner.com": "own-site",
@@ -1626,6 +1646,7 @@
 "677cool.com": "own-site",
 "cunninghamoil.com": "own-site"
 },
+"cost": 0.005364,
 "money_spent": null
 },
 {
@@ -1679,6 +1700,7 @@
 "bestprosintown.com": "directory",
 "buildzoom.com": "directory"
 },
+"cost": 0.03517725,
 "money_spent": null
 },
 {
@@ -1760,7 +1782,7 @@
 ],
 "kinds": {
 "mechanicalone.com": "own-site",
-"delair.com": "directory",
+"delair.com": "multi-city",
 "autumnairandheat.com": "own-site",
 "coolsolutionsacfl.com": "own-site",
 "mid-floridaair.com": "own-site",
@@ -1770,6 +1792,7 @@
 "angi.com": "directory",
 "thumbtack.com": "directory"
 },
+"cost": 0.005368,
 "money_spent": null
 },
 {
@@ -1848,16 +1871,17 @@
 ],
 "kinds": {
 "onehourheatandair.com": "own-site",
-"scottsair.com": "directory",
+"scottsair.com": "multi-city",
 "totalcomfortfl.com": "own-site",
-"brittinghamac.com": "directory",
+"brittinghamac.com": "own-site",
 "yelp.com": "directory",
 "facebook.com": "directory",
 "677cool.com": "own-site",
 "ecoairflorida.com": "own-site",
 "bbb.org": "directory",
-"advancedairandheat.com": "directory"
+"advancedairandheat.com": "own-site"
 },
+"cost": 0.005296,
 "money_spent": null
 },
 {
@@ -1912,10 +1936,11 @@
 "kinds": {
 "certifiedclimate.com": "own-site",
 "bestprosintown.com": "directory",
-"findhvacrepair.com": "directory",
+"findhvacrepair.com": "multi-city",
 "chamberofcommerce.com": "directory",
 "386acrepair.com": "own-site"
 },
+"cost": 0.0350425,
 "money_spent": null
 },
 {
@@ -1993,14 +2018,15 @@
 ],
 "kinds": {
 "davisbroscooling.com": "own-site",
-"scottsair.com": "directory",
-"brittinghamac.com": "directory",
+"scottsair.com": "multi-city",
+"brittinghamac.com": "own-site",
 "carrier.com": "own-site",
 "yelp.com": "directory",
 "facebook.com": "directory",
 "angi.com": "directory",
-"advancedairandheat.com": "directory"
+"advancedairandheat.com": "own-site"
 },
+"cost": 0.005297,
 "money_spent": null
 },
 {
@@ -2055,9 +2081,10 @@
 "bestprosintown.com": "directory",
 "experience.com": "directory",
 "brittinghamac.com": "own-site",
-"findhvacrepair.com": "directory",
+"findhvacrepair.com": "multi-city",
 "mapquest.com": "directory"
 },
+"cost": 0.03507225,
 "money_spent": null
 },
 {
@@ -2128,9 +2155,10 @@
 "expertise.com": "directory",
 "onehourheatandair.com": "own-site",
 "experience.com": "directory",
-"findhvacrepair.com": "directory",
+"findhvacrepair.com": "multi-city",
 "bestprosintown.com": "directory"
 },
+"cost": 0.03552025,
 "money_spent": null
 },
 {
@@ -2207,15 +2235,16 @@
 ],
 "kinds": {
 "davisbroscooling.com": "own-site",
-"scottsair.com": "directory",
-"brittinghamac.com": "directory",
-"advancedairandheat.com": "directory",
-"delair.com": "directory",
+"scottsair.com": "multi-city",
+"brittinghamac.com": "own-site",
+"advancedairandheat.com": "own-site",
+"delair.com": "multi-city",
 "yelp.com": "directory",
 "facebook.com": "directory",
 "jbgouldac.com": "own-site",
 "angi.com": "directory"
 },
+"cost": 0.005375,
 "money_spent": null
 },
 {
@@ -2298,17 +2327,18 @@
 "thumbtack.com"
 ],
 "kinds": {
-"bobheinmiller.com": "directory",
+"bobheinmiller.com": "own-site",
 "mechanicalone.com": "own-site",
-"scottsair.com": "directory",
+"scottsair.com": "multi-city",
 "fixmyacnow.com": "own-site",
-"frankgayservices.com": "directory",
+"frankgayservices.com": "multi-city",
 "mid-floridaair.com": "own-site",
 "facebook.com": "directory",
 "yelp.com": "directory",
 "solaireac.com": "own-site",
 "thumbtack.com": "directory"
 },
+"cost": 0.005372,
 "money_spent": null
 },
 {
@@ -2366,6 +2396,7 @@
 "bestprosintown.com": "directory",
 "airconditioningprofessionals.com": "own-site"
 },
+"cost": 0.03495675,
 "money_spent": null
 },
 {
@@ -2442,15 +2473,16 @@
 ],
 "kinds": {
 "serviceoneac.com": "own-site",
-"bobheinmiller.com": "directory",
+"bobheinmiller.com": "own-site",
 "infiniteairflow.com": "own-site",
-"scottsair.com": "directory",
+"scottsair.com": "multi-city",
 "airaerohvac.com": "own-site",
-"frankgayservices.com": "directory",
+"frankgayservices.com": "multi-city",
 "yelp.com": "directory",
 "facebook.com": "directory",
 "todayshomeowner.com": "own-site"
 },
+"cost": 0.005326,
 "money_spent": null
 },
 {
@@ -2510,6 +2542,7 @@
 "brittinghamac.com": "own-site",
 "hvac-usa.nears.me": "own-site"
 },
+"cost": 0.0352525,
 "money_spent": null
 },
 {
@@ -2561,12 +2594,13 @@
 "thehvacdude.com"
 ],
 "kinds": {
-"loc8nearme.com": "directory",
+"loc8nearme.com": "own-site",
 "experience.com": "directory",
 "reviews.birdeye.com": "directory",
 "386acrepair.com": "own-site",
 "thehvacdude.com": "own-site"
 },
+"cost": 0.03498125,
 "money_spent": null
 },
 {
@@ -2650,15 +2684,16 @@
 "kinds": {
 "downtown-air.com": "own-site",
 "millsair.com": "own-site",
-"bobheinmiller.com": "directory",
+"bobheinmiller.com": "own-site",
 "angi.com": "directory",
-"delair.com": "directory",
+"delair.com": "multi-city",
 "belleairac.com": "own-site",
 "yelp.com": "directory",
 "reddit.com": "directory",
 "bbb.org": "directory",
 "forbes.com": "own-site"
 },
+"cost": 0.005292,
 "money_spent": null
 },
 {
@@ -2721,13 +2756,14 @@
 "bestprosintown.com"
 ],
 "kinds": {
-"hvacservice.io": "directory",
+"hvacservice.io": "own-site",
 "comparehvacpro.com": "own-site",
-"findhvacrepair.com": "directory",
-"loc8nearme.com": "directory",
+"findhvacrepair.com": "multi-city",
+"loc8nearme.com": "own-site",
 "mapquest.com": "directory",
 "bestprosintown.com": "directory"
 },
+"cost": 0.0360295,
 "money_spent": null
 },
 {
@@ -2809,17 +2845,18 @@
 "angi.com"
 ],
 "kinds": {
-"bobheinmiller.com": "directory",
-"scottsair.com": "directory",
+"bobheinmiller.com": "own-site",
+"scottsair.com": "multi-city",
 "downtown-air.com": "own-site",
 "ferran-services.com": "own-site",
 "stradaservices.com": "own-site",
 "hirechillybilly.com": "own-site",
 "yelp.com": "directory",
 "thumbtack.com": "directory",
-"delair.com": "directory",
+"delair.com": "multi-city",
 "angi.com": "directory"
 },
+"cost": 0.005392,
 "money_spent": null
 },
 {
@@ -2877,9 +2914,10 @@
 "kinds": {
 "smarthomeairheat.com": "own-site",
 "ameritechfl.com": "own-site",
-"hvacservice.io": "directory",
+"hvacservice.io": "own-site",
 "forbes.com": "own-site"
 },
+"cost": 0.035004,
 "money_spent": null
 },
 {
@@ -2961,10 +2999,10 @@
 "angi.com"
 ],
 "kinds": {
-"advancedairandheat.com": "directory",
+"advancedairandheat.com": "own-site",
 "colonialplmg.com": "own-site",
 "absolutefamilyplumbing.com": "own-site",
-"rotorooter.com": "directory",
+"rotorooter.com": "multi-city",
 "yelp.com": "directory",
 "facebook.com": "directory",
 "watertite.com": "own-site",
@@ -2972,6 +3010,7 @@
 "delandplumber.com": "own-site",
 "angi.com": "directory"
 },
+"cost": 0.005324,
 "money_spent": null
 },
 {
@@ -3051,8 +3090,8 @@
 "homeadvisor.com"
 ],
 "kinds": {
-"rotorooter.com": "directory",
-"delair.com": "directory",
+"rotorooter.com": "multi-city",
+"delair.com": "multi-city",
 "yelp.com": "directory",
 "facebook.com": "directory",
 "mrrooter.com": "own-site",
@@ -3062,6 +3101,7 @@
 "bbb.org": "directory",
 "homeadvisor.com": "directory"
 },
+"cost": 0.005308,
 "money_spent": null
 },
 {
@@ -3113,10 +3153,11 @@
 "homeadvisor.com"
 ],
 "kinds": {
-"hvacservice.io": "directory",
+"hvacservice.io": "own-site",
 "bestprosintown.com": "directory",
 "homeadvisor.com": "directory"
 },
+"cost": 0.035522,
 "money_spent": null
 },
 {
@@ -3197,8 +3238,9 @@
 "bbb.org": "directory",
 "angi.com": "directory",
 "procraftplumbing.net": "own-site",
-"modernpi.com": "directory"
+"modernpi.com": "multi-city"
 },
+"cost": 0.005211,
 "money_spent": null
 },
 {
@@ -3256,11 +3298,12 @@
 ],
 "kinds": {
 "bestprosintown.com": "directory",
-"hvacservice.io": "directory",
+"hvacservice.io": "own-site",
 "ameritechfl.com": "own-site",
 "eliteacllc.com": "own-site",
 "expertise.com": "directory"
 },
+"cost": 0.03512475,
 "money_spent": null
 },
 {
@@ -3341,13 +3384,14 @@
 "krakenplumbingcompany.com": "own-site",
 "tcplumbingfl.com": "own-site",
 "yelp.com": "directory",
-"frankgayservices.com": "directory",
+"frankgayservices.com": "multi-city",
 "facebook.com": "directory",
 "patriotplumbingco.com": "own-site",
 "benjaminfranklinplumbing.com": "own-site",
 "angi.com": "directory",
 "contractorfinder.noritz.com": "own-site"
 },
+"cost": 0.005251,
 "money_spent": null
 },
 {
@@ -3409,6 +3453,7 @@
 "experience.com": "directory",
 "hometownplumbing386.com": "own-site"
 },
+"cost": 0.0339855,
 "money_spent": null
 },
 {
@@ -3464,6 +3509,7 @@
 "havensplumbing.com": "own-site",
 "draingenieplumbing.com": "own-site"
 },
+"cost": 0.03402575,
 "money_spent": null
 },
 {
@@ -3524,8 +3570,7 @@
 "DeWitt Plumbing",
 "Bill Shafer Plumbing",
 "Little Plumbing Inc",
-"Johnson Brothers Plumbing",
-"Plumber"
+"Johnson Brothers Plumbing"
 ],
 "domains": [
 "rotorooter.com",
@@ -3539,7 +3584,7 @@
 "todayshomeowner.com"
 ],
 "kinds": {
-"rotorooter.com": "directory",
+"rotorooter.com": "multi-city",
 "integrityplumbingandmore.com": "own-site",
 "watertite.com": "own-site",
 "facebook.com": "directory",
@@ -3549,6 +3594,7 @@
 "portorangeplumbing.com": "own-site",
 "todayshomeowner.com": "own-site"
 },
+"cost": 0.005401,
 "money_spent": null
 },
 {
@@ -3625,15 +3671,16 @@
 ],
 "kinds": {
 "colemanplumbing.net": "own-site",
-"rotorooter.com": "directory",
-"frankgayservices.com": "directory",
+"rotorooter.com": "multi-city",
+"frankgayservices.com": "multi-city",
 "indeed.com": "own-site",
 "yelp.com": "directory",
 "facebook.com": "directory",
 "howellplumbingfl.com": "own-site",
 "angi.com": "directory",
-"modernpi.com": "directory"
+"modernpi.com": "multi-city"
 },
+"cost": 0.005209,
 "money_spent": null
 },
 {
@@ -3683,6 +3730,7 @@
 "expertise.com": "directory",
 "leadsmartinc.com": "own-site"
 },
+"cost": 0.03332225,
 "money_spent": null
 },
 {
@@ -3749,8 +3797,7 @@
 "Ellis Plumbing",
 "Roto-Rooter",
 "Yelp",
-"Angi",
-"Plumber"
+"Angi"
 ],
 "domains": [
 "rotorooter.com",
@@ -3765,17 +3812,18 @@
 "thumbtack.com"
 ],
 "kinds": {
-"rotorooter.com": "directory",
+"rotorooter.com": "multi-city",
 "bbb.org": "directory",
 "popeplumbinginc.com": "own-site",
 "yelp.com": "directory",
 "facebook.com": "directory",
-"modernpi.com": "directory",
+"modernpi.com": "multi-city",
 "angi.com": "directory",
 "hancockplumbingco.com": "own-site",
 "benjaminfranklinplumbing.com": "own-site",
 "thumbtack.com": "directory"
 },
+"cost": 0.005457,
 "money_spent": null
 },
 {
@@ -3827,6 +3875,7 @@
 "krakenplumbingcompany.com": "own-site",
 "homeservices.review": "own-site"
 },
+"cost": 0.03472575,
 "money_spent": null
 },
 {
@@ -3882,6 +3931,7 @@
 "portorangeplumbing.com": "own-site",
 "homeadvisor.com": "directory"
 },
+"cost": 0.0339925,
 "money_spent": null
 },
 {
@@ -3963,16 +4013,17 @@
 ],
 "kinds": {
 "relianceplumbers.com": "own-site",
-"rotorooter.com": "directory",
+"rotorooter.com": "multi-city",
 "bbb.org": "directory",
 "yelp.com": "directory",
 "ferran-services.com": "own-site",
-"modernpi.com": "directory",
-"frankgayservices.com": "directory",
+"modernpi.com": "multi-city",
+"frankgayservices.com": "multi-city",
 "facebook.com": "directory",
 "angi.com": "directory",
 "benjaminfranklinplumbing.com": "own-site"
 },
+"cost": 0.005287,
 "money_spent": null
 },
 {
@@ -4054,7 +4105,7 @@
 ],
 "kinds": {
 "consumeraffairs.com": "own-site",
-"rotorooter.com": "directory",
+"rotorooter.com": "multi-city",
 "herrellplumbing.com": "own-site",
 "orlandosbestplumber.com": "own-site",
 "yelp.com": "directory",
@@ -4064,6 +4115,7 @@
 "bestplumbingorlando.com": "own-site",
 "thumbtack.com": "directory"
 },
+"cost": 0.005296,
 "money_spent": null
 },
 {
@@ -4123,8 +4175,9 @@
 "experience.com": "directory",
 "plumbersofamerica.com": "own-site",
 "bestprosintown.com": "directory",
-"rotorooter.com": "own-site"
+"rotorooter.com": "multi-city"
 },
+"cost": 0.03381225,
 "money_spent": null
 },
 {
@@ -4176,12 +4229,13 @@
 "zillow.com"
 ],
 "kinds": {
-"findhvacrepair.com": "directory",
+"findhvacrepair.com": "multi-city",
 "shamrockplumbingfl.com": "own-site",
 "plumberranker.com": "own-site",
-"rotorooter.com": "own-site",
+"rotorooter.com": "multi-city",
 "zillow.com": "directory"
 },
+"cost": 0.03021075,
 "money_spent": null
 },
 {
@@ -4261,16 +4315,17 @@
 "bbb.org"
 ],
 "kinds": {
-"frankgayservices.com": "directory",
-"delair.com": "directory",
+"frankgayservices.com": "multi-city",
+"delair.com": "multi-city",
 "maitlandwinterparkplumbing.com": "own-site",
 "yelp.com": "directory",
 "facebook.com": "directory",
 "bestplumbingorlando.com": "own-site",
 "angi.com": "directory",
-"modernpi.com": "directory",
+"modernpi.com": "multi-city",
 "bbb.org": "directory"
 },
+"cost": 0.005326,
 "money_spent": null
 },
 {
@@ -4322,8 +4377,9 @@
 "kinds": {
 "plumberranker.com": "own-site",
 "sanfordplumbingco.com": "own-site",
-"rotorooter.com": "own-site"
+"rotorooter.com": "multi-city"
 },
+"cost": 0.03454025,
 "money_spent": null
 },
 {
@@ -4387,8 +4443,7 @@
 "Morgan & Morgan Team",
 "Chanfrau & Chanfrau",
 "Chubb Law",
-"Morgan & Morgan",
-"Lawyer"
+"Morgan & Morgan"
 ],
 "domains": [
 "chubbfirm.com",
@@ -4406,12 +4461,13 @@
 "attorneys.superlawyers.com": "directory",
 "justia.com": "directory",
 "forthepeople.com": "own-site",
-"chanfraulaw.com": "directory",
+"chanfraulaw.com": "multi-city",
 "newlinlaw.com": "own-site",
 "attorneyatlawmagazine.com": "own-site",
 "communitylawfirm.com": "own-site",
 "dwaccidentlawyer.com": "own-site"
 },
+"cost": 0.00549,
 "money_spent": null
 },
 {
@@ -4486,6 +4542,7 @@
 "choiceplumbingorlando.com": "own-site",
 "forbes.com": "own-site"
 },
+"cost": 0.03539425,
 "money_spent": null
 },
 {
@@ -4573,13 +4630,14 @@
 "lawyerdude.com": "own-site",
 "radicallawfirm.com": "own-site",
 "boginmunns.com": "own-site",
-"chanfraulaw.com": "directory",
-"farahandfarah.com": "directory",
+"chanfraulaw.com": "multi-city",
+"farahandfarah.com": "multi-city",
 "bencrump.com": "own-site",
 "attorneys.superlawyers.com": "directory",
 "thejusticeattorneys.com": "own-site",
 "forthepeople.com": "own-site"
 },
+"cost": 0.005459,
 "money_spent": null
 },
 {
@@ -4633,6 +4691,7 @@
 "reviews.birdeye.com": "directory",
 "homeadvisor.com": "directory"
 },
+"cost": 0.034752,
 "money_spent": null
 },
 {
@@ -4716,14 +4775,15 @@
 "dwaccidentlawyer.com": "own-site",
 "justia.com": "directory",
 "radicallawfirm.com": "own-site",
-"farahandfarah.com": "directory",
+"farahandfarah.com": "multi-city",
 "attorneys.superlawyers.com": "directory",
 "boginmunns.com": "own-site",
 "findyourjustice.com": "own-site",
 "thumbtack.com": "directory",
-"zimmetzimmet.com": "own-site",
+"zimmetzimmet.com": "multi-city",
 "attorneyatlawmagazine.com": "own-site"
 },
+"cost": 0.005364,
 "money_spent": null
 },
 {
@@ -4806,15 +4866,16 @@
 "kinds": {
 "justia.com": "directory",
 "fl-law.com": "own-site",
-"chanfraulaw.com": "directory",
+"chanfraulaw.com": "multi-city",
 "mylegalneeds.com": "own-site",
 "boginmunns.com": "own-site",
-"farahandfarah.com": "directory",
+"farahandfarah.com": "multi-city",
 "attorneys.superlawyers.com": "directory",
 "thejusticeattorneys.com": "own-site",
 "ormondbeachlawfirm.com": "own-site",
 "attorneyatlawmagazine.com": "own-site"
 },
+"cost": 0.005399,
 "money_spent": null
 },
 {
@@ -4867,12 +4928,13 @@
 "keithcwarnock.com"
 ],
 "kinds": {
-"chanfraulaw.com": "own-site",
-"zimmetzimmet.com": "own-site",
+"chanfraulaw.com": "multi-city",
+"zimmetzimmet.com": "multi-city",
 "thejusticeattorneys.com": "own-site",
 "boginmunns.com": "own-site",
 "keithcwarnock.com": "own-site"
 },
+"cost": 0.03535575,
 "money_spent": null
 },
 {
@@ -4920,6 +4982,7 @@
 "bestprosintown.com": "directory",
 "lawyers.com": "directory"
 },
+"cost": 0.03541,
 "money_spent": null
 },
 {
@@ -5005,10 +5068,11 @@
 "yelp.com": "directory",
 "facebook.com": "directory",
 "davidalanwolf.com": "own-site",
-"farahandfarah.com": "directory",
-"chanfraulaw.com": "directory",
+"farahandfarah.com": "multi-city",
+"chanfraulaw.com": "multi-city",
 "communitylawfirm.com": "own-site"
 },
+"cost": 0.005416,
 "money_spent": null
 },
 {
@@ -5090,10 +5154,10 @@
 "communitylawfirm.com"
 ],
 "kinds": {
-"chanfraulaw.com": "directory",
+"chanfraulaw.com": "multi-city",
 "adamclark.law": "own-site",
 "dolmanlaw.com": "own-site",
-"zimmetzimmet.com": "own-site",
+"zimmetzimmet.com": "multi-city",
 "justia.com": "directory",
 "yelp.com": "directory",
 "anidjarlevine.com": "own-site",
@@ -5101,6 +5165,7 @@
 "petersonlawgroupnsb.com": "own-site",
 "communitylawfirm.com": "own-site"
 },
+"cost": 0.005356,
 "money_spent": null
 },
 {
@@ -5160,11 +5225,12 @@
 "kinds": {
 "lawyers.com": "directory",
 "ledfordlaw.com": "own-site",
-"chanfraulaw.com": "own-site",
+"chanfraulaw.com": "multi-city",
 "ormondlegal.com": "own-site",
 "fl-law.com": "own-site",
-"zimmetzimmet.com": "own-site"
+"zimmetzimmet.com": "multi-city"
 },
+"cost": 0.035879,
 "money_spent": null
 },
 {
@@ -5228,8 +5294,7 @@
 "Chubb Law",
 "Weston & Pape",
 "The Benenati Law Firm",
-"Graves Law",
-"Lawyer / Firm"
+"Graves Law"
 ],
 "domains": [
 "justia.com",
@@ -5251,10 +5316,11 @@
 "dwaccidentlawyer.com": "own-site",
 "777injury.com": "own-site",
 "attorneys.superlawyers.com": "directory",
-"farahandfarah.com": "directory",
+"farahandfarah.com": "multi-city",
 "naopia.com": "own-site",
 "graveslawpractice.com": "own-site"
 },
+"cost": 0.005392,
 "money_spent": null
 },
 {
@@ -5302,6 +5368,7 @@
 "lawyers.com": "directory",
 "attorneys.superlawyers.com": "directory"
 },
+"cost": 0.0355815,
 "money_spent": null
 },
 {
@@ -5394,6 +5461,7 @@
 "chubbfirm.com": "own-site",
 "penalawyers.com": "own-site"
 },
+"cost": 0.005286,
 "money_spent": null
 },
 {
@@ -5445,12 +5513,13 @@
 "zimmetzimmet.com"
 ],
 "kinds": {
-"chanfraulaw.com": "own-site",
+"chanfraulaw.com": "multi-city",
 "lawyers.findlaw.com": "directory",
 "powersinjurygroup.com": "own-site",
 "mikehuddlestonlaw.com": "own-site",
-"zimmetzimmet.com": "own-site"
+"zimmetzimmet.com": "multi-city"
 },
+"cost": 0.0357705,
 "money_spent": null
 },
 {
@@ -5536,7 +5605,7 @@
 "justia.com": "directory",
 "whkpa.com": "own-site",
 "newlinlaw.com": "own-site",
-"farahandfarah.com": "directory",
+"farahandfarah.com": "multi-city",
 "attorneys.superlawyers.com": "directory",
 "thejasponfirm.com": "own-site",
 "orlandoinjury.com": "own-site",
@@ -5544,6 +5613,7 @@
 "legallypinklaw.com": "own-site",
 "toddminerlaw.com": "own-site"
 },
+"cost": 0.005407,
 "money_spent": null
 },
 {
@@ -5601,6 +5671,7 @@
 "fighterlaw.com": "own-site",
 "777injury.com": "own-site"
 },
+"cost": 0.034983,
 "money_spent": null
 },
 {
@@ -5650,6 +5721,7 @@
 "attorneys.superlawyers.com": "directory",
 "avvo.com": "directory"
 },
+"cost": 0.03560075,
 "money_spent": null
 },
 {
@@ -5721,6 +5793,7 @@
 "lawinfo.com": "directory",
 "en.wikipedia.org": "directory"
 },
+"cost": 0.03618525,
 "money_spent": null
 },
 {
@@ -5786,8 +5859,7 @@
 "Justin Presser",
 "Thomas DeLattre",
 "Ronald Gilbert",
-"Jonathan Jacobs",
-"Attorney"
+"Jonathan Jacobs"
 ],
 "domains": [
 "richardtroutman.com",
@@ -5813,6 +5885,7 @@
 "attorneys.superlawyers.com": "directory",
 "bestlawyers.com": "own-site"
 },
+"cost": 0.005351,
 "money_spent": null
 },
 {
@@ -5895,7 +5968,7 @@
 "universalsmilesdentistry.com": "own-site",
 "bobwrabledmd.com": "own-site",
 "cowelldental.com": "own-site",
-"deltadental.com": "directory",
+"deltadental.com": "multi-city",
 "battendental.com": "own-site",
 "facebook.com": "directory",
 "yelp.com": "directory",
@@ -5903,6 +5976,7 @@
 "delandfamilydental.com": "own-site",
 "raedental.com": "own-site"
 },
+"cost": 0.005355,
 "money_spent": null
 },
 {
@@ -5957,6 +6031,7 @@
 "lawleaderboard.com": "own-site",
 "lawyers.law.cornell.edu": "own-site"
 },
+"cost": 0.036082,
 "money_spent": null
 },
 {
@@ -6044,8 +6119,9 @@
 "changlowe.com": "own-site",
 "health.usnews.com": "own-site",
 "yelp.com": "directory",
-"deltadental.com": "directory"
+"deltadental.com": "multi-city"
 },
+"cost": 0.005347,
 "money_spent": null
 },
 {
@@ -6116,6 +6192,7 @@
 "winterparklegal.com": "own-site",
 "avvo.com": "directory"
 },
+"cost": 0.03689575,
 "money_spent": null
 },
 {
@@ -6183,8 +6260,7 @@
 "Yelp",
 "Zocdoc",
 "Greenberg Dental & Orthodontics",
-"Vista Dental and Braces",
-"Dentist"
+"Vista Dental and Braces"
 ],
 "domains": [
 "coastdental.com",
@@ -6207,9 +6283,10 @@
 "myfamilydentaldeltona.com": "own-site",
 "yelp.com": "directory",
 "zocdoc.com": "directory",
-"deltadental.com": "directory",
+"deltadental.com": "multi-city",
 "providencedentaldeltona.com": "own-site"
 },
+"cost": 0.005467,
 "money_spent": null
 },
 {
@@ -6296,9 +6373,10 @@
 "facebook.com": "directory",
 "drbc.com": "own-site",
 "saradeandental.com": "own-site",
-"deltadental.com": "directory",
+"deltadental.com": "multi-city",
 "msmythdmd.com": "own-site"
 },
+"cost": 0.005288,
 "money_spent": null
 },
 {
@@ -6354,6 +6432,7 @@
 "dentistry.com": "own-site",
 "verview.com": "own-site"
 },
+"cost": 0.0348675,
 "money_spent": null
 },
 {
@@ -6447,12 +6526,13 @@
 "smilliedental.com": "own-site",
 "greenbergdental.com": "own-site",
 "portorangedentist.com": "own-site",
-"deltadental.com": "directory",
+"deltadental.com": "multi-city",
 "familydentistryportorange.com": "own-site",
 "yelp.com": "directory",
 "whitewolfdental.com": "own-site",
 "healthgrades.com": "directory"
 },
+"cost": 0.005369,
 "money_spent": null
 },
 {
@@ -6503,6 +6583,7 @@
 "dentist-orange-city.com": "own-site",
 "bestprosintown.com": "directory"
 },
+"cost": 0.03455775,
 "money_spent": null
 },
 {
@@ -6581,10 +6662,11 @@
 "health.usnews.com": "own-site",
 "yelp.com": "directory",
 "newsmyrnadentistry.com": "own-site",
-"deltadental.com": "directory",
+"deltadental.com": "multi-city",
 "kilmandental.com": "own-site",
 "atlanticdental.net": "own-site"
 },
+"cost": 0.005388,
 "money_spent": null
 },
 {
@@ -6642,6 +6724,7 @@
 "top-rated.online": "own-site",
 "coastdental.com": "own-site"
 },
+"cost": 0.0350635,
 "money_spent": null
 },
 {
@@ -6697,6 +6780,7 @@
 "healthgrades.com": "directory",
 "meetmydentist.com": "own-site"
 },
+"cost": 0.0354205,
 "money_spent": null
 },
 {
@@ -6773,8 +6857,9 @@
 "dentistinsanfordfl.com": "own-site",
 "oakportdental.com": "own-site",
 "dentistsofsanford.com": "own-site",
-"deltadental.com": "directory"
+"deltadental.com": "multi-city"
 },
+"cost": 0.005249,
 "money_spent": null
 },
 {
@@ -6832,7 +6917,6 @@
 "Primera Dental",
 "Lake Mary Modern Dentistry",
 "Tiralosi Dental",
-"Dentist",
 "Dr. Maria"
 ],
 "domains": [
@@ -6851,10 +6935,11 @@
 "yelp.com": "directory",
 "heathrowdentistry.com": "own-site",
 "lakemarydentist.com": "own-site",
-"deltadental.com": "directory",
+"deltadental.com": "multi-city",
 "primeradentistry.com": "own-site",
 "lakemarymoderndentistry.com": "own-site"
 },
+"cost": 0.005438,
 "money_spent": null
 },
 {
@@ -6910,6 +6995,7 @@
 "envision-dental.com": "own-site",
 "bestprosintown.com": "directory"
 },
+"cost": 0.03534525,
 "money_spent": null
 },
 {
@@ -6969,6 +7055,7 @@
 "hammockgardensdentalcare.com": "own-site",
 "dentalvitals.com": "own-site"
 },
+"cost": 0.035781,
 "money_spent": null
 },
 {
@@ -7030,7 +7117,6 @@
 "Fine Dentistry of Downtown Orlando",
 "Mosaic Dental Center",
 "Dr. Chris (Mills Dental Group)",
-"Dentist / Clinic",
 "Park Smiles Dentistry (Winter Park)"
 ],
 "domains": [
@@ -7047,7 +7133,7 @@
 ],
 "kinds": {
 "yelp.com": "directory",
-"deltadental.com": "directory",
+"deltadental.com": "multi-city",
 "mosaicdentalcenter.com": "own-site",
 "dentistwinterpark.com": "own-site",
 "finedentistryorlando.com": "own-site",
@@ -7057,6 +7143,7 @@
 "orlandostylemagazine.com": "own-site",
 "adc-fl.com": "own-site"
 },
+"cost": 0.005407,
 "money_spent": null
 },
 {
@@ -7110,6 +7197,7 @@
 "doctor.webmd.com": "directory",
 "vitals.com": "directory"
 },
+"cost": 0.0345525,
 "money_spent": null
 },
 {
@@ -7200,8 +7288,9 @@
 "yelp.com": "directory",
 "dentistwinterpark.com": "own-site",
 "winterparkfldentistry.com": "own-site",
-"deltadental.com": "directory"
+"deltadental.com": "multi-city"
 },
+"cost": 0.005385,
 "money_spent": null
 },
 {
@@ -7255,6 +7344,7 @@
 "bestprosintown.com": "directory",
 "ratemds.com": "directory"
 },
+"cost": 0.03465575,
 "money_spent": null
 },
 {
@@ -7319,7 +7409,6 @@
 "DeLand Chiropractic & Spinal Decompression",
 "Pure Alignment Chiropractic",
 "Zocdoc",
-"Chiropractor / Clinic",
 "James J. Hether, D.C. (DeLand Chiropractor)"
 ],
 "domains": [
@@ -7342,10 +7431,11 @@
 "yelp.com": "directory",
 "purealignmentchiro.com": "own-site",
 "delandchiropractic.com": "own-site",
-"thejoint.com": "directory",
+"thejoint.com": "own-site",
 "facebook.com": "directory",
 "completewellnessmedicalcenters.com": "own-site"
 },
+"cost": 0.005412,
 "money_spent": null
 },
 {
@@ -7436,6 +7526,7 @@
 "zocdoc.com": "directory",
 "evolvedaytonabeach.com": "own-site"
 },
+"cost": 0.005284,
 "money_spent": null
 },
 {
@@ -7497,6 +7588,7 @@
 "bestdentist.reviews": "own-site",
 "orlandomagazine.com": "own-site"
 },
+"cost": 0.035144,
 "money_spent": null
 },
 {
@@ -7557,6 +7649,7 @@
 "dentist-usa.nears.me": "own-site",
 "thedentalhealers.com": "own-site"
 },
+"cost": 0.03483425,
 "money_spent": null
 },
 {
@@ -7623,7 +7716,6 @@
 "Dr. Steven Oliver, DC",
 "Dr. Peter Francis, DC",
 "Dr. Michael Rodriguez, DC",
-"Chiropractor / Clinic",
 "Watts Chiropractic Center (Dr. Terry Watts, DC)",
 "Spine & Rehabilitation Centers (Volusia Spine)",
 "Rivera Chiropractic (Dr. Omar Rivera, DC)"
@@ -7652,6 +7744,7 @@
 "zocdoc.com": "directory",
 "momentuminjury.com": "own-site"
 },
+"cost": 0.005454,
 "money_spent": null
 },
 {
@@ -7702,9 +7795,10 @@
 ],
 "kinds": {
 "reviews.birdeye.com": "directory",
-"chiropractorsnear.me": "directory",
+"chiropractorsnear.me": "multi-city",
 "alvarezchiropractic.com": "own-site"
 },
+"cost": 0.03501275,
 "money_spent": null
 },
 {
@@ -7792,6 +7886,7 @@
 "facebook.com": "directory",
 "theedgechiro.com": "own-site"
 },
+"cost": 0.005423,
 "money_spent": null
 },
 {
@@ -7841,11 +7936,12 @@
 "healthgrades.com"
 ],
 "kinds": {
-"chiropractorsnear.me": "directory",
+"chiropractorsnear.me": "multi-city",
 "bestprosintown.com": "directory",
 "wanderlog.com": "own-site",
 "healthgrades.com": "directory"
 },
+"cost": 0.03492525,
 "money_spent": null
 },
 {
@@ -7932,8 +8028,9 @@
 "yelp.com": "directory",
 "facebook.com": "directory",
 "zocdoc.com": "directory",
-"thejoint.com": "directory"
+"thejoint.com": "own-site"
 },
+"cost": 0.005422,
 "money_spent": null
 },
 {
@@ -8026,6 +8123,7 @@
 "coastalwellnesschiropractic.com": "own-site",
 "zocdoc.com": "directory"
 },
+"cost": 0.005331,
 "money_spent": null
 },
 {
@@ -8075,10 +8173,11 @@
 "wellness.com"
 ],
 "kinds": {
-"chiropractorsnear.me": "directory",
+"chiropractorsnear.me": "multi-city",
 "bestprosintown.com": "directory",
 "wellness.com": "own-site"
 },
+"cost": 0.03461375,
 "money_spent": null
 },
 {
@@ -8171,6 +8270,7 @@
 "zocdoc.com": "directory",
 "chirophit.com": "own-site"
 },
+"cost": 0.005274,
 "money_spent": null
 },
 {
@@ -8219,10 +8319,11 @@
 "healthhives.com"
 ],
 "kinds": {
-"chiropractorsnear.me": "directory",
+"chiropractorsnear.me": "multi-city",
 "bestprosintown.com": "directory",
 "healthhives.com": "own-site"
 },
+"cost": 0.0347975,
 "money_spent": null
 },
 {
@@ -8311,6 +8412,7 @@
 "facebook.com": "directory",
 "healthgrades.com": "directory"
 },
+"cost": 0.005255,
 "money_spent": null
 },
 {
@@ -8366,6 +8468,7 @@
 "bestprosintown.com": "directory",
 "sainatochiropractor.org": "own-site"
 },
+"cost": 0.035844,
 "money_spent": null
 },
 {
@@ -8423,6 +8526,7 @@
 "wellnessnsb.com": "own-site",
 "healthgrades.com": "directory"
 },
+"cost": 0.03473975,
 "money_spent": null
 },
 {
@@ -8506,7 +8610,7 @@
 ],
 "kinds": {
 "orlandoschiropractor.com": "own-site",
-"thejoint.com": "directory",
+"thejoint.com": "own-site",
 "familyspinalcare.com": "own-site",
 "healthgrades.com": "directory",
 "kaizenchiropracticsolutions.com": "own-site",
@@ -8516,6 +8620,7 @@
 "yelp.com": "directory",
 "zocdoc.com": "directory"
 },
+"cost": 0.005509,
 "money_spent": null
 },
 {
@@ -8580,6 +8685,7 @@
 "vitalspinechirofl.com": "own-site",
 "bestprosintown.com": "directory"
 },
+"cost": 0.03603475,
 "money_spent": null
 },
 {
@@ -8669,9 +8775,10 @@
 "lionschiropractic.com": "own-site",
 "yelp.com": "directory",
 "facebook.com": "directory",
-"thejoint.com": "directory",
+"thejoint.com": "own-site",
 "healthgrades.com": "directory"
 },
+"cost": 0.005455,
 "money_spent": null
 },
 {
@@ -8740,16 +8847,17 @@
 "swannre.com"
 ],
 "kinds": {
-"fastexpert.com": "directory",
+"fastexpert.com": "multi-city",
 "yelp.com": "directory",
-"realestate.usnews.com": "directory",
+"realestate.usnews.com": "multi-city",
 "zillow.com": "directory",
 "bee-realty.com": "own-site",
 "facebook.com": "directory",
 "greenerealtyflorida.com": "own-site",
-"redfin.com": "directory",
+"redfin.com": "multi-city",
 "swannre.com": "own-site"
 },
+"cost": 0.005231,
 "money_spent": null
 },
 {
@@ -8800,12 +8908,13 @@
 "healthgrades.com"
 ],
 "kinds": {
-"chiropractorsnear.me": "directory",
+"chiropractorsnear.me": "multi-city",
 "healthhives.com": "own-site",
 "bestprosintown.com": "directory",
 "markharrischiro.com": "own-site",
 "healthgrades.com": "directory"
 },
+"cost": 0.03500225,
 "money_spent": null
 },
 {
@@ -8867,6 +8976,7 @@
 "vitals.com": "directory",
 "trustanalytica.org": "own-site"
 },
+"cost": 0.0344895,
 "money_spent": null
 },
 {
@@ -8941,9 +9051,9 @@
 "facebook.com"
 ],
 "kinds": {
-"fastexpert.com": "directory",
+"fastexpert.com": "multi-city",
 "yelp.com": "directory",
-"realestate.usnews.com": "directory",
+"realestate.usnews.com": "multi-city",
 "zillow.com": "directory",
 "ronsellsthebeach.com": "own-site",
 "realtor.com": "directory",
@@ -8951,6 +9061,7 @@
 "386realestate.com": "own-site",
 "facebook.com": "directory"
 },
+"cost": 0.005271,
 "money_spent": null
 },
 {
@@ -9024,9 +9135,9 @@
 "realtrends.com"
 ],
 "kinds": {
-"fastexpert.com": "directory",
+"fastexpert.com": "multi-city",
 "yelp.com": "directory",
-"realestate.usnews.com": "directory",
+"realestate.usnews.com": "multi-city",
 "realtor.com": "directory",
 "zillow.com": "directory",
 "deltonalakes.net": "own-site",
@@ -9034,6 +9145,7 @@
 "c21arm.com": "own-site",
 "realtrends.com": "own-site"
 },
+"cost": 0.005289,
 "money_spent": null
 },
 {
@@ -9094,6 +9206,7 @@
 "fullerhealthcenter.com": "own-site",
 "wpspineinjury.com": "own-site"
 },
+"cost": 0.03662625,
 "money_spent": null
 },
 {
@@ -9149,8 +9262,7 @@
 "Chris Creegan",
 "Dominick Florio",
 "Riley Hill",
-"Al Wilson",
-"Agent"
+"Al Wilson"
 ],
 "domains": [
 "realtor.com",
@@ -9165,13 +9277,14 @@
 "kinds": {
 "realtor.com": "directory",
 "yelp.com": "directory",
-"realestate.usnews.com": "directory",
+"realestate.usnews.com": "multi-city",
 "facebook.com": "directory",
 "zillow.com": "directory",
 "realtyprosassured.com": "own-site",
 "billnavarra.com": "own-site",
-"redfin.com": "directory"
+"redfin.com": "multi-city"
 },
+"cost": 0.005369,
 "money_spent": null
 },
 {
@@ -9235,10 +9348,11 @@
 "kinds": {
 "realtrends.com": "own-site",
 "zillow.com": "directory",
-"redfin.com": "own-site",
+"redfin.com": "multi-city",
 "reviews.birdeye.com": "directory",
 "effectiveagents.com": "own-site"
 },
+"cost": 0.0306255,
 "money_spent": null
 },
 {
@@ -9301,7 +9415,7 @@
 "kemprealtygroup.com"
 ],
 "kinds": {
-"bestrealestateagentnear.me": "directory",
+"bestrealestateagentnear.me": "multi-city",
 "experience.com": "directory",
 "realestateagents.com": "own-site",
 "bee-realty.com": "own-site",
@@ -9309,6 +9423,7 @@
 "swannre.com": "own-site",
 "kemprealtygroup.com": "own-site"
 },
+"cost": 0.0363095,
 "money_spent": null
 },
 {
@@ -9368,8 +9483,9 @@
 ],
 "kinds": {
 "zillow.com": "directory",
-"fastexpert.com": "directory"
+"fastexpert.com": "multi-city"
 },
+"cost": 0.03597525,
 "money_spent": null
 },
 {
@@ -9427,8 +9543,7 @@
 "Alice Cooper",
 "Don Bell",
 "Jennifer Wemert",
-"Brian Griffin",
-"Agent"
+"Brian Griffin"
 ],
 "domains": [
 "fastexpert.com",
@@ -9442,16 +9557,17 @@
 "redfin.com"
 ],
 "kinds": {
-"fastexpert.com": "directory",
+"fastexpert.com": "multi-city",
 "yelp.com": "directory",
-"realestate.usnews.com": "directory",
+"realestate.usnews.com": "multi-city",
 "realtor.com": "directory",
 "zillow.com": "directory",
 "liferealestatefl.com": "own-site",
 "alicecooperteam.com": "own-site",
 "facebook.com": "directory",
-"redfin.com": "directory"
+"redfin.com": "multi-city"
 },
+"cost": 0.005312,
 "money_spent": null
 },
 {
@@ -9510,8 +9626,7 @@
 "Tara Lyall",
 "Jodie Stratton",
 "Mike Sanford",
-"Collado Real Estate",
-"Agent"
+"Collado Real Estate"
 ],
 "domains": [
 "fastexpert.com",
@@ -9525,9 +9640,9 @@
 "premiersothebysrealty.com"
 ],
 "kinds": {
-"fastexpert.com": "directory",
+"fastexpert.com": "multi-city",
 "colladorealestate.com": "own-site",
-"realestate.usnews.com": "directory",
+"realestate.usnews.com": "multi-city",
 "floridahightide.com": "own-site",
 "facebook.com": "directory",
 "zillow.com": "directory",
@@ -9535,6 +9650,7 @@
 "realtor.com": "directory",
 "premiersothebysrealty.com": "own-site"
 },
+"cost": 0.005419,
 "money_spent": null
 },
 {
@@ -9593,8 +9709,9 @@
 "realtor.com": "directory",
 "effectiveagents.com": "own-site",
 "experience.com": "directory",
-"fastexpert.com": "directory"
+"fastexpert.com": "multi-city"
 },
+"cost": 0.029565,
 "money_spent": null
 },
 {
@@ -9668,16 +9785,17 @@
 "redfin.com"
 ],
 "kinds": {
-"fastexpert.com": "directory",
+"fastexpert.com": "multi-city",
 "realtyexecutives.com": "own-site",
 "yelp.com": "directory",
-"realestate.usnews.com": "directory",
+"realestate.usnews.com": "multi-city",
 "houseunicorn.com": "own-site",
 "zillow.com": "directory",
 "coldwellbanker.com": "own-site",
 "realtor.com": "directory",
-"redfin.com": "directory"
+"redfin.com": "multi-city"
 },
+"cost": 0.005317,
 "money_spent": null
 },
 {
@@ -9740,8 +9858,9 @@
 "bestprosintown.com": "directory",
 "experience.com": "directory",
 "realtor.com": "directory",
-"bestrealestateagentnear.me": "directory"
+"bestrealestateagentnear.me": "multi-city"
 },
+"cost": 0.03707075,
 "money_spent": null
 },
 {
@@ -9821,17 +9940,18 @@
 "facebook.com"
 ],
 "kinds": {
-"fastexpert.com": "directory",
+"fastexpert.com": "multi-city",
 "yelp.com": "directory",
-"realestate.usnews.com": "directory",
+"realestate.usnews.com": "multi-city",
 "korrrealty.com": "own-site",
 "realtor.com": "directory",
 "zillow.com": "directory",
 "getorlandorealestate.com": "own-site",
-"redfin.com": "directory",
+"redfin.com": "multi-city",
 "compass.com": "own-site",
 "facebook.com": "directory"
 },
+"cost": 0.005332,
 "money_spent": null
 },
 {
@@ -9899,6 +10019,7 @@
 "experience.com": "directory",
 "realtor.com": "directory"
 },
+"cost": 0.03596825,
 "money_spent": null
 },
 {
@@ -9978,9 +10099,9 @@
 ],
 "kinds": {
 "wemertgrouprealty.com": "own-site",
-"fastexpert.com": "directory",
+"fastexpert.com": "multi-city",
 "facebook.com": "directory",
-"realestate.usnews.com": "directory",
+"realestate.usnews.com": "multi-city",
 "thenickleygroup.com": "own-site",
 "yelp.com": "directory",
 "reddit.com": "directory",
@@ -9988,6 +10109,7 @@
 "reprosfl.com": "own-site",
 "bestorlandomlssearch.com": "own-site"
 },
+"cost": 0.005352,
 "money_spent": null
 },
 {
@@ -10042,8 +10164,9 @@
 "thehazerateam.com": "own-site",
 "yellowdoorrealty.org": "own-site",
 "realtor.com": "directory",
-"fastexpert.com": "directory"
+"fastexpert.com": "multi-city"
 },
+"cost": 0.03368975,
 "money_spent": null
 },
 {
@@ -10107,8 +10230,7 @@
 "Kris Kennedy",
 "Eric Zimmerman, CRS",
 "Stacie Kelly",
-"Innovation",
-"Agent Name"
+"Innovation"
 ],
 "domains": [
 "creegangroup.com",
@@ -10125,7 +10247,7 @@
 "kinds": {
 "creegangroup.com": "own-site",
 "yelp.com": "directory",
-"realestate.usnews.com": "directory",
+"realestate.usnews.com": "multi-city",
 "realtor.com": "directory",
 "premiersothebysrealty.com": "own-site",
 "facebook.com": "directory",
@@ -10134,6 +10256,7 @@
 "fanniehillman.com": "own-site",
 "palmanogroup.com": "own-site"
 },
+"cost": 0.005418,
 "money_spent": null
 },
 {
@@ -10186,11 +10309,12 @@
 ],
 "kinds": {
 "effectiveagents.com": "own-site",
-"fastexpert.com": "directory",
-"bestrealestateagentnear.me": "directory",
+"fastexpert.com": "multi-city",
+"bestrealestateagentnear.me": "multi-city",
 "realtrends.com": "own-site",
 "realtor.com": "directory"
 },
+"cost": 0.034654,
 "money_spent": null
 },
 {
@@ -10287,6 +10411,7 @@
 "tomstouchlandscape.com": "own-site",
 "angi.com": "directory"
 },
+"cost": 0.005337,
 "money_spent": null
 },
 {
@@ -10345,13 +10470,14 @@
 "homes.com"
 ],
 "kinds": {
-"bestrealestateagentnear.me": "directory",
+"bestrealestateagentnear.me": "multi-city",
 "realsatisfied.com": "own-site",
 "realtor.com": "directory",
 "expertise.com": "directory",
 "joedoher.realtor": "own-site",
 "homes.com": "own-site"
 },
+"cost": 0.037083,
 "money_spent": null
 },
 {
@@ -10437,7 +10563,7 @@
 ],
 "kinds": {
 "lawnstarter.com": "directory",
-"leafylandscapes.com": "directory",
+"leafylandscapes.com": "multi-city",
 "jrizzyslandscaping.com": "own-site",
 "lawnlove.com": "own-site",
 "yardbook.com": "own-site",
@@ -10447,6 +10573,7 @@
 "facebook.com": "directory",
 "homeadvisor.com": "directory"
 },
+"cost": 0.005401,
 "money_spent": null
 },
 {
@@ -10513,15 +10640,16 @@
 "yourgreenpal.com"
 ],
 "kinds": {
-"leafylandscapes.com": "directory",
+"leafylandscapes.com": "multi-city",
 "lawnstarter.com": "directory",
 "yelp.com": "directory",
 "humphrieslawncare.com": "own-site",
 "allstarrrandslandscaping.com": "own-site",
 "thumbtack.com": "directory",
 "houzz.com": "directory",
-"yourgreenpal.com": "directory"
+"yourgreenpal.com": "multi-city"
 },
+"cost": 0.005287,
 "money_spent": null
 },
 {
@@ -10584,13 +10712,14 @@
 "omarcotto.com"
 ],
 "kinds": {
-"fastexpert.com": "directory",
+"fastexpert.com": "multi-city",
 "rate-my-agent.com": "own-site",
 "zillow.com": "directory",
 "realtor.com": "directory",
-"bestrealestateagentnear.me": "directory",
+"bestrealestateagentnear.me": "multi-city",
 "omarcotto.com": "own-site"
 },
+"cost": 0.0358895,
 "money_spent": null
 },
 {
@@ -10675,13 +10804,14 @@
 "lawncareormondbeach.com": "own-site",
 "lawnstarter.com": "directory",
 "jrizzyslandscaping.com": "own-site",
-"leafylandscapes.com": "directory",
+"leafylandscapes.com": "multi-city",
 "thumbtack.com": "directory",
 "facebook.com": "directory",
 "yelp.com": "directory",
 "gardenboyslandscaping.com": "own-site",
 "angi.com": "directory"
 },
+"cost": 0.005385,
 "money_spent": null
 },
 {
@@ -10746,6 +10876,7 @@
 "coles-landscaping.com": "own-site",
 "graslawn.com": "own-site"
 },
+"cost": 0.03579675,
 "money_spent": null
 },
 {
@@ -10806,6 +10937,7 @@
 "bestprosintown.com": "directory",
 "angi.com": "directory"
 },
+"cost": 0.03503375,
 "money_spent": null
 },
 {
@@ -10884,17 +11016,18 @@
 "homeguide.com"
 ],
 "kinds": {
-"leafylandscapes.com": "directory",
+"leafylandscapes.com": "multi-city",
 "lawnstarter.com": "directory",
 "yelp.com": "directory",
 "bulldoglawnandlandscaping.com": "own-site",
 "facebook.com": "directory",
 "thumbtack.com": "directory",
-"yourgreenpal.com": "directory",
+"yourgreenpal.com": "multi-city",
 "houzz.com": "directory",
 "absolutequalitylandscape.com": "own-site",
 "homeguide.com": "directory"
 },
+"cost": 0.005283,
 "money_spent": null
 },
 {
@@ -10952,6 +11085,7 @@
 "homeadvisor.com": "directory",
 "dexknows.com": "own-site"
 },
+"cost": 0.035221,
 "money_spent": null
 },
 {
@@ -11035,10 +11169,11 @@
 "facebook.com": "directory",
 "nextlawnfl.com": "own-site",
 "thumbtack.com": "directory",
-"leafylandscapes.com": "directory",
+"leafylandscapes.com": "multi-city",
 "lawnstarter.com": "directory",
 "houzz.com": "directory"
 },
+"cost": 0.005342,
 "money_spent": null
 },
 {
@@ -11116,10 +11251,11 @@
 "yelp.com": "directory",
 "facebook.com": "directory",
 "brightview.com": "own-site",
-"yourgreenpal.com": "directory",
+"yourgreenpal.com": "multi-city",
 "thumbtack.com": "directory",
 "homeguide.com": "directory"
 },
+"cost": 0.005306,
 "money_spent": null
 },
 {
@@ -11185,6 +11321,7 @@
 "allbiz.com": "own-site",
 "angi.com": "directory"
 },
+"cost": 0.035298,
 "money_spent": null
 },
 {
@@ -11240,6 +11377,7 @@
 "bestprosintown.com": "directory",
 "experience.com": "directory"
 },
+"cost": 0.03512825,
 "money_spent": null
 },
 {
@@ -11322,6 +11460,7 @@
 "lawnguru.co": "own-site",
 "angi.com": "directory"
 },
+"cost": 0.005354,
 "money_spent": null
 },
 {
@@ -11411,8 +11550,9 @@
 "groundsource.pro": "own-site",
 "jlcoutdoors.com": "own-site",
 "acutaboveorlando.com": "own-site",
-"yourgreenpal.com": "directory"
+"yourgreenpal.com": "multi-city"
 },
+"cost": 0.005338,
 "money_spent": null
 },
 {
@@ -11489,6 +11629,7 @@
 "plmfl.com": "own-site",
 "chasingthesunlandscaping.com": "own-site"
 },
+"cost": 0.036117,
 "money_spent": null
 },
 {
@@ -11559,6 +11700,7 @@
 "lawnstarter.com": "directory",
 "landscapersup.com": "own-site"
 },
+"cost": 0.03529975,
 "money_spent": null
 },
 {
@@ -11611,6 +11753,7 @@
 "reviews.birdeye.com": "directory",
 "bestprosintown.com": "directory"
 },
+"cost": 0.03457175,
 "money_spent": null
 },
 {
@@ -11692,13 +11835,14 @@
 "facebook.com": "directory",
 "houzz.com": "directory",
 "mcallisterlandscaping.com": "own-site",
-"yourgreenpal.com": "directory",
+"yourgreenpal.com": "multi-city",
 "signaturelandscapecontractors.com": "own-site",
 "thumbtack.com": "directory",
 "groundsguys.com": "own-site",
 "cityofwinterpark.org": "own-site",
 "lawnstarter.com": "directory"
 },
+"cost": 0.005388,
 "money_spent": null
 },
 {
@@ -11763,6 +11907,7 @@
 "houzz.com": "directory",
 "attention2detail.co": "own-site"
 },
+"cost": 0.03521925,
 "money_spent": null
 },
 {
@@ -11843,14 +11988,15 @@
 "kinds": {
 "myheronhome.com": "own-site",
 "pioneerpestservices.com": "own-site",
-"imperialpestprevent.com": "directory",
+"imperialpestprevent.com": "multi-city",
 "driggerspestcontrol.com": "own-site",
-"davespestcontrol.com": "directory",
+"davespestcontrol.com": "multi-city",
 "yelp.com": "directory",
-"masseyservices.com": "directory",
+"masseyservices.com": "multi-city",
 "facebook.com": "directory",
 "pestcontroldelandfl.com": "own-site"
 },
+"cost": 0.005474,
 "money_spent": null
 },
 {
@@ -11928,14 +12074,15 @@
 ],
 "kinds": {
 "trulynolen.com": "own-site",
-"imperialpestprevent.com": "directory",
-"turnerpest.com": "directory",
+"imperialpestprevent.com": "multi-city",
+"turnerpest.com": "multi-city",
 "flapest.com": "own-site",
-"masseyservices.com": "directory",
+"masseyservices.com": "multi-city",
 "yelp.com": "directory",
 "facebook.com": "directory",
 "pestdefense.com": "own-site"
 },
+"cost": 0.005475,
 "money_spent": null
 },
 {
@@ -11981,6 +12128,7 @@
 "experience.com": "directory",
 "lawnstarter.com": "directory"
 },
+"cost": 0.03492525,
 "money_spent": null
 },
 {
@@ -12039,6 +12187,7 @@
 "homeadvisor.com": "directory",
 "pestcontrolexperts.com": "own-site"
 },
+"cost": 0.035242,
 "money_spent": null
 },
 {
@@ -12117,9 +12266,9 @@
 "angi.com"
 ],
 "kinds": {
-"imperialpestprevent.com": "directory",
+"imperialpestprevent.com": "multi-city",
 "westpestcontrol.com": "own-site",
-"turnerpest.com": "directory",
+"turnerpest.com": "multi-city",
 "bye-bye-pest.com": "own-site",
 "orkin.com": "own-site",
 "pioneerpestservices.com": "own-site",
@@ -12127,6 +12276,7 @@
 "homeguide.com": "directory",
 "angi.com": "directory"
 },
+"cost": 0.005431,
 "money_spent": null
 },
 {
@@ -12197,14 +12347,15 @@
 "facebook.com"
 ],
 "kinds": {
-"turnerpest.com": "directory",
+"turnerpest.com": "multi-city",
 "bugandtermitecontrol.com": "own-site",
 "yelp.com": "directory",
-"davespestcontrol.com": "directory",
-"masseyservices.com": "directory",
+"davespestcontrol.com": "multi-city",
+"masseyservices.com": "multi-city",
 "flapest.com": "own-site",
 "facebook.com": "directory"
 },
+"cost": 0.005274,
 "money_spent": null
 },
 {
@@ -12267,8 +12418,9 @@
 "birdeye.com": "directory",
 "bestprosintown.com": "directory",
 "growcycle.com": "own-site",
-"imperialpestprevent.com": "own-site"
+"imperialpestprevent.com": "multi-city"
 },
+"cost": 0.0359,
 "money_spent": null
 },
 {
@@ -12359,14 +12511,15 @@
 "kinds": {
 "trulynolen.com": "own-site",
 "portorangepestcontrol.com": "own-site",
-"turnerpest.com": "directory",
+"turnerpest.com": "multi-city",
 "yelp.com": "directory",
-"masseyservices.com": "directory",
-"davespestcontrol.com": "directory",
+"masseyservices.com": "multi-city",
+"davespestcontrol.com": "multi-city",
 "thumbtack.com": "directory",
 "facebook.com": "directory",
-"imperialpestprevent.com": "directory"
+"imperialpestprevent.com": "multi-city"
 },
+"cost": 0.005467,
 "money_spent": null
 },
 {
@@ -12416,11 +12569,12 @@
 "expertise.com"
 ],
 "kinds": {
-"pestcontrolreviews.com": "directory",
+"pestcontrolreviews.com": "multi-city",
 "en.wikipedia.org": "directory",
 "bestprosintown.com": "directory",
 "expertise.com": "directory"
 },
+"cost": 0.03541525,
 "money_spent": null
 },
 {
@@ -12503,14 +12657,15 @@
 "kinds": {
 "myheronhome.com": "own-site",
 "trulynolen.com": "own-site",
-"imperialpestprevent.com": "directory",
+"imperialpestprevent.com": "multi-city",
 "yelp.com": "directory",
-"davespestcontrol.com": "directory",
-"masseyservices.com": "directory",
+"davespestcontrol.com": "multi-city",
+"masseyservices.com": "multi-city",
 "smyrnapest.com": "own-site",
 "angi.com": "directory",
 "bbb.org": "directory"
 },
+"cost": 0.00535,
 "money_spent": null
 },
 {
@@ -12574,8 +12729,9 @@
 "bestprosintown.com": "directory",
 "reviews.birdeye.com": "directory",
 "pests.org": "own-site",
-"pestcontrolreviews.com": "directory"
+"pestcontrolreviews.com": "multi-city"
 },
+"cost": 0.0358405,
 "money_spent": null
 },
 {
@@ -12654,13 +12810,14 @@
 "kinds": {
 "pestcontrolsanfordfl.com": "own-site",
 "gagerpestcontrol.com": "own-site",
-"davespestcontrol.com": "directory",
-"turnerpest.com": "directory",
+"davespestcontrol.com": "multi-city",
+"turnerpest.com": "multi-city",
 "facebook.com": "directory",
 "yelp.com": "directory",
 "locations.trulynolen.com": "own-site",
 "mosquitojoe.com": "own-site"
 },
+"cost": 0.005487,
 "money_spent": null
 },
 {
@@ -12710,10 +12867,11 @@
 "pests.org"
 ],
 "kinds": {
-"pestcontrolreviews.com": "directory",
+"pestcontrolreviews.com": "multi-city",
 "bestprosintown.com": "directory",
 "pests.org": "own-site"
 },
+"cost": 0.034528,
 "money_spent": null
 },
 {
@@ -12793,13 +12951,14 @@
 "pestcontrollakemaryfl.com": "own-site",
 "yelp.com": "directory",
 "remotuspest.com": "own-site",
-"davespestcontrol.com": "directory",
-"masseyservices.com": "directory",
+"davespestcontrol.com": "multi-city",
+"masseyservices.com": "multi-city",
 "facebook.com": "directory",
-"turnerpest.com": "directory",
+"turnerpest.com": "multi-city",
 "mosquitojoe.com": "own-site",
 "bbb.org": "directory"
 },
+"cost": 0.005395,
 "money_spent": null
 },
 {
@@ -12887,10 +13046,11 @@
 "locations.trulynolen.com": "own-site",
 "pestdefense.com": "own-site",
 "bbb.org": "directory",
-"masseyservices.com": "directory",
+"masseyservices.com": "multi-city",
 "yelp.com": "directory",
 "reddit.com": "directory"
 },
+"cost": 0.005355,
 "money_spent": null
 },
 {
@@ -12945,9 +13105,10 @@
 "kinds": {
 "pests.org": "own-site",
 "birdeye.com": "directory",
-"loc8nearme.com": "directory",
+"loc8nearme.com": "own-site",
 "tapspest.com": "own-site"
 },
+"cost": 0.03433375,
 "money_spent": null
 },
 {
@@ -13027,12 +13188,13 @@
 "myheronhome.com": "own-site",
 "aruzapest.com": "own-site",
 "fox-pest.com": "own-site",
-"masseyservices.com": "directory",
-"turnerpest.com": "directory",
+"masseyservices.com": "multi-city",
+"turnerpest.com": "multi-city",
 "yelp.com": "directory",
 "angi.com": "directory",
 "facebook.com": "directory"
 },
+"cost": 0.005362,
 "money_spent": null
 },
 {
@@ -13079,6 +13241,7 @@
 "floridapestcontrol.com": "own-site",
 "bestprosintown.com": "directory"
 },
+"cost": 0.03475025,
 "money_spent": null
 },
 {
@@ -13147,14 +13310,15 @@
 ],
 "kinds": {
 "delandcpa.com": "own-site",
-"jmco.com": "directory",
+"jmco.com": "own-site",
 "taxattorneykrus.com": "own-site",
 "yelp.com": "directory",
-"clearlyrated.com": "own-site",
+"clearlyrated.com": "multi-city",
 "facebook.com": "directory",
 "fixitaccounting.com": "own-site",
 "toptaxhq.com": "own-site"
 },
+"cost": 0.005346,
 "money_spent": null
 },
 {
@@ -13214,8 +13378,9 @@
 "angi.com": "directory",
 "bestprosintown.com": "directory",
 "contactus.com": "own-site",
-"pestcontrolreviews.com": "directory"
+"pestcontrolreviews.com": "multi-city"
 },
+"cost": 0.03461375,
 "money_spent": null
 },
 {
@@ -13268,12 +13433,13 @@
 "cpaguide.com"
 ],
 "kinds": {
-"jmco.com": "directory",
+"jmco.com": "own-site",
 "yelp.com": "directory",
 "lskcpas.com": "own-site",
 "seolium.com": "own-site",
 "cpaguide.com": "own-site"
 },
+"cost": 0.005304,
 "money_spent": null
 },
 {
@@ -13333,6 +13499,7 @@
 "irem-centralfl.org": "own-site",
 "en.wikipedia.org": "directory"
 },
+"cost": 0.03548875,
 "money_spent": null
 },
 {
@@ -13408,7 +13575,7 @@
 ],
 "kinds": {
 "completecpa.com": "own-site",
-"jmco.com": "directory",
+"jmco.com": "own-site",
 "yelp.com": "directory",
 "thervo.com": "own-site",
 "hrblock.com": "own-site",
@@ -13417,6 +13584,7 @@
 "themanifest.com": "own-site",
 "silvatopsolution.net": "own-site"
 },
+"cost": 0.005433,
 "money_spent": null
 },
 {
@@ -13480,11 +13648,12 @@
 ],
 "kinds": {
 "floridapestcontrol.com": "own-site",
-"pestcontrolreviews.com": "directory",
+"pestcontrolreviews.com": "multi-city",
 "birdeye.com": "directory",
 "reviews.birdeye.com": "directory",
 "wecontrolbugs.com": "own-site"
 },
+"cost": 0.035977,
 "money_spent": null
 },
 {
@@ -13540,6 +13709,7 @@
 "jmco.com": "own-site",
 "chamberofcommerce.com": "directory"
 },
+"cost": 0.03468725,
 "money_spent": null
 },
 {
@@ -13600,10 +13770,11 @@
 "yelp.com": "directory",
 "delaneycpa.net": "own-site",
 "bkacpa.com": "own-site",
-"jmco.com": "directory",
+"jmco.com": "own-site",
 "lskcpas.com": "own-site",
 "business.ormondchamber.com": "own-site"
 },
+"cost": 0.005336,
 "money_spent": null
 },
 {
@@ -13651,8 +13822,7 @@
 "names": [
 "Matt The CPA",
 "Sonya L. Laney, C.P.A., P.A",
-"Robert E. Paxson, CPA",
-"CPA/Firm"
+"Robert E. Paxson, CPA"
 ],
 "domains": [
 "business.pschamber.com",
@@ -13672,6 +13842,7 @@
 "ficpa.org": "own-site",
 "sonyalaney.com": "own-site"
 },
+"cost": 0.005384,
 "money_spent": null
 },
 {
@@ -13727,8 +13898,9 @@
 "kswcpafirm.com": "own-site",
 "rpyllc.com": "own-site",
 "integralcpa.com": "own-site",
-"clearlyrated.com": "directory"
+"clearlyrated.com": "multi-city"
 },
+"cost": 0.0344265,
 "money_spent": null
 },
 {
@@ -13795,6 +13967,7 @@
 "facebook.com": "directory",
 "bbb.org": "directory"
 },
+"cost": 0.005259,
 "money_spent": null
 },
 {
@@ -13857,6 +14030,7 @@
 "yellowpages.com": "directory",
 "mapquest.com": "directory"
 },
+"cost": 0.0346925,
 "money_spent": null
 },
 {
@@ -13912,6 +14086,7 @@
 "expertise.com": "directory",
 "bestprosintown.com": "directory"
 },
+"cost": 0.0363305,
 "money_spent": null
 },
 {
@@ -13989,6 +14164,7 @@
 "sanjayguptacpa.com": "own-site",
 "hmrcpa.net": "own-site"
 },
+"cost": 0.005296,
 "money_spent": null
 },
 {
@@ -14046,6 +14222,7 @@
 "reviews.birdeye.com": "directory",
 "legaldirectorate.com": "own-site"
 },
+"cost": 0.03483775,
 "money_spent": null
 },
 {
@@ -14105,6 +14282,7 @@
 "expertise.com": "directory",
 "strongholdaccountants.com": "own-site"
 },
+"cost": 0.005286,
 "money_spent": null
 },
 {
@@ -14192,11 +14370,12 @@
 "howardcpas.com": "own-site",
 "yelp.com": "directory",
 "lausconsult.com": "own-site",
-"clearlyrated.com": "own-site",
+"clearlyrated.com": "multi-city",
 "reddit.com": "directory",
 "mosskrusick.com": "own-site",
 "upfrontcpa.com": "own-site"
 },
+"cost": 0.005355,
 "money_spent": null
 },
 {
@@ -14249,11 +14428,12 @@
 ],
 "kinds": {
 "poyst.com": "own-site",
-"loc8nearme.com": "directory",
+"loc8nearme.com": "own-site",
 "seolium.com": "own-site",
 "expertise.com": "directory",
-"clearlyrated.com": "directory"
+"clearlyrated.com": "multi-city"
 },
+"cost": 0.03464525,
 "money_spent": null
 },
 {
@@ -14319,8 +14499,9 @@
 "cpaandaccountants.com": "own-site",
 "lakemarycpa.com": "own-site",
 "staatscpa.com": "own-site",
-"clearlyrated.com": "directory"
+"clearlyrated.com": "multi-city"
 },
+"cost": 0.036222,
 "money_spent": null
 },
 {
@@ -14376,6 +14557,7 @@
 "reviews.birdeye.com": "directory",
 "hirschaccounting.com": "own-site"
 },
+"cost": 0.03555175,
 "money_spent": null
 },
 {
@@ -14445,12 +14627,13 @@
 "wr-cpa.com": "own-site",
 "business.winterpark.org": "own-site",
 "yelp.com": "directory",
-"clearlyrated.com": "own-site",
+"clearlyrated.com": "multi-city",
 "mosskrusick.com": "own-site",
 "wilderaccountingcpa.com": "own-site",
 "bbb.org": "directory",
 "felsingcpa.com": "own-site"
 },
+"cost": 0.005349,
 "money_spent": null
 },
 {
@@ -14506,6 +14689,7 @@
 "mattthecpa.com": "own-site",
 "legaldirectorate.com": "own-site"
 },
+"cost": 0.03513,
 "money_spent": null
 },
 {
@@ -14568,13 +14752,14 @@
 "expertise.com"
 ],
 "kinds": {
-"loc8nearme.com": "directory",
+"loc8nearme.com": "own-site",
 "trustytaxer.com": "own-site",
 "wr-cpa.com": "own-site",
 "jtccpas.com": "own-site",
-"clearlyrated.com": "directory",
+"clearlyrated.com": "multi-city",
 "expertise.com": "directory"
 },
+"cost": 0.035844,
 "money_spent": null
 }
 ]

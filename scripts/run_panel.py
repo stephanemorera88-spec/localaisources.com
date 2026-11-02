@@ -142,13 +142,19 @@ def main():
     if not os.path.exists(a.dfs):
         sys.exit(f"dfs helper not found at {a.dfs}")
 
+    if spent >= a.cost_cap:
+        sys.exit(f"recorded cost ${spent:.2f} already meets the cap ${a.cost_cap:.2f}; raise --cost-cap to continue")
+
     lock = Lock()
-    stop = {"flag": False}
+    state = {"stop": False, "spent": spent, "ok": 0, "err": 0}
 
     def work(item):
+        """Runs in a worker. The cap is checked before the call and the spend is added, under the
+        lock, by the worker that receives the result, so the flag flips before any queued worker starts."""
         p, e, s = item
-        if stop["flag"]:
-            return None
+        with lock:
+            if state["stop"]:
+                return None
         row = {"run_id": a.run_id, "panel_version": panel["panel_version"], "query_id": p["query_id"],
                "vertical": p["vertical"], "city": p["city"], "prompt": p["prompt"], "engine": e,
                "model_requested": MODELS[e], "sample": s,
@@ -157,9 +163,13 @@ def main():
             row.update(call(a.dfs, e, p["prompt"]))
         except Exception as ex:  # noqa: BLE001
             row["error"] = f"{type(ex).__name__}: {str(ex)[:200]}"
+        with lock:
+            state["spent"] += float(row.get("cost") or 0)
+            if state["spent"] >= a.cost_cap and not state["stop"]:
+                state["stop"] = True
+                print(f"cost cap ${a.cost_cap:.2f} reached at ${state['spent']:.2f}; no further submissions", flush=True)
         return row
 
-    n_ok = n_err = 0
     with open(out_path, "a", encoding="utf-8") as f, ThreadPoolExecutor(max_workers=a.concurrency) as pool:
         futures = [pool.submit(work, it) for it in plan]
         for fut in as_completed(futures):
@@ -169,18 +179,14 @@ def main():
             with lock:
                 f.write(json.dumps(row, ensure_ascii=False) + "\n")
                 f.flush()
-                spent += float(row.get("cost") or 0)
                 if row.get("error"):
-                    n_err += 1
+                    state["err"] += 1
                 else:
-                    n_ok += 1
+                    state["ok"] += 1
                 print(f"{row['engine']:10} s{row['sample']} {row['query_id']:45} "
                       f"{'ERR ' + row['error'][:60] if row.get('error') else str(len(row.get('sources') or [])) + ' sources'}  "
-                      f"${float(row.get('cost') or 0):.4f}  total ${spent:.2f}", flush=True)
-                if spent >= a.cost_cap and not stop["flag"]:
-                    stop["flag"] = True
-                    print(f"cost cap ${a.cost_cap:.2f} reached; no further submissions", flush=True)
-    print(f"done: {n_ok} ok, {n_err} errors, recorded cost ${spent:.2f}, file {out_path}")
+                      f"${float(row.get('cost') or 0):.4f}  total ${state['spent']:.2f}", flush=True)
+    print(f"done: {state['ok']} ok, {state['err']} errors, recorded cost ${state['spent']:.2f}, file {out_path}")
 
 
 if __name__ == "__main__":

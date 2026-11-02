@@ -24,7 +24,7 @@ from collections import Counter, defaultdict
 from datetime import date
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from classify import (AGGREGATOR_CITY_THRESHOLD, ANALYSIS_VERSION, is_directory,  # noqa: E402
+from classify import (ANALYSIS_VERSION, MULTI_CITY_THRESHOLD, in_directory_list,  # noqa: E402
                       norm_domain)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -41,6 +41,7 @@ ENGINE_ORDER = ["chat_gpt", "perplexity", "claude", "gemini"]
 MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August",
           "September", "October", "November", "December"]
 TODAY = date.today().isoformat()
+KIND_LABEL = {"own-site": "own site", "directory": "directory", "multi-city": "multi-city site"}
 
 GENERIC = {
     "pros", "cons", "note", "notes", "summary", "services", "why", "rating", "reviews", "best for",
@@ -77,6 +78,14 @@ def article(word):
     return "an" if word[:1].lower() in "aeiou" else "a"
 
 
+def cap(s):
+    return s[:1].upper() + s[1:]
+
+
+def day(s):
+    return (s or "")[:10]
+
+
 def write(path, content):
     full = os.path.join(ROOT, path)
     os.makedirs(os.path.dirname(full), exist_ok=True)
@@ -99,7 +108,8 @@ def valid_name(n):
         return None
     if n[:1].islower() or n.startswith("#"):
         return None
-    if re.search(r"\b(near|options|option|companies|providers|picks|choices|list|guide|rated|reviewed|top|best)\b", low) and not re.search(r"\b(inc|llc|co|corp|group|services|service|roofing|plumbing|law|dental|clinic|pa|pllc)\b", low):
+    if re.search(r"\b(near|options|option|companies|providers|picks|choices|list|guide|rated|reviewed|top|best)\b", low) \
+            and not re.search(r"\b(inc|llc|co|corp|group|services|service|roofing|plumbing|law|dental|clinic|pa|pllc)\b", low):
         return None
     if re.search(r"\(?\b20\d\d\b", n):
         return None
@@ -110,9 +120,13 @@ def valid_name(n):
     return n
 
 
+SEP_RE = re.compile(r"^\|?\s*:?-{2,}")
+
+
 def extract_names(answer):
-    """Business names as they appear in the answer: bold runs and table first cells.
-    Automatic and heuristic; labelled as such on every page."""
+    """Business names as they appear in the answer: bold runs and table body rows (first cell).
+    Header rows (the line before a |---| separator) are skipped. Automatic and heuristic;
+    labelled as such on every page."""
     found = []
     for m in re.finditer(r"\*\*([^*\n]{3,80})\*\*", answer or ""):
         n = re.sub(r"^\d+[.)]\s*", "", m.group(1))
@@ -120,10 +134,12 @@ def extract_names(answer):
         n = valid_name(n)
         if n:
             found.append(n)
-    for line in (answer or "").splitlines():
-        s = line.strip()
-        if not s.startswith("|") or re.match(r"^\|\s*:?-", s):
+    lines = [l.strip() for l in (answer or "").splitlines()]
+    for i, s in enumerate(lines):
+        if not s.startswith("|") or SEP_RE.match(s):
             continue
+        if i + 1 < len(lines) and SEP_RE.match(lines[i + 1]):
+            continue  # header row
         cells = [c.strip() for c in s.strip("|").split("|")]
         if not cells:
             continue
@@ -144,6 +160,15 @@ def extract_names(answer):
     return out
 
 
+def row_cost(r):
+    """One spend figure per row: the DataForSEO task charge, which is what the collector caps on.
+    Provider spend (money_spent) is the fallback for rows that have no task cost."""
+    c = r.get("cost")
+    if c is None:
+        c = r.get("money_spent")
+    return float(c or 0)
+
+
 # ----------------------------------------------------------------------------
 # data
 # ----------------------------------------------------------------------------
@@ -153,20 +178,33 @@ def load_panel():
 
 
 def load_runs():
+    """Returns {run_id: {"rows": [...answered rows...], "failed": Counter(engine -> failed calls)}}.
+    A prompt that failed once and succeeded on resume is not counted as failed."""
     runs = {}
     for path in sorted(glob.glob(os.path.join(ROOT, "data", "runs", "*.jsonl"))):
         name = os.path.basename(path)[:-6]
         if name.endswith("-variance"):
             continue
-        rows = []
-        for line in open(path, encoding="utf-8"):
-            if line.strip():
-                r = json.loads(line)
-                if r.get("error") or not r.get("answer"):
-                    continue
-                rows.append(r)
+        raw = [json.loads(l) for l in open(path, encoding="utf-8") if l.strip()]
+        rows, seen = [], set()
+        for r in raw:
+            if r.get("error") or not r.get("answer"):
+                continue
+            key = (r.get("query_id"), r.get("engine"), r.get("sample", 1))
+            if key in seen:
+                continue
+            seen.add(key)
+            rows.append(r)
+        ok_keys = {(r["query_id"], r["engine"]) for r in rows}
+        failed = Counter()
+        failed_seen = set()
+        for r in raw:
+            k = (r.get("query_id"), r.get("engine"))
+            if (r.get("error") or not r.get("answer")) and k not in ok_keys and k not in failed_seen:
+                failed_seen.add(k)
+                failed[r.get("engine")] += 1
         if rows:
-            runs[name] = rows
+            runs[name] = {"rows": rows, "failed": failed}
     return runs
 
 
@@ -181,23 +219,36 @@ def load_variance():
     return out
 
 
-def analyse_run(rows):
-    """Per-engine stats plus per-row derived fields. Mutates rows (adds names, domains, kinds)."""
+def analyse_run(rows, failed, panel_size):
+    """Per-engine stats plus per-row derived fields (names, domains, kinds). Mutates rows.
+
+    Domain kinds, decided per run across all engines so one domain has one kind per month:
+      directory   on the list in classify.py (directories, aggregators, review, social, reference, lead-gen)
+      multi-city  not on the list, but cited for the same template across MULTI_CITY_THRESHOLD or more
+                  cities this month (a regional business, a franchise, or a listicle-publishing business site)
+      own-site    everything else, read as a local business's own website
+    """
     by_engine = defaultdict(list)
+    cities_per_domain = defaultdict(set)
     for r in rows:
         by_engine[r["engine"]].append(r)
+        for s in r.get("sources") or []:
+            if s.get("url"):
+                cities_per_domain[norm_domain(s["url"])].add(r["city"])
+
+    def kind_of(d):
+        if in_directory_list(d):
+            return "directory"
+        if len(cities_per_domain[d]) >= MULTI_CITY_THRESHOLD:
+            return "multi-city"
+        return "own-site"
+
     stats = {}
     for eng, recs in by_engine.items():
-        cities_per_domain = defaultdict(set)
-        for r in recs:
-            for s in r.get("sources") or []:
-                if s.get("url"):
-                    cities_per_domain[norm_domain(s["url"])].add(r["city"])
         cited = Counter()
         kinds = {}
-        own = dirs = 0
-        with_sources = named_any = 0
-        named_total = 0
+        counts = Counter()
+        with_sources = named_any = named_total = 0
         for r in recs:
             r["names"] = extract_names(r.get("answer", ""))
             doms = []
@@ -207,37 +258,36 @@ def analyse_run(rows):
                     if d and d not in doms:
                         doms.append(d)
             r["domains"] = doms
-            r["kinds"] = {}
+            r["kinds"] = {d: kind_of(d) for d in doms}
             if doms:
                 with_sources += 1
             if r["names"]:
                 named_any += 1
             named_total += len(r["names"])
             for d in doms:
-                k = "directory" if is_directory(d, cities_per_domain[d]) else "own-site"
-                r["kinds"][d] = k
-                kinds[d] = k
+                kinds[d] = r["kinds"][d]
                 cited[d] += 1
-                if k == "directory":
-                    dirs += 1
-                else:
-                    own += 1
-        total = own + dirs
+                counts[r["kinds"][d]] += 1
+        total = sum(counts.values())
+        dates = [day(r.get("datetime")) for r in recs if day(r.get("datetime"))]
         stats[eng] = {
             "answers": len(recs),
+            "expected": panel_size,
+            "failed": failed.get(eng, 0),
             "with_sources": with_sources,
             "named_any": named_any,
             "avg_named": (named_total / len(recs)) if recs else 0,
-            "own": own,
-            "dirs": dirs,
-            "own_share": (own / total) if total else None,
+            "own": counts["own-site"],
+            "dirs": counts["directory"],
+            "multi": counts["multi-city"],
+            "own_share": (counts["own-site"] / total) if total else None,
             "unique_domains": len(cited),
             "top": cited.most_common(25),
             "kinds": kinds,
             "models": sorted({r.get("model_name") or r.get("model_requested") or "?" for r in recs}),
-            "cost": sum((r.get("money_spent") or r.get("cost") or 0) for r in recs),
-            "first": min((r.get("datetime") or "") for r in recs)[:10],
-            "last": max((r.get("datetime") or "") for r in recs)[:10],
+            "cost": sum(row_cost(r) for r in recs),
+            "first": min(dates) if dates else "",
+            "last": max(dates) if dates else "",
         }
     return stats
 
@@ -247,7 +297,7 @@ def analyse_run(rows):
 # ----------------------------------------------------------------------------
 
 CSS = """
-:root{--bg:#fbfaf7;--ink:#1c1a19;--muted:#5d5853;--line:#e6e1d8;--accent:#1f4d3a;--own:#1f4d3a;--dir:#8a4b1f;--chip:#efeae0}
+:root{--bg:#fbfaf7;--ink:#1c1a19;--muted:#5d5853;--line:#e6e1d8;--accent:#1f4d3a;--own:#1f4d3a;--dir:#8a4b1f;--multi:#4a4f8a;--chip:#efeae0}
 *{box-sizing:border-box}html{font-size:17px}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-serif,Georgia,"Times New Roman",serif;line-height:1.5}
 a{color:var(--accent)}
@@ -265,11 +315,10 @@ table{border-collapse:collapse;width:100%;margin:.6em 0 1.2em;font-size:.95rem}
 th,td{text-align:left;padding:.45em .6em;border-bottom:1px solid var(--line);vertical-align:top}
 th{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600}
 td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
-.chip{display:inline-block;font-family:ui-sans-serif,system-ui,sans-serif;font-size:.72rem;padding:.1em .5em;border-radius:3px;background:var(--chip);color:var(--muted);margin-left:.4em;vertical-align:middle}
-.chip.own{color:#fff;background:var(--own)}.chip.dir{color:#fff;background:var(--dir)}
+.chip{display:inline-block;font-family:ui-sans-serif,system-ui,sans-serif;font-size:.72rem;padding:.1em .5em;border-radius:3px;background:var(--chip);color:var(--muted);margin-left:.4em;vertical-align:middle;white-space:nowrap}
+.chip.own{color:#fff;background:var(--own)}.chip.dir{color:#fff;background:var(--dir)}.chip.multi{color:#fff;background:var(--multi)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));gap:6px 18px;font-size:.95rem}
 .grid a{text-decoration:none}
-.box{border:1px solid var(--line);padding:14px 16px;margin:1em 0;background:#fff}
 .note{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.85rem;color:var(--muted);border-left:3px solid var(--line);padding-left:12px;margin:1em 0}
 footer.site{border-top:1px solid var(--line);margin-top:40px;padding:22px 16px;font-family:ui-sans-serif,system-ui,sans-serif;font-size:.85rem;color:var(--muted)}
 footer.site .in{max-width:76rem;margin:0 auto}
@@ -278,31 +327,30 @@ ul.names{columns:2;column-gap:2rem;padding-left:1.2em;margin:.3em 0 .8em}
 code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;background:var(--chip);padding:.05em .3em;border-radius:3px}
 """
 
+ENTITY_NODES = [
+    {"@type": "WebSite", "@id": SITE + "/#website", "url": SITE + "/", "name": SITE_NAME,
+     "publisher": {"@id": PUBLISHER_URL + "#organization"}},
+    {"@type": "Organization", "@id": PUBLISHER_URL + "#organization", "name": PUBLISHER, "url": PUBLISHER_URL,
+     "founder": {"@id": AUTHOR_ID},
+     "address": {"@type": "PostalAddress", "addressLocality": "DeLand", "addressRegion": "FL", "addressCountry": "US"}},
+    {"@type": "Person", "@id": AUTHOR_ID, "name": "Stephane Morera", "url": "https://stephanemorera.com/",
+     "worksFor": {"@id": PUBLISHER_URL + "#organization"},
+     "sameAs": ["https://www.linkedin.com/in/stephanemorera", "https://lounge.ai/@stephanemorera", "https://kingofaeo.io/"]},
+]
 
-def shell(title, desc, path, body, ld=None, og_type="website"):
+
+def shell(title, desc, path, body, lastmod, ld=None, og_type="website"):
     url = SITE + path
-    ld_blocks = ""
     graph = [{
         "@type": "WebPage", "@id": url + "#webpage", "url": url, "name": title, "description": desc,
-        "inLanguage": "en", "dateModified": TODAY,
+        "inLanguage": "en", "dateModified": lastmod,
         "isPartOf": {"@id": SITE + "/#website"},
         "author": {"@id": AUTHOR_ID}, "publisher": {"@id": PUBLISHER_URL + "#organization"},
-    }]
-    if path == "/":
-        graph.append({"@type": "WebSite", "@id": SITE + "/#website", "url": SITE + "/", "name": SITE_NAME,
-                      "description": desc, "publisher": {"@id": PUBLISHER_URL + "#organization"}})
-        graph.append({"@type": "Organization", "@id": PUBLISHER_URL + "#organization", "name": PUBLISHER,
-                      "url": PUBLISHER_URL, "founder": {"@id": AUTHOR_ID},
-                      "address": {"@type": "PostalAddress", "addressLocality": "DeLand", "addressRegion": "FL",
-                                  "addressCountry": "US"}})
-        graph.append({"@type": "Person", "@id": AUTHOR_ID, "name": "Stephane Morera", "url": "https://stephanemorera.com/",
-                      "worksFor": {"@id": PUBLISHER_URL + "#organization"},
-                      "sameAs": ["https://www.linkedin.com/in/stephanemorera", "https://lounge.ai/@stephanemorera",
-                                 "https://kingofaeo.io/"]})
+    }] + ENTITY_NODES
     if ld:
         graph.extend(ld)
-    ld_blocks = '<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@graph": graph},
-                                                                   ensure_ascii=False) + "</script>"
+    ld_block = '<script type="application/ld+json">' + json.dumps(
+        {"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False) + "</script>"
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -320,7 +368,7 @@ def shell(title, desc, path, body, ld=None, og_type="website"):
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@Stephane_Morera">
 <link rel="stylesheet" href="/assets/style.css">
-{ld_blocks}
+{ld_block}
 </head>
 <body>
 <header class="site"><div class="in">
@@ -332,7 +380,7 @@ def shell(title, desc, path, body, ld=None, og_type="website"):
 </main>
 <footer class="site"><div class="in">
 <p>{SITE_NAME} is published by <a href="{PUBLISHER_URL}">{PUBLISHER}</a> in DeLand, Florida. It is written by <a href="https://stephanemorera.com/">Stephane Morera</a>. Data under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, code under MIT, both on <a href="https://github.com/stephanemorera88-spec/localaisources.com">GitHub</a>. Engine answers are recorded as returned and are not EVOIX recommendations. Extraction errors can be reported through the <a href="{CONTACT_URL}">EVOIX contact page</a>.</p>
-<p>Page generated {TODAY}. Analysis version {ANALYSIS_VERSION}.</p>
+<p>Page data as of {esc(lastmod)}. Analysis version {ANALYSIS_VERSION}.</p>
 </div></footer>
 </body>
 </html>
@@ -340,11 +388,25 @@ def shell(title, desc, path, body, ld=None, og_type="website"):
 
 
 def kind_chip(k):
-    return '<span class="chip own">own site</span>' if k == "own-site" else '<span class="chip dir">directory</span>'
+    cls = {"own-site": "own", "directory": "dir", "multi-city": "multi"}.get(k, "")
+    return f'<span class="chip {cls}">{KIND_LABEL.get(k, "unclassified")}</span>'
 
 
 def pct(x):
     return "n/a" if x is None else f"{round(x * 100)}%"
+
+
+def answers_cell(s):
+    if s["failed"]:
+        return f"{s['answers']} of {s['expected']} ({s['failed']} calls failed)"
+    return f"{s['answers']} of {s['expected']}"
+
+
+def top_cell(s):
+    if not s["top"]:
+        return "none cited"
+    d, n = s["top"][0]
+    return f"<a href=\"/domains/{slug(d)}/\">{esc(d)}</a> {kind_chip(s['kinds'].get(d))}<div class=\"meta\">cited in {n} of {s['answers']} answers</div>"
 
 
 # ----------------------------------------------------------------------------
@@ -354,31 +416,35 @@ def pct(x):
 def build(panel, runs, variance):
     run_ids = sorted(runs)
     latest = run_ids[-1]
-    analysed = {rid: analyse_run(runs[rid]) for rid in run_ids}
+    panel_size = len(panel["prompts"])
+    analysed = {rid: analyse_run(runs[rid]["rows"], runs[rid]["failed"], panel_size) for rid in run_ids}
+    run_date = {rid: min((analysed[rid][e]["first"] or TODAY) for e in analysed[rid]) for rid in run_ids}
     by_q = defaultdict(lambda: defaultdict(dict))   # query_id -> run -> engine -> row
     for rid in run_ids:
-        for r in runs[rid]:
+        for r in runs[rid]["rows"]:
             by_q[r["query_id"]][rid][r["engine"]] = r
-    engines_latest = [e for e in ENGINE_ORDER if e in analysed[latest]]
     all_engines = [e for e in ENGINE_ORDER if any(e in analysed[rid] for rid in run_ids)]
-    pages = []
+    pages = []   # (path, lastmod)
 
     def engines_in(rid):
         return [e for e in ENGINE_ORDER if e in analysed[rid]]
 
+    engines_latest = engines_in(latest)
+    latest_date = run_date[latest]
+
     # ---- home
     st = analysed[latest]
-    rows_html = ""
-    for e in engines_latest:
-        s = st[e]
-        topd, topn = (s["top"][0] if s["top"] else ("", 0))
-        rows_html += (f"<tr><td><a href=\"/engines/{e}/\">{ENGINE_NAMES[e]}</a><div class=\"meta\">{esc(', '.join(s['models']))}</div></td>"
-                      f"<td class=\"num\">{s['named_any']} of {s['answers']}</td>"
-                      f"<td class=\"num\">{pct(s['own_share'])}</td>"
-                      f"<td><a href=\"/domains/{slug(topd)}/\">{esc(topd)}</a> {kind_chip(s['kinds'].get(topd))}<div class=\"meta\">cited in {topn} of {s['answers']} answers</div></td></tr>")
+    rows_html = "".join(
+        f"<tr><td><a href=\"/engines/{e}/\">{ENGINE_NAMES[e]}</a><div class=\"meta\">{esc(', '.join(st[e]['models']))}</div></td>"
+        f"<td class=\"num\">{st[e]['named_any']} of {st[e]['answers']}</td>"
+        f"<td class=\"num\">{pct(st[e]['own_share'])}</td>"
+        f"<td>{top_cell(st[e])}</td></tr>" for e in engines_latest)
+    failed_total = sum(st[e]["failed"] for e in engines_latest)
+    failed_note = (f" {failed_total} of {panel_size * len(engines_latest)} calls returned no answer this month and are counted as missing, not as answers; the per-engine detail is on the <a href=\"/runs/{latest}/\">run page</a>."
+                   if failed_total else "")
     grid = ""
     for v in panel["verticals"]:
-        grid += f"<h3>{esc(v.capitalize() if v != 'CPA' else v)}</h3><div class=\"grid\">"
+        grid += f"<h3>{esc(cap(v))}</h3><div class=\"grid\">"
         for c in panel["cities"]:
             grid += f"<a href=\"/{slug(c)}/{slug(v)}/\">{esc(c)}</a>"
         grid += "</div>"
@@ -386,15 +452,15 @@ def build(panel, runs, variance):
     home_desc = (f"A public monthly record of which businesses and which sources {n_eng} AI engines cite when asked who the best "
                  f"roofer, plumber, dentist and seven other local providers are in 10 Central Florida cities. {month_label(latest)} edition.")
     body = f"""
-<p class="meta">Panel v1 · {len(panel['prompts'])} fixed questions · {n_eng} engines · updated monthly · latest run {month_label(latest)}</p>
+<p class="meta">Panel v1 · {panel_size} fixed questions · {n_eng} engines · updated monthly · latest run {month_label(latest)}, collected {esc(latest_date)}</p>
 <h1>Which businesses do AI engines recommend in Central Florida, and which sources do they cite?</h1>
-<p class="lede">Every month we ask {n_eng} AI engines the same {len(panel['prompts'])} questions, "Who is the best {{vertical}} in {{city}}, Florida?", for {len(panel['verticals'])} service verticals across {len(panel['cities'])} Central Florida cities, with live web search on. We record every business named and every source cited, and publish all of it here, right or wrong. This is the {month_label(latest)} edition.</p>
+<p class="lede">Every month we ask {n_eng} AI engines the same {panel_size} questions, "Who is the best {{vertical}} in {{city}}, Florida?", for {len(panel['verticals'])} service verticals across {len(panel['cities'])} Central Florida cities, with live web search on. We record every business named and every source cited, and publish all of it here, right or wrong. This is the {month_label(latest)} edition.</p>
 <h2>{month_label(latest)} at a glance</h2>
 <table>
 <tr><th>Engine</th><th class="num">Answers naming at least one business</th><th class="num">Own-site share of citations</th><th>Most cited source</th></tr>
 {rows_html}
 </table>
-<p class="note">Each cell is one answer per question per engine in this month's run (N=1 per question), so a single question's result is provisional. The aggregate rows above are the index figures. The same-day repeat subsample on the <a href="/method/">method page</a> is the measured noise floor. "Own-site share" is the share of distinct cited domains that are a local business's own website rather than a directory, aggregator, review or social site (analysis {ANALYSIS_VERSION}).</p>
+<p class="note">Each cell is one answer per question per engine in this month's run (N=1 per question), so a single question's result is provisional. The aggregate rows above are the index figures. The same-day repeat subsample on the <a href="/method/">method page</a> is the measured noise floor. "Own-site share" is the share of distinct cited domains that read as a local business's own website, as opposed to a directory, aggregator, review or social site, or a multi-city business site (analysis {ANALYSIS_VERSION}).{failed_note}</p>
 <h2>Browse by vertical and city</h2>
 {grid}
 <h2>Why this exists</h2>
@@ -409,22 +475,28 @@ def build(panel, runs, variance):
 </ul>
 """
     write("index.html", shell(f"{SITE_NAME}: which businesses AI engines recommend in Central Florida, {month_label(latest)}",
-                              home_desc, "/", body))
-    pages.append("/")
+                              home_desc, "/", body, latest_date))
+    pages.append(("/", latest_date))
 
     # ---- panel pages
     for p in panel["prompts"]:
         qid, v, c = p["query_id"], p["vertical"], p["city"]
         path = f"/{slug(c)}/{slug(v)}/"
         sections = ""
+        page_date = ""
         for rid in reversed(run_ids):
             per = by_q[qid].get(rid, {})
             if not per:
                 continue
             engs = [e for e in ENGINE_ORDER if e in per]
+            collected = max(day(per[e].get("datetime")) for e in engs) or run_date[rid]
+            page_date = page_date or collected
             named_engines = sum(1 for e in engs if per[e].get("names"))
-            sections += f"<h2>{month_label(rid)}</h2><p class=\"meta\">Collected {esc(per[engs[0]].get('datetime', '')[:10])} · N=1 per engine · provisional at the question level</p>"
+            missing = [e for e in engines_in(rid) if e not in per]
+            sections += f"<h2>{month_label(rid)}</h2><p class=\"meta\">Collected {esc(collected)} · N=1 per engine · provisional at the question level</p>"
             sections += f"<p>{named_engines} of {len(engs)} engines named at least one specific business."
+            if missing:
+                sections += f" No answer was returned by {', '.join(ENGINE_NAMES[e] for e in missing)} this month."
             sections += "</p>"
             for e in engs:
                 r = per[e]
@@ -455,27 +527,31 @@ def build(panel, runs, variance):
         body += ("<p class=\"note\">Names are extracted automatically from each answer's bold text and tables, so a name can be missed or cut oddly; "
                  "the full answer text is in the <a href=\"/data/\">downloadable rows</a>. A business listed here was named by that engine on that date. "
                  "It is not an EVOIX recommendation, and absence from this page is not a judgement of any business.</p>")
-        write(path.strip("/") + "/index.html", shell(title, desc, path, body, og_type="article"))
-        pages.append(path)
+        write(path.strip("/") + "/index.html", shell(title, desc, path, body, page_date or latest_date, og_type="article"))
+        pages.append((path, page_date or latest_date))
 
     # ---- domain pages + index
     dom_rows = defaultdict(list)   # domain -> list of (rid, engine, qid, vertical, city, kind)
     for rid in run_ids:
-        for r in runs[rid]:
+        for r in runs[rid]["rows"]:
             for d in r.get("domains", []):
                 dom_rows[d].append((rid, r["engine"], r["query_id"], r["vertical"], r["city"], r["kinds"].get(d)))
     dom_index = ""
     for d, lst in sorted(dom_rows.items(), key=lambda kv: (-len(kv[1]), kv[0])):
-        kinds = Counter(x[5] for x in lst)
-        kind = kinds.most_common(1)[0][0]
+        kind_by_run = {}
+        for rid, e, qid, v, c, k in lst:
+            kind_by_run[rid] = k
+        latest_kind = kind_by_run[max(kind_by_run)]
         path = f"/domains/{slug(d)}/"
         by_run = defaultdict(Counter)
         for rid, e, *_ in lst:
             by_run[rid][e] += 1
-        tbl = "<table><tr><th>Month</th>" + "".join(f"<th class=\"num\">{ENGINE_NAMES[e]}</th>" for e in all_engines) + "</tr>"
+        tbl = "<table><tr><th>Month</th><th>Classified as</th>" + "".join(f"<th class=\"num\">{ENGINE_NAMES[e]}</th>" for e in all_engines) + "</tr>"
         for rid in reversed(run_ids):
-            tbl += f"<tr><td><a href=\"/runs/{rid}/\">{month_label(rid)}</a></td>" + "".join(
-                f"<td class=\"num\">{by_run[rid].get(e, 0) if e in analysed[rid] else 'not run'}</td>" for e in all_engines) + "</tr>"
+            if rid not in by_run:
+                continue
+            tbl += (f"<tr><td><a href=\"/runs/{rid}/\">{month_label(rid)}</a></td><td>{kind_chip(kind_by_run[rid])}</td>"
+                    + "".join(f"<td class=\"num\">{by_run[rid].get(e, 0) if e in analysed[rid] else 'not run'}</td>" for e in all_engines) + "</tr>")
         tbl += "</table>"
         qlist = defaultdict(list)
         for rid, e, qid, v, c, _k in lst:
@@ -483,19 +559,20 @@ def build(panel, runs, variance):
         ql = "<ul>" + "".join(
             f"<li><a href=\"/{slug(c)}/{slug(v)}/\">{esc(v)} in {esc(c)}</a> <span class=\"meta\">({', '.join(sorted({ENGINE_NAMES[e] for _, e in ents}))})</span></li>"
             for (v, c), ents in sorted(qlist.items())) + "</ul>"
+        dom_date = max(run_date[rid] for rid in kind_by_run)
         title = f"{d}: how often AI engines cite it for Central Florida local-service questions"
-        desc = f"{d} was cited in {len(lst)} answers across {len(run_ids)} monthly run(s) of the Local AI Sources panel. Classified as {kind.replace('-', ' ')}."
-        body = (f"<p class=\"meta\"><a href=\"/\">{SITE_NAME}</a> · <a href=\"/domains/\">Sources</a></p><h1>{esc(d)} {kind_chip(kind)}</h1>"
-                f"<p class=\"lede\">{esc(d)} was cited in {len(lst)} answers across {len(run_ids)} monthly run(s), classified as {kind.replace('-', ' ')} under analysis {ANALYSIS_VERSION}.</p>"
+        desc = f"{d} was cited in {len(lst)} answers across {len(kind_by_run)} monthly run(s) of the Local AI Sources panel. Classified as {KIND_LABEL[latest_kind]} in the latest month."
+        body = (f"<p class=\"meta\"><a href=\"/\">{SITE_NAME}</a> · <a href=\"/domains/\">Sources</a></p><h1>{esc(d)} {kind_chip(latest_kind)}</h1>"
+                f"<p class=\"lede\">{esc(d)} was cited in {len(lst)} answers across {len(kind_by_run)} monthly run(s). Classification is decided per month from that month's rows (analysis {ANALYSIS_VERSION}); the latest month reads {KIND_LABEL[latest_kind]}.</p>"
                 f"<h2>Answers citing it, by month and engine</h2>{tbl}<h2>Questions it was cited on</h2>{ql}")
-        write(path.strip("/") + "/index.html", shell(title, desc, path, body))
-        pages.append(path)
-        dom_index += f"<tr><td><a href=\"{path}\">{esc(d)}</a> {kind_chip(kind)}</td><td class=\"num\">{len(lst)}</td></tr>"
+        write(path.strip("/") + "/index.html", shell(title, desc, path, body, dom_date))
+        pages.append((path, dom_date))
+        dom_index += f"<tr><td><a href=\"{path}\">{esc(d)}</a> {kind_chip(latest_kind)}</td><td class=\"num\">{len(lst)}</td></tr>"
     body = (f"<h1>Every source domain cited on the panel</h1><p class=\"lede\">{len(dom_rows)} distinct domains across {len(run_ids)} monthly run(s). "
-            f"Count is the number of answers citing the domain, all engines and months combined.</p><table><tr><th>Domain</th><th class=\"num\">Answers</th></tr>{dom_index}</table>")
+            f"Count is the number of answers citing the domain, all engines and months combined. The chip is the latest month's classification.</p><table><tr><th>Domain</th><th class=\"num\">Answers</th></tr>{dom_index}</table>")
     write("domains/index.html", shell("Sources cited by AI engines for Central Florida local-service questions",
-                                      f"{len(dom_rows)} distinct domains cited across the Local AI Sources panel, with counts.", "/domains/", body))
-    pages.append("/domains/")
+                                      f"{len(dom_rows)} distinct domains cited across the Local AI Sources panel, with counts.", "/domains/", body, latest_date))
+    pages.append(("/domains/", latest_date))
 
     # ---- engine pages + index
     eng_index = ""
@@ -506,22 +583,23 @@ def build(panel, runs, variance):
             if e not in analysed[rid]:
                 continue
             s = analysed[rid][e]
-            top = "".join(f"<tr><td><a href=\"/domains/{slug(d)}/\">{esc(d)}</a> {kind_chip(s['kinds'].get(d))}</td><td class=\"num\">{n}</td></tr>" for d, n in s["top"][:20])
+            top = "".join(f"<tr><td><a href=\"/domains/{slug(d)}/\">{esc(d)}</a> {kind_chip(s['kinds'].get(d))}</td><td class=\"num\">{n}</td></tr>" for d, n in s["top"][:20]) or "<tr><td colspan=\"2\">none cited</td></tr>"
             sec += (f"<h2>{month_label(rid)} <span class=\"chip\">{esc(', '.join(s['models']))}</span></h2>"
-                    f"<table><tr><th>Answers</th><th class=\"num\">Naming a business</th><th class=\"num\">With sources</th><th class=\"num\">Own-site share</th><th class=\"num\">Unique domains</th><th class=\"num\">Names per answer</th></tr>"
-                    f"<tr><td>{s['answers']}</td><td class=\"num\">{s['named_any']}</td><td class=\"num\">{s['with_sources']}</td><td class=\"num\">{pct(s['own_share'])}</td><td class=\"num\">{s['unique_domains']}</td><td class=\"num\">{s['avg_named']:.1f}</td></tr></table>"
+                    f"<table><tr><th>Answers returned</th><th class=\"num\">Naming a business</th><th class=\"num\">With sources</th><th class=\"num\">Own-site share</th><th class=\"num\">Unique domains</th><th class=\"num\">Names per answer</th></tr>"
+                    f"<tr><td>{answers_cell(s)}</td><td class=\"num\">{s['named_any']}</td><td class=\"num\">{s['with_sources']}</td><td class=\"num\">{pct(s['own_share'])}</td><td class=\"num\">{s['unique_domains']}</td><td class=\"num\">{s['avg_named']:.1f}</td></tr></table>"
                     f"<h3>Most cited domains</h3><table><tr><th>Domain</th><th class=\"num\">Answers citing it</th></tr>{top}</table>")
         s = analysed[latest].get(e)
+        eng_date = max(run_date[rid] for rid in run_ids if e in analysed[rid])
         title = f"What {ENGINE_NAMES[e]} cites for Central Florida local-service questions"
         desc = (f"{ENGINE_NAMES[e]} on the Local AI Sources panel: how often it names a business, its own-site share and its most cited domains, by month."
                 if not s else f"In {month_label(latest)}, {ENGINE_NAMES[e]} named a business in {s['named_any']} of {s['answers']} answers with an own-site citation share of {pct(s['own_share'])}. Most cited domains by month.")
         body = f"<p class=\"meta\"><a href=\"/\">{SITE_NAME}</a> · <a href=\"/engines/\">Engines</a></p><h1>{esc(title)}</h1>{sec}"
-        write(path.strip("/") + "/index.html", shell(title, desc, path, body))
-        pages.append(path)
+        write(path.strip("/") + "/index.html", shell(title, desc, path, body, eng_date))
+        pages.append((path, eng_date))
         eng_index += f"<li><a href=\"{path}\">{ENGINE_NAMES[e]}</a></li>"
     write("engines/index.html", shell("Engines on the Local AI Sources panel", "Per-engine pages: ChatGPT, Perplexity, Claude and Gemini on 100 Central Florida local-service questions.", "/engines/",
-                                      f"<h1>Engines</h1><ul>{eng_index}</ul>"))
-    pages.append("/engines/")
+                                      f"<h1>Engines</h1><ul>{eng_index}</ul>", latest_date))
+    pages.append(("/engines/", latest_date))
 
     # ---- run pages + index
     run_index = ""
@@ -530,53 +608,51 @@ def build(panel, runs, variance):
         st = analysed[rid]
         engs = engines_in(rid)
         cost = sum(st[e]["cost"] for e in engs)
-        tbl = "<table><tr><th>Engine</th><th>Model</th><th class=\"num\">Answers</th><th class=\"num\">Naming a business</th><th class=\"num\">Own-site share</th><th class=\"num\">Unique domains</th><th>Top domain</th></tr>"
+        n_answers = sum(st[e]["answers"] for e in engs)
+        n_failed = sum(st[e]["failed"] for e in engs)
+        tbl = "<table><tr><th>Engine</th><th>Model</th><th>Answers returned</th><th class=\"num\">Naming a business</th><th class=\"num\">Own-site share</th><th class=\"num\">Multi-city sites</th><th class=\"num\">Unique domains</th><th>Top domain</th></tr>"
         for e in engs:
             s = st[e]
-            topd, topn = (s["top"][0] if s["top"] else ("", 0))
-            tbl += (f"<tr><td><a href=\"/engines/{e}/\">{ENGINE_NAMES[e]}</a></td><td>{esc(', '.join(s['models']))}</td><td class=\"num\">{s['answers']}</td>"
-                    f"<td class=\"num\">{s['named_any']}</td><td class=\"num\">{pct(s['own_share'])}</td><td class=\"num\">{s['unique_domains']}</td>"
-                    f"<td><a href=\"/domains/{slug(topd)}/\">{esc(topd)}</a> ({topn})</td></tr>")
+            tbl += (f"<tr><td><a href=\"/engines/{e}/\">{ENGINE_NAMES[e]}</a></td><td>{esc(', '.join(s['models']))}</td><td>{answers_cell(s)}</td>"
+                    f"<td class=\"num\">{s['named_any']}</td><td class=\"num\">{pct(s['own_share'])}</td><td class=\"num\">{s['multi']}</td><td class=\"num\">{s['unique_domains']}</td>"
+                    f"<td>{top_cell(s)}</td></tr>")
         tbl += "</table>"
         tops = ""
         for e in engs:
             s = st[e]
-            tops += f"<h3>{ENGINE_NAMES[e]}</h3><table><tr><th>Domain</th><th class=\"num\">Answers citing it</th></tr>" + "".join(
-                f"<tr><td><a href=\"/domains/{slug(d)}/\">{esc(d)}</a> {kind_chip(s['kinds'].get(d))}</td><td class=\"num\">{n}</td></tr>" for d, n in s["top"][:15]) + "</table>"
+            tops += f"<h3>{ENGINE_NAMES[e]}</h3><table><tr><th>Domain</th><th class=\"num\">Answers citing it</th></tr>" + ("".join(
+                f"<tr><td><a href=\"/domains/{slug(d)}/\">{esc(d)}</a> {kind_chip(s['kinds'].get(d))}</td><td class=\"num\">{n}</td></tr>" for d, n in s["top"][:15]) or "<tr><td colspan=\"2\">none cited</td></tr>") + "</table>"
         var = variance.get(rid)
-        var_html = ""
-        if var:
-            agree = variance_agreement(var)
-            var_html = "<h2>Same-day repeat subsample</h2>" + agree
-        collected = min(st[e]["first"] for e in engs)
+        var_html = ("<h2>Same-day repeat subsample</h2>" + variance_agreement(var)) if var else ""
+        collected = run_date[rid]
+        failed_txt = f" {n_failed} call(s) returned no answer and are excluded from every figure on this page." if n_failed else ""
         title = f"{month_label(rid)} run: what {len(engs)} AI engines cited for 100 Central Florida local-service questions"
-        desc = f"Local AI Sources {month_label(rid)}: {len(engs)} engines, {sum(st[e]['answers'] for e in engs)} answers, collected {collected}. Per-engine naming rate, own-site share and most cited domains."
+        desc = f"Local AI Sources {month_label(rid)}: {len(engs)} engines, {n_answers} answers, collected {collected}. Per-engine naming rate, own-site share and most cited domains."
         body = (f"<p class=\"meta\"><a href=\"/\">{SITE_NAME}</a> · <a href=\"/runs/\">Months</a></p><h1>{esc(title)}</h1>"
-                f"<p class=\"lede\">Collected {esc(collected)}. {sum(st[e]['answers'] for e in engs)} answers, one per question per engine. Recorded API spend ${cost:.2f}.</p>"
+                f"<p class=\"lede\">Collected {esc(collected)}. {n_answers} answers returned of {panel_size * len(engs)} calls, one per question per engine.{failed_txt} Recorded API charge ${cost:.2f}.</p>"
                 f"{tbl}<h2>Most cited domains by engine</h2>{tops}{var_html}"
                 f"<p><a href=\"/data/{rid}.csv\">Download this month as CSV</a> · <a href=\"/data/{rid}.json\">JSON with full answers</a></p>")
-        write(path.strip("/") + "/index.html", shell(title, desc, path, body, og_type="article"))
-        pages.append(path)
+        write(path.strip("/") + "/index.html", shell(title, desc, path, body, collected, og_type="article"))
+        pages.append((path, collected))
         run_index += f"<li><a href=\"{path}\">{month_label(rid)}</a> <span class=\"meta\">{len(engs)} engines, collected {esc(collected)}</span></li>"
-    write("runs/index.html", shell("Monthly runs of the Local AI Sources panel", "Every monthly run, newest first.", "/runs/", f"<h1>Months</h1><ul>{run_index}</ul>"))
-    pages.append("/runs/")
+    write("runs/index.html", shell("Monthly runs of the Local AI Sources panel", "Every monthly run, newest first.", "/runs/", f"<h1>Months</h1><ul>{run_index}</ul>", latest_date))
+    pages.append(("/runs/", latest_date))
 
     # ---- data files
     for rid in run_ids:
-        rows = runs[rid]
+        rows = runs[rid]["rows"]
         json.dump([{k: r.get(k) for k in ("run_id", "panel_version", "query_id", "vertical", "city", "prompt", "engine",
-                                            "model_requested", "model_name", "datetime", "answer", "sources", "names", "domains", "kinds", "money_spent")} for r in rows],
+                                            "model_requested", "model_name", "datetime", "answer", "sources", "names", "domains", "kinds", "cost", "money_spent")} for r in rows],
                   open(os.path.join(ROOT, "data", f"{rid}.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=0)
         with open(os.path.join(ROOT, "data", f"{rid}.csv"), "w", newline="", encoding="utf-8") as f:
             w = csv.writer(f)
             w.writerow(["run_id", "panel_version", "query_id", "vertical", "city", "engine", "model_name", "datetime",
-                        "names_extracted", "domains_cited", "own_site_count", "directory_count"])
+                        "names_extracted", "domains_cited", "own_site_count", "directory_count", "multi_city_count"])
             for r in rows:
-                own = sum(1 for d in r.get("domains", []) if r["kinds"].get(d) == "own-site")
-                dr = sum(1 for d in r.get("domains", []) if r["kinds"].get(d) == "directory")
+                kc = Counter(r["kinds"].get(d) for d in r.get("domains", []))
                 w.writerow([r.get("run_id"), r.get("panel_version"), r["query_id"], r["vertical"], r["city"], r["engine"],
                             r.get("model_name") or r.get("model_requested"), r.get("datetime"),
-                            "|".join(r.get("names", [])), "|".join(r.get("domains", [])), own, dr])
+                            "|".join(r.get("names", [])), "|".join(r.get("domains", [])), kc["own-site"], kc["directory"], kc["multi-city"]])
     ds = [{
         "@type": "Dataset", "@id": SITE + "/data/#dataset", "name": "Local AI Sources panel v1",
         "description": "Monthly record of the businesses named and the source URLs cited by AI engines when asked who the best local provider is, for 10 service verticals in 10 Central Florida cities. One row per question per engine per month, with the full answer text.",
@@ -588,33 +664,37 @@ def build(panel, runs, variance):
                         + [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": f"{SITE}/data/{rid}.csv"} for rid in run_ids],
     }]
     dl = "".join(f"<li>{month_label(rid)}: <a href=\"/data/{rid}.json\">JSON (full answers)</a> · <a href=\"/data/{rid}.csv\">CSV (names and domains)</a></li>" for rid in reversed(run_ids))
-    body = (f"<h1>Download the rows</h1><p class=\"lede\">One row per question per engine per month. The JSON carries the full answer text and every cited URL with its title; the CSV carries the extracted names, the cited domains and the own-site and directory counts.</p>"
+    body = (f"<h1>Download the rows</h1><p class=\"lede\">One row per question per engine per month. The JSON carries the full answer text and every cited URL with its title; the CSV carries the extracted names, the cited domains and the own-site, directory and multi-city counts.</p>"
             f"<ul>{dl}<li><a href=\"/data/panel-v1.json\">Panel v1</a>, the 100 prompts</li></ul>"
             f"<p>License <a href=\"https://creativecommons.org/licenses/by/4.0/\">CC BY 4.0</a>. Attribution: \"Local AI Sources by EVOIX LLC, localaisources.com\". The answer text is engine output reproduced for research and comparison; it is not written by EVOIX and may contain errors about the businesses it names.</p>")
-    write("data/index.html", shell("Local AI Sources data downloads", "Monthly rows of AI engine answers and citations for Central Florida local-service questions, CC BY 4.0.", "/data/", body, ld=ds))
-    pages.append("/data/")
+    write("data/index.html", shell("Local AI Sources data downloads", "Monthly rows of AI engine answers and citations for Central Florida local-service questions, CC BY 4.0.", "/data/", body, latest_date, ld=ds))
+    pages.append(("/data/", latest_date))
 
     # ---- method
-    instr = "<table><tr><th>Month</th>" + "".join(f"<th>{ENGINE_NAMES[e]}</th>" for e in all_engines) + "<th class=\"num\">Spend</th></tr>"
+    instr = "<table><tr><th>Month</th>" + "".join(f"<th>{ENGINE_NAMES[e]}</th>" for e in all_engines) + "<th class=\"num\">Calls failed</th><th class=\"num\">Charge</th></tr>"
     for rid in reversed(run_ids):
-        instr += f"<tr><td>{month_label(rid)}</td>" + "".join(
-            f"<td>{esc(', '.join(analysed[rid][e]['models'])) if e in analysed[rid] else 'not run'}</td>" for e in all_engines) + f"<td class=\"num\">${sum(analysed[rid][e]['cost'] for e in engines_in(rid)):.2f}</td></tr>"
+        instr += (f"<tr><td>{month_label(rid)}</td>" + "".join(
+            f"<td>{esc(', '.join(analysed[rid][e]['models'])) if e in analysed[rid] else 'not run'}</td>" for e in all_engines)
+            + f"<td class=\"num\">{sum(analysed[rid][e]['failed'] for e in engines_in(rid))}</td>"
+            + f"<td class=\"num\">${sum(analysed[rid][e]['cost'] for e in engines_in(rid)):.2f}</td></tr>")
     instr += "</table>"
     var_sections = "".join(f"<h3>{month_label(rid)}</h3>{variance_agreement(v)}" for rid, v in sorted(variance.items(), reverse=True)) or "<p>No repeat subsample has been run yet. The first one is scheduled with the first monthly run after July 2026.</p>"
     prompts_html = "<ol>" + "".join(f"<li>{esc(p['prompt'])}</li>" for p in panel["prompts"]) + "</ol>"
     body = f"""
 <h1>Method, instrument and changelog</h1>
-<p class="lede">The index is a fixed panel of {len(panel['prompts'])} questions put to the same AI engines once a month through their search-grounded APIs. Every answer and every cited URL is stored and published. Nothing on the site is typed in; every page is generated from the rows.</p>
+<p class="lede">The index is a fixed panel of {panel_size} questions put to the same AI engines once a month through their search-grounded APIs. Every answer and every cited URL is stored and published. Nothing on the site is typed in; every page is generated from the rows.</p>
 <h2>Panel v1</h2>
 <p>Template <code>{esc(panel['template'])}</code>, frozen {esc(panel['frozen'])}. {len(panel['verticals'])} verticals ({esc(', '.join(panel['verticals']))}) by {len(panel['cities'])} cities ({esc(', '.join(panel['cities']))}). A prompt is never edited. If the panel changes it gets a new version number and the old one stays comparable with itself.</p>
 <h2>Instrument</h2>
-<p>DataForSEO <code>ai_optimization/{{engine}}/llm_responses/live</code> with <code>web_search: true</code>, United States, English, no location override, no logged-in state. The model is part of the instrument: a month asked with a different model is a different instrument and is compared to earlier months as directional only. Movers are reported only between months with the same instrument.</p>
+<p>DataForSEO <code>ai_optimization/{{engine}}/llm_responses/live</code> with <code>web_search: true</code>, United States, English, no location override, no logged-in state. The model is part of the instrument: a month asked with a different model is a different instrument and is compared to earlier months as directional only. Movers are reported only between months with the same instrument. "Charge" is the DataForSEO task charge recorded per call, the figure the collector caps on.</p>
 {instr}
 <p>July 2026 was collected for EVOIX's <a href="{STUDY_URL}">Central Florida AI Citation Study</a> on ChatGPT <code>gpt-5.3-chat-latest</code> and Perplexity <code>sonar</code>. From November 2026 the panel runs on four engines with pinned models (ChatGPT <code>gpt-5.4-2026-03-05</code>, Perplexity <code>sonar-pro</code>, Claude <code>claude-sonnet-5</code>, Gemini <code>gemini-3.5-flash</code>), so the ChatGPT and Perplexity lanes changed instrument between month zero and month one.</p>
 <h2>What is counted</h2>
 <ul>
-<li><strong>Naming a business.</strong> An answer counts if at least one business name is extracted from its bold text or its tables. The extraction is automatic and conservative; it can miss a name written in plain prose. It never invents one.</li>
-<li><strong>Own-site share.</strong> Of the distinct domains an answer cites, the share that are a local business's own website rather than a directory, aggregator, review, social, reference or lead-gen site. The list is in <code>scripts/classify.py</code> in the public repository, and any domain cited for the same template across {AGGREGATOR_CITY_THRESHOLD} or more cities on one engine is treated as an aggregator whatever its name. Current analysis version {ANALYSIS_VERSION}.</li>
+<li><strong>Answers returned.</strong> A call that errors or returns no text is a failed call. It is counted and shown, and excluded from every rate, so "80 of 88" means 88 answers came back out of 100 calls.</li>
+<li><strong>Naming a business.</strong> An answer counts if at least one business name is extracted from its bold text or its table body rows (table headers are skipped). The extraction is automatic and conservative; it can miss a name written in plain prose. It never invents one.</li>
+<li><strong>Source classes.</strong> Each cited domain is one of three things in a given month. <em>Directory</em>: on the published list in <code>scripts/classify.py</code> (directories, aggregators, review, social, reference and lead-gen sites). <em>Multi-city site</em>: not on the list, but cited for the same template across {MULTI_CITY_THRESHOLD} or more of the 10 cities that month, which catches regional businesses, franchises and business sites that publish "best in {{city}}" listicles. <em>Own site</em>: everything else, read as a local business's own website. The class is decided per month across all engines, so a domain has one class per month and can change class between months; the domain pages show the class for every month.</li>
+<li><strong>Own-site share.</strong> Own-site domains divided by all distinct cited domains (own site, directory and multi-city together), per engine per month.</li>
 <li><strong>Most cited source.</strong> The number of answers citing a domain at least once; a domain counts once per answer.</li>
 <li><strong>Samples.</strong> One answer per question per engine per month. AI engines are not deterministic, so any single question's monthly result is provisional. The aggregate figures across 100 questions are the index. The noise floor is measured, not assumed, with the subsample below.</li>
 </ul>
@@ -623,8 +703,8 @@ def build(panel, runs, variance):
 {var_sections}
 <h2>Changelog</h2>
 <ul>
-<li>2026-07-02: month zero collected (two engines) for the Central Florida AI Citation Study.</li>
-<li>2026-11-02: Local AI Sources filed as EVOIX aeo-lab experiment EXP-015 with predictions written before the first monthly run. Domain registered. Analysis a2: nine domains appended to the July directory list after reading the July top tables (experience.com, lawnstarter.com, homeguide.com, trustanalytica.com, bing.com, apple.com, tiktok.com, x.com, twitter.com).</li>
+<li>2026-07-02: month zero collected (two engines) for the Central Florida AI Citation Study. Its published analysis (a1) split domains into two classes, aggregator and own site, with a 4-city rule; the figures on this site are recomputed under the current analysis and can differ from the study page.</li>
+<li>2026-11-02: Local AI Sources filed as EVOIX aeo-lab experiment EXP-015 with predictions written before the first monthly run. Domain registered. Analysis a3: nine domains appended to the July directory list (experience.com, lawnstarter.com, homeguide.com, trustanalytica.com, bing.com, apple.com, tiktok.com, x.com, twitter.com); the city rule became its own class, multi-city site, at {MULTI_CITY_THRESHOLD} cities, decided per month across all engines, after a code review found the 4-city rule labelling regional businesses as directories; table header rows excluded from name extraction; failed calls counted and shown.</li>
 </ul>
 <h2>Related work</h2>
 <p>Three public indexes measure AI citations at the global, category level and are worth reading alongside this one: <a href="https://promvia.app/ai-source-index">Promvia's AI Source Index</a> (weekly, 40 buyer questions, every row published), <a href="https://brandinsightai.com/sources">BrandInsightAI's AI Source Bias Index</a> and <a href="https://www.heyamos.com/ai-citation-index">HeyAmos's AI Sources Index</a>. This index is the local complement: fixed cities, fixed verticals, named businesses, monthly, from July 2026.</p>
@@ -634,18 +714,18 @@ def build(panel, runs, variance):
 {prompts_html}
 """
     write("method/index.html", shell("Local AI Sources method, instrument and changelog",
-                                     "How the Local AI Sources panel is collected and counted: 100 fixed prompts, four AI engines, pinned models, published rows, measured noise floor.", "/method/", body))
-    pages.append("/method/")
+                                     "How the Local AI Sources panel is collected and counted: 100 fixed prompts, four AI engines, pinned models, published rows, measured noise floor.", "/method/", body, latest_date))
+    pages.append(("/method/", latest_date))
 
     # ---- sitemap, llms.txt, 404, css
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(
-        f"<url><loc>{SITE}{p}</loc><lastmod>{TODAY}</lastmod></url>\n" for p in pages) + "</urlset>\n"
+        f"<url><loc>{SITE}{p}</loc><lastmod>{lm}</lastmod></url>\n" for p, lm in pages) + "</urlset>\n"
     write("sitemap.xml", sm)
     llms = f"""# {SITE_NAME}
 
 > A public monthly record of which businesses and which source domains AI engines (ChatGPT, Perplexity, Claude, Gemini) cite when asked "Who is the best {{vertical}} in {{city}}, Florida?" for 10 service verticals in 10 Central Florida cities. Published by EVOIX LLC, DeLand, Florida. Author Stephane Morera. Data CC BY 4.0.
 
-Latest run: {month_label(latest)}. Panel v1, 100 fixed prompts, one answer per prompt per engine per month, every row published.
+Latest run: {month_label(latest)}, collected {latest_date}. Panel v1, 100 fixed prompts, one answer per prompt per engine per month, every row published.
 
 ## Pages
 - [Home]({SITE}/): this month's headline figures per engine
@@ -660,7 +740,7 @@ Latest run: {month_label(latest)}. Panel v1, 100 fixed prompts, one answer per p
 """
     write("llms.txt", llms)
     write("404.html", shell("Page not found", "This page does not exist on Local AI Sources.", "/404.html",
-                            "<h1>Not here</h1><p>Try the <a href=\"/\">home page</a>, the <a href=\"/runs/\">monthly runs</a> or the <a href=\"/domains/\">source list</a>.</p>"))
+                            "<h1>Not here</h1><p>Try the <a href=\"/\">home page</a>, the <a href=\"/runs/\">monthly runs</a> or the <a href=\"/domains/\">source list</a>.</p>", latest_date))
     write("assets/style.css", CSS)
     return pages
 

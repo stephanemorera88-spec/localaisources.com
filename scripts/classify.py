@@ -30,11 +30,13 @@ DIRECTORIES = {
     "bing.com", "apple.com", "tiktok.com", "x.com", "twitter.com",
 }
 
-# Cited for the same template across this many distinct cities on one engine:
-# an aggregator or lead-gen site, whatever its name says.
-AGGREGATOR_CITY_THRESHOLD = 4
+# Not on the list, but cited for the same template across this many of the 10
+# cities in one month (all engines pooled): a regional business, a franchise or
+# a business site publishing "best in {city}" listicles. Its own class, never
+# folded into "directory".
+MULTI_CITY_THRESHOLD = 5
 
-ANALYSIS_VERSION = "a2"  # a1 = July 2026 list; a2 = a1 plus the appended rows above
+ANALYSIS_VERSION = "a3"  # a1 July 2026 two-class; a2 appended list rows; a3 multi-city class, per-month decision
 
 
 def norm_domain(url):
@@ -47,9 +49,5 @@ def root(domain):
     return ".".join(parts[-2:]) if len(parts) >= 2 else domain
 
 
-def is_directory(domain, cities_seen=None):
-    if root(domain) in DIRECTORIES or domain in DIRECTORIES:
-        return True
-    if cities_seen is not None and len(cities_seen) >= AGGREGATOR_CITY_THRESHOLD:
-        return True
-    return False
+def in_directory_list(domain):
+    return root(domain) in DIRECTORIES or domain in DIRECTORIES
