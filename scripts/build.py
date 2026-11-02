@@ -96,8 +96,42 @@ def write(path, content):
         f.write(content)
 
 
-def valid_name(n):
+GENERIC_WORDS_PATH = os.path.join(ROOT, "data", "generic-words.txt")
+GENERIC_WORDS = {l.strip().lower() for l in open(GENERIC_WORDS_PATH, encoding="utf-8")
+                 if l.strip() and not l.startswith("#")} if os.path.exists(GENERIC_WORDS_PATH) else set()
+
+# A business name usually carries a trade or entity word. Phrases without one need another signal (a5).
+BIZ_SUFFIX_RE = re.compile(
+    r"\b(inc|llc|co|corp|group|services?|roofing|roofers?|roof|plumbing|plumbers?|air|hvac|cooling|heating|"
+    r"mechanical|dental|dentistry|orthodontics|smiles?|law|legal|attorneys?|lawyers?|injury|chiropractic|"
+    r"chiropractor|wellness|spine|realty|real estate|properties|homes|team|landscaping|landscapes?|lawn|pest|"
+    r"termite|exterminators?|cpa|cpas|accounting|tax|advisors?|associates|contractors?|construction|partners|"
+    r"center|centre|clinic|care|family|firm|pa|pllc|brothers|bros|sons|company|solutions|enterprises|exteriors|"
+    r"restoration|remodeling|electric|comfort|realtors?|agency|office|studio|practice|dds|dmd|md|esq|"
+    r"pros|experts|specialists|doctors?|dentists?|orthodontist|ortho|physicians?|medical|health|rooter|"
+    r"irrigation|tree|turf|outdoor|property|properties|mortgage|title|insurance agency|accountants?|bookkeeping)\b")
+# Advice headings and the model's own thinking headings ("Searching for recommendations") (a5).
+ADVICE_START_RE = re.compile(
+    r"^(verify|get|check|ask|look|compare|read|call|request|avoid|confirm|consider|make|use|start|research|"
+    r"schedule|review|choose|hire|ensure|be|do|don'?t|never|always|know|understand|watch|beware|insist|prioritize|"
+    r"focus|gather|obtain|contact|visit|search|expect|keep|trust|remember|prepare|document|inspect|negotiate|"
+    r"evaluate|determine|find|narrow|decide|plan|protect|secure|pay|sign|budget|searching|looking|gathering|"
+    r"checking|finding|evaluating|comparing|considering|verifying|reviewing|planning|thinking|assessing|"
+    r"identifying|investigating|researching|confirming|browsing|determining|compiling|narrowing|focusing|"
+    r"weighing|deciding|how|why|what|where|when|who|if|before|after|pro tip|tip|tips|step|note|important|"
+    r"disclaimer|red flags?|questions?|things?|factors?|signs?|reasons?)\b")
+RATING_RE = re.compile(r"/\s?5\b|\b\d[\d,]*\+?\s+(google\s+|yelp\s+)?reviews?\b|\bstars?\b|\b\d(\.\d)?\s*(star|rating)")
+ADDRESS_RE = re.compile(r"^\d{2,6}\s+\S|\bfl\s+\d{5}\b|\b\d+\s+[a-z0-9 .]+\b(rd|st|ave|blvd|dr|hwy|ln|way|suite|ste|unit|pkwy)\b\.?", re.I)
+PHONE_RE = re.compile(r"\(?\b\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}\b")
+
+
+def compact(text):
+    return re.sub(r"[^a-z0-9]", "", (text or "").lower())
+
+
+def valid_name(n, domains_compact=""):
     n = n.strip().strip(":;,.").strip()
+    n = re.sub(r"\s+at\s+\(?\d{3}\)?[\s.-]*\d{3}[\s.-]*\d{4}.*$", "", n).strip()  # "Del-Air at (386) 387-8075"
     if not (3 <= len(n) <= 70):
         return None
     if not re.search(r"[A-Za-z]", n):
@@ -110,6 +144,17 @@ def valid_name(n):
     if re.match(r"^(step|option|tier|category|section)\b", low):
         return None
     if n[:1].islower() or n.startswith("#"):
+        return None
+    has_suffix = bool(BIZ_SUFFIX_RE.search(low))
+    if PHONE_RE.search(n) or ADDRESS_RE.search(n):
+        return None
+    if RATING_RE.search(low):
+        return None
+    if ADVICE_START_RE.match(low) and not has_suffix:
+        return None
+    toks = re.findall(r"[A-Za-z][A-Za-z'-]+", n)
+    if GENERIC_WORDS and toks and not has_suffix and all(t.lower() in GENERIC_WORDS for t in toks) \
+            and compact(n) not in (domains_compact or ""):
         return None
     if re.search(r"\b(near|options|option|companies|providers|picks|choices|list|guide|rated|reviewed|top|best)\b", low) \
             and not re.search(r"\b(inc|llc|co|corp|group|services|service|roofing|plumbing|law|dental|clinic|pa|pllc)\b", low):
@@ -126,17 +171,31 @@ def valid_name(n):
 SEP_RE = re.compile(r"^\|?\s*:?-{2,}")
 
 
-def extract_names(answer):
+def split_list(n):
+    """'GRIT Roofing, Pier Roofing, and Heritage Roofing' -> three names. Only splits a run of three or more
+    comma-separated parts that each have two or more words, so 'Beery Roofing & Redesign' stays whole (a5)."""
+    if n.count(",") < 2:
+        return [n]
+    parts = [p.strip() for p in re.split(r",\s*(?:and\s+|&\s+)?|\s+and\s+(?=[A-Z])", n) if p.strip()]
+    if len(parts) >= 3 and all(len(p.split()) >= 2 for p in parts):
+        return parts
+    return [n]
+
+
+def extract_names(answer, sources=None):
     """Business names as they appear in the answer: bold runs and table body rows (first cell).
     Header rows (the line before a |---| separator) are skipped. Automatic and heuristic;
-    labelled as such on every page."""
+    labelled as such on every page. `sources` (the row's cited URLs) lets a plain-word name such as
+    'Total Comfort' survive when totalcomfortfl.com is among the citations (a5)."""
+    domains_compact = "".join(compact(s.get("url", "")) for s in (sources or []))
     found = []
     for m in re.finditer(r"\*\*([^*\n]{3,80})\*\*", answer or ""):
-        n = re.sub(r"^\d+[.)]\s*", "", m.group(1))
-        n = re.sub(r"\[\d+\]", "", n)
-        n = valid_name(n)
-        if n:
-            found.append(n)
+        raw = re.sub(r"^\d+[.)]\s*", "", m.group(1))
+        raw = re.sub(r"\[\d+\]", "", raw)
+        for part in split_list(raw):
+            n = valid_name(part, domains_compact)
+            if n:
+                found.append(n)
     lines = [l.strip() for l in (answer or "").splitlines()]
     for i, s in enumerate(lines):
         if not s.startswith("|") or SEP_RE.match(s):
@@ -151,9 +210,10 @@ def extract_names(answer):
         c = re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", c)
         c = re.sub(r"\[\d+\]", "", c)
         c = re.sub(r"^\d+[.)]\s*", "", c)
-        c = valid_name(c)
-        if c:
-            found.append(c)
+        for part in split_list(c):
+            c2 = valid_name(part, domains_compact)
+            if c2:
+                found.append(c2)
     out, seen = [], set()
     for n in found:
         k = n.lower()
@@ -253,7 +313,7 @@ def analyse_run(rows, failed, panel_size):
         counts = Counter()
         with_sources = named_any = named_total = 0
         for r in recs:
-            r["names"] = extract_names(r.get("answer", ""))
+            r["names"] = extract_names(r.get("answer", ""), r.get("sources"))
             doms = []
             for s in r.get("sources") or []:
                 if s.get("url"):
@@ -697,7 +757,7 @@ def build(panel, runs, variance):
 <h2>What is counted</h2>
 <ul>
 <li><strong>Answers returned.</strong> A call that errors or returns no text is a failed call. It is counted and shown, and excluded from every rate, so "80 of 88" means 88 answers came back out of 100 calls.</li>
-<li><strong>Naming a business.</strong> An answer counts if at least one business name is extracted from its bold text or its table body rows (table headers are skipped). The extraction is automatic and conservative; it can miss a name written in plain prose. It never invents one.</li>
+<li><strong>Naming a business.</strong> An answer counts if at least one business name is extracted from its bold text or its table body rows (table headers are skipped). Since analysis a5 the extractor drops advice headings ("Get Multiple Estimates"), the model's own working headings ("Searching for recommendations"), ratings, addresses and phone lines, splits a bold run of three or more names into separate names, and treats a phrase made only of ordinary English words as a heading unless it carries a trade word (Roofing, Dental, Law, CPA and the like) or matches one of the answer's cited domains. The extraction is automatic and conservative; it can miss a name written in plain prose. It never invents one.</li>
 <li><strong>Source classes.</strong> Each cited domain is one of three things in a given month. <em>Directory</em>: on the published list in <code>scripts/classify.py</code> (directories, aggregators, review, social, reference and lead-gen sites). <em>Multi-city site</em>: not on the list, but cited for the same template across {MULTI_CITY_THRESHOLD} or more of the 10 cities that month, which catches regional businesses, franchises and business sites that publish "best in {{city}}" listicles. <em>Own site</em>: everything else, read as a local business's own website. The class is decided per month across all engines, so a domain has one class per month and can change class between months; the domain pages show the class for every month. Disclosure: <code>delandlocal.com</code> is a DeLand business directory published by EVOIX, the publisher of this index. It is on the directory list, so a citation of it never counts as a business's own site, and it appears in the tables like any other directory.</li>
 <li><strong>Own-site share.</strong> Each answer contributes its distinct cited domains once. The share is own-site citations divided by all domain citations (own site, directory and multi-city together), summed over the engine's answers that month. It is not the share of the engine's distinct domains across the whole month, which runs higher because directories repeat across answers and business sites mostly do not.</li>
 <li><strong>Most cited source.</strong> The number of answers citing a domain at least once; a domain counts once per answer.</li>
@@ -711,6 +771,7 @@ def build(panel, runs, variance):
 <li>2026-07-02: month zero collected (two engines) for the Central Florida AI Citation Study. Its published analysis (a1) split domains into two classes, aggregator and own site, with a 4-city rule; the figures on this site are recomputed under the current analysis and can differ from the study page.</li>
 <li>2026-11-02: Local AI Sources filed as EVOIX aeo-lab experiment EXP-015 with predictions written before the first monthly run. Domain registered. Analysis a3: nine domains appended to the July directory list (experience.com, lawnstarter.com, homeguide.com, trustanalytica.com, bing.com, apple.com, tiktok.com, x.com, twitter.com); the city rule became its own class, multi-city site, at {MULTI_CITY_THRESHOLD} cities, decided per month across all engines, after a code review found the 4-city rule labelling regional businesses as directories; table header rows excluded from name extraction; failed calls counted and shown.</li>
 <li>2026-11-02: month one collected, four engines, 400 answers, 04:52 to 05:30 EST, charge $13.36. Analysis a4: 46 domains appended to the directory list after reading the November top sources on the two new lanes and the long tail (directories, aggregators, ranking and listicle sites, media, reference, government, professional associations, manufacturer and insurer finders; the full list is in <code>scripts/classify.py</code>, including <code>delandlocal.com</code>, disclosed above). Nine domains cited in three or more answers could not be verified today and are left to the multi-city rule for now: smarfle.com, theroofingbrief.com, legaldirectorate.com, toptaxhq.com, prosgrade.com, cityvetted.com, myheronhome.com, roof.info, hvacservice.io. Gemini redirect links resolved to real URLs (above). The collector stops on a confirmed empty account balance and treats a one-off 40200 as a retryable row.</li>
+<li>2026-11-02, later the same day: analysis a5. A review of the first November build found about one extracted name in ten was not a business (an address, a star rating, a line of advice such as "Verify Licensing &amp; Insurance", or three names bundled in one bold run; about one in five on the Gemini lane). The extractor now filters those as described under "Naming a business"; the word list it uses is published as <code>data/generic-words.txt</code>. Naming rates moved with it (Claude 76 to 72 of 100, Gemini 100 to 99). July is recomputed under the same rule.</li>
 </ul>
 <h2>Related work</h2>
 <p>Three public indexes measure AI citations at the global, category level and are worth reading alongside this one: <a href="https://promvia.app/ai-source-index">Promvia's AI Source Index</a> (weekly, 40 buyer questions, every row published), <a href="https://brandinsightai.com/sources">BrandInsightAI's AI Source Bias Index</a> and <a href="https://www.heyamos.com/ai-citation-index">HeyAmos's AI Sources Index</a>. This index is the local complement: fixed cities, fixed verticals, named businesses, monthly, from July 2026.</p>
@@ -756,7 +817,7 @@ def variance_agreement(rows):
     share at least one named business, and where all samples share at least one cited domain."""
     groups = defaultdict(list)
     for r in rows:
-        r["names"] = extract_names(r.get("answer", ""))
+        r["names"] = extract_names(r.get("answer", ""), r.get("sources"))
         r["domains"] = sorted({norm_domain(s["url"]) for s in (r.get("sources") or []) if s.get("url")})
         groups[(r["query_id"], r["engine"])].append(r)
     per_engine = defaultdict(lambda: {"groups": 0, "names_agree": 0, "domains_agree": 0, "top_name_agree": 0})

@@ -51,7 +51,7 @@ DIRECTORIES = {
 # folded into "directory".
 MULTI_CITY_THRESHOLD = 5
 
-ANALYSIS_VERSION = "a4"  # a1 July 2026 two-class; a2 appended list rows; a3 multi-city class, per-month decision; a4 list appended after run 1
+ANALYSIS_VERSION = "a5"  # a1 July 2026 two-class; a2 appended list rows; a3 multi-city class, per-month decision; a4 list appended after run 1; a5 name extraction filters
 
 
 def norm_domain(url):
