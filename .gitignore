@@ -2,3 +2,6 @@
 __pycache__/
 *.pyc
 .build-cache/
+.impeccable/
+PRODUCT.md
+prototype/
