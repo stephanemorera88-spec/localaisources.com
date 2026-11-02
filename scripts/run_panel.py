@@ -4,7 +4,8 @@
 Calls DataForSEO ai_optimization/{engine}/llm_responses/live through the house
 helper dfs.sh (which holds the credentials; this script never reads them).
 
-  python3 scripts/run_panel.py --run-id 2026-11                 # the 100 prompts, four engines
+  python3 scripts/run_panel.py --run-id 2026-11                 # the 100 prompts, four engines, N=1 (November 2026)
+  python3 scripts/run_panel.py --run-id 2026-12 --samples 3     # from December 2026: N=3 per prompt per engine (decision 2026-11-02)
   python3 scripts/run_panel.py --run-id 2026-11 --variance      # the 10-prompt N=3 same-day subsample
   python3 scripts/run_panel.py --run-id 2026-11 --limit 4 --engines chat_gpt   # smoke test
   python3 scripts/run_panel.py --run-id 2026-11 --dry-run       # print the plan, call nothing
@@ -176,8 +177,9 @@ def main():
     ap.add_argument("--engines", default=",".join(MODELS))
     ap.add_argument("--limit", type=int, default=None, help="first N prompts only (smoke test)")
     ap.add_argument("--variance", action="store_true", help="run the 10-prompt N=3 subsample instead of the panel")
-    ap.add_argument("--samples", type=int, default=3, help="samples per prompt in variance mode")
-    ap.add_argument("--cost-cap", type=float, default=20.0)
+    ap.add_argument("--samples", type=int, default=None,
+                    help="samples per prompt per engine; panel default 1 (November 2026 was N=1), variance default 3. From December 2026 the panel runs with --samples 3")
+    ap.add_argument("--cost-cap", type=float, default=50.0)
     ap.add_argument("--concurrency", type=int, default=3)
     ap.add_argument("--dfs", default=DFS_DEFAULT)
     ap.add_argument("--dry-run", action="store_true")
@@ -211,7 +213,8 @@ def main():
     prompts = variance_prompts(panel, a.run_id) if a.variance else panel["prompts"]
     if a.limit:
         prompts = prompts[:a.limit]
-    samples = range(1, a.samples + 1) if a.variance else [1]
+    n_samples = a.samples if a.samples else (3 if a.variance else 1)
+    samples = range(1, n_samples + 1)
     out_path = os.path.join(ROOT, "data", "runs", f"{a.run_id}{'-variance' if a.variance else ''}.jsonl")
 
     done = set()
