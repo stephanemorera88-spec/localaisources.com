@@ -350,6 +350,23 @@ def domain_link(d, kind=None):
     return f'<a href="/domains/{slug(d)}/">{esc(d)}</a>'
 
 
+HOSTNAME = re.compile(r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}")
+
+
+def source_link(d):
+    """The one outbound link a cited domain gets, on its own page only.
+
+    Same sentence and same rel for every domain, so the link lets a reader check the source and
+    never ranks one source over another. Never add a followed link or a one-off link for a single
+    domain (decided 2026-11-18 after the first request from a cited source). A string that is not
+    a plain hostname gets no link.
+    """
+    if not HOSTNAME.fullmatch(d):
+        return ""
+    return (f'<p>Check the source at <a href="https://{esc(d)}/" rel="nofollow">{esc(d)}</a>. '
+            "Every source page links to its domain the same way.</p>")
+
+
 def engine_link(e):
     return f'<a href="/engines/{e}/">{ENGINE_NAMES[e]}</a>'
 
@@ -493,7 +510,7 @@ def build_domains(ix):
         desc = f"{d} was cited in {len(lst)} answers across {runs_txt} of the Local AI Sources panel. Classified as {KIND_LABEL[latest_kind]} in the latest month."
         head = lead(esc(d), ask=esc(KIND_LABEL[latest_kind]),
                     q=f"Cited in {plural(len(lst), 'answer')} across {runs_txt}")
-        body = (head + f'<div class="prose note"><p>Classification is decided per month from that month&rsquo;s rows (analysis {ANALYSIS_VERSION}), so a domain can change class between months.</p></div>'
+        body = (head + f'<div class="prose note">{source_link(d)}<p>Classification is decided per month from that month&rsquo;s rows (analysis {ANALYSIS_VERSION}), so a domain can change class between months.</p></div>'
                 + rule_head("Answers citing it, by month and engine") + "".join(per_month)
                 + rule_head("Questions it was cited on") + questions)
         write(path.strip("/") + "/index.html", shell(ix, title, desc, path, body, dom_date))
