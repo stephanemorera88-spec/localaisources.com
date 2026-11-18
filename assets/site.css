@@ -83,7 +83,7 @@ a:hover{color:var(--red)}
 /* display ads: the double-ruled lead box and the single-ruled notice */
 .ad{border:3px solid var(--red);padding:.55em .75em;margin:0 0 .8em}
 .ad.lead{box-shadow:inset 0 0 0 3px var(--paper),inset 0 0 0 5px var(--red);padding:1em .95em .95em}
-.ad.lead h1{font-family:var(--title);font-weight:400;font-size:2.97em;line-height:.9;margin:0;letter-spacing:.01em;text-wrap:balance}
+.ad.lead h1{font-family:var(--title);font-weight:400;font-size:2.97em;line-height:.9;margin:0;letter-spacing:.01em;text-wrap:balance;overflow-wrap:anywhere}
 .ad.lead .dot{color:var(--red)}
 .ad.lead .tag{margin:.45em 0 0;font-size:.95em;color:var(--red);line-height:1.1}
 .ad.lead .ask{margin:.5em 0 0;font-size:1em;color:var(--red)}
